@@ -1,0 +1,6 @@
+Methode : <link href="https://fonts.googleapis.com/css?family=Cinzel|Roboto|Roboto+Slab" rel="stylesheet">
+Bof car Google prend des données + latence
+
+font-family: 'Cinzel', serif;
+font-family: 'Roboto', sans-serif;
+font-family: 'Roboto Slab', serif;

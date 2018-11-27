@@ -1,0 +1,180 @@
+.Bandeau {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-top: 2px dashed #003471;
+  border-bottom: 2px dashed #003471;
+  margin: 1em;
+}
+
+.Gros_Titre {
+  font-family: 'Cinzel', serif;
+  color: #bd7a00;
+  margin-left: 0.5em;
+}
+
+.Article_element {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 1em;
+  justify-content: center; /* NEW */
+  padding: 0;  /* NEW */
+}
+
+.Article_element > .Une_Boite {
+  width: 20em;
+}
+
+.Une_Boite {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    margin-bottom: 1em;
+}
+
+.hidden {
+  visibility: hidden;
+  margin: 0;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  margin-bottom: 1em;
+  height: 0;
+}
+
+.Lien_Photo {
+  margin: 0;
+  padding: 0;
+  border-bottom: 4px solid #003471;
+  width: 320px;
+  height: 180px;
+}
+
+.Titre_article {
+  margin: 0;
+  padding: 0;
+  margin-top: 0.5em;
+  font-size: 1.25em;
+}
+
+.Date {
+  margin-top: 0.5em;
+  margin-left: 0.5em;
+  font-size: 1em;
+}
+
+.Sous_Bandeau {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  font-family: "Roboto Slab", serif;
+  margin: 0;
+  padding: 0;
+  width: 320px;
+}
+
+.Couleur_slash {
+  color: #bd7a00;
+  font-size: 1.25em;
+}
+
+.fa-map {
+  margin-right: 0.5em;
+  font-size: 2em;
+}
+
+#Scroll {
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+#Scroll::-webkit-scrollbar {
+    width: 0.2em;
+}
+
+#Scroll::-webkit-scrollbar-track {
+    background-color: none;
+}
+
+#Scroll::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #bd7a00;
+}
+
+#Separation_basse {
+  width: 100%;
+  display: flex;
+  border: 0;
+  border-bottom: 2px solid #003471;
+  padding: 0;
+  margin: 0;
+}
+
+#Partie_Basse {
+  display: flex;
+  flex-direction: row;
+  color: white;
+  align-items: center;
+  font-family: "Cinzel", serif;
+  font-size: 1.25em;
+    height: 7em;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+#Gauche {
+  display: flex;
+  width: 50%;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 1em;
+}
+
+#Gauche:hover, #Droite:hover {
+  color: #bd7a00;
+  cursor: pointer;
+}
+
+#Droite {
+  display: flex;
+  width: 50%;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 1em;
+}
+
+#Faeriths_Image {
+  width: 8em;
+  height: auto;
+  margin-left: 1em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+@media screen and (max-width:1325px) {
+.Article_element>.Une_Boite {
+    width: 21.5em;
+}
+}
+
+
+@media screen and (max-width:1450px) {
+
+  #Partie_Basse {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    align-items: center;
+    font-family: "Cinzel", serif;
+    font-size: 1.25em;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  #Droite {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1em;
+  }
+
+
+}

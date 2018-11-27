@@ -1,0 +1,273 @@
+/* POLICES D'ECRITURES */
+@font-face {
+  font-family: "Cinzel";
+  src: url("../fonts/Cinzel/Cinzel-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto/Roboto-regular.ttf");
+}
+
+@font-face {
+  font-family: "Roboto-Italic";
+  font-style: italic;
+  src: url("../fonts/Roboto/Roboto-Italic.ttf");
+}
+
+@font-face {
+  font-family: "Roboto-Bold";
+  font-style: bold;
+  src: url("../fonts/Roboto/Roboto-Bold.ttf");
+}
+
+@font-face {
+  font-family: "RobotoSlab-Regular";
+  src: url("../fonts/Roboto-Slab/Roboto-Regular.ttf");
+}
+
+@font-face {
+  font-family: "RobotoSlab-Bold";
+  font-style: bold;
+  src: url("../fonts/Roboto-Slab/Roboto-Bold.ttf");
+}
+
+body {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-image: url("../Images/Background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+h1, h2, h3 {
+  font-weight: normal;
+}
+
+/* MENU */
+#Main_header {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  min-height: 100vh;
+  width: 21%;
+  min-width: 20em;
+  border-right: 2px solid #003471;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+#Header_Mobile {
+  display: none;
+}
+
+#Image_Logo, #Logo {
+  display: flex;
+  justify-content: center;
+}
+
+#Image_Logo {
+  margin-top: 1.5em;
+}
+
+#Image_Logo img {
+  width: auto;
+  height: 150px;
+}
+
+#Logo {
+  font-family: "Cinzel", serif;
+  color: white;
+  font-size: 1.75em;
+}
+
+#Navigation_principale {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#Navigation_principale ul {
+  padding: 0;
+}
+
+#Navigation_principale ul li {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+}
+
+#Navigation_principale ul li a {
+  font-family: "Roboto Slab", serif;
+  text-decoration: none;
+  color: white;
+  font-size: 145%;
+}
+
+#Navigation_principale ul li a:hover {
+  color: #bd7a00;
+}
+
+#Social_Media {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+#Social_Media a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  font-size: 2em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+#Social_Media a:hover {
+  color: #bd7a00;
+}
+
+#Social_haut {
+  display: flex;
+  margin-bottom: 0.75em;
+}
+
+#Social_bas {
+  display: flex;
+  margin-top: 0.75em;
+}
+
+#Mention {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  bottom: 0;
+  width: 21%;
+  min-width: 20em;
+  justify-content: space-around;
+  align-items: center;
+  font-family: "Roboto Slab", serif;
+  color: white;
+  border-top: 2px solid #003471;
+}
+
+#Mention p a {
+  text-decoration: none;
+  color: white;
+}
+
+#Mention p a:hover {
+  color: #bd7a00;
+}
+
+#Site_content {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 2px solid #003471;
+  width: 60%;
+  height: 50em;
+  margin-left: 9%;
+  margin-top: 5em;
+}
+
+.Espace {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.Decoration {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.Decoration_trait {
+  border: 0px;
+  border-bottom: 1px solid white;
+  width: 25%;
+}
+
+.Slash {
+  color: white;
+  font-size: 2em;
+}
+
+#Selection {
+  color: #bd7a00;
+}
+
+@media screen and (max-height:925px) {
+  #Mention {
+    background-color: rgba(5, 5, 5, 0.9);
+  }
+}
+
+/* POUR LES ECRANS INFERIEURS A 1280px DE LARGE */
+@media screen and (max-width:1280px) {
+  body {
+    flex-direction: column;
+  }
+
+  #Main_header {
+    display: none;
+  }
+
+  #Site_content {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: none;
+    width: 100%;
+    height: auto;
+  }
+
+  #Header_Mobile {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #003471;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+  }
+
+  #Menu_Debut {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 50%;
+    margin-left: 1em;
+  }
+
+  #Logo_Mobile {
+    color: white;
+    text-decoration: none;
+    font-family: "Cinzel";
+  }
+
+  #Hamburger {
+    display: flex;
+    justify-content: flex-end;
+    color: white;
+    font-size: 2em;
+    width: 50%;
+    margin-right: 1em;
+  }
+}
+
+/* POUR LES ECRANS INFERIEURS A 1024px DE LARGE */
+@media screen and (max-width:1024px) {
+
+}

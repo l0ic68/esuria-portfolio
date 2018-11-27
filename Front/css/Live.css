@@ -1,0 +1,184 @@
+.fa-expand-arrows-alt {
+  margin-left: 0.5em;
+}
+
+.Point_mobile {
+  display: none;
+}
+
+.Row_bas {
+  display: flex;
+}
+
+.Titre_info {
+  font-size: 1.25em;
+  font-weight: normal;
+  font-family: "Cinzel", serif;
+  margin: 0;
+}
+
+.Description_info {
+  font-family: "Roboto", sans-serif;
+  margin-bottom: 0;
+}
+
+.Ligne_titre {
+  display: flex;
+  align-items: center;
+  color: #bd7a00;
+}
+
+.Separation_info {
+  width: 33.33%;
+  margin: 1em;
+}
+
+.icone_info {
+  font-size: 1.5em;
+  margin-right: 0.5em;
+}
+
+#Main_all {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+#Principal_zone {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-left: 6.5%;
+  margin-right: 6.5%;
+}
+
+#Haut {
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 2px solid #003471;
+  color: white;
+  font-size: 1.5em;
+  height: 2em;
+  margin: 0.5em 0 0.5em 0;
+  width: 100%;
+  justify-content: center;
+}
+
+#Horaire {
+  display: flex;
+  width: 50%;
+  justify-content: flex-start;
+  margin-left: 1em;
+  font-family: "Roboto Slab", serif;
+}
+
+#Theater {
+  display: flex;
+  align-items: center;
+  width: 50%;
+  justify-content: flex-end;
+  margin-right: 1em;
+  font-family: "Roboto Slab", serif;
+}
+
+#Theater:hover {
+  cursor: pointer;
+    color: #bd7a00;
+}
+
+#Twitch {
+  width: 100%;
+  padding-bottom: 56.25%;
+  position: relative;
+  margin-bottom: 0.5em;
+}
+
+#Twitch_1 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border: 2px solid #003471;
+}
+
+#Chat {
+  display: flex;
+  height: 100vh;
+  border-left: 2px solid #003471;
+}
+
+#Twitch_chat {}
+
+#Bas_page {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 2px solid #003471;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.5em;
+  width: 100%;
+}
+
+#Point {
+  border: 0;
+  border-bottom: 2px dotted #003471;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* POUR LES ECRANS INFERIEURS A 1280px DE LARGE */
+@media screen and (max-width:1280px) {
+  #Twitch_chat {}
+}
+
+/* POUR LES ECRANS INFERIEURS A 1024px DE LARGE */
+@media screen and (max-width:1024px) {
+  #Twitch_chat {
+    display: none;
+  }
+
+  #Twitch_1 {
+    height: 52.5vw;
+    width: 100%;
+    border: 2px solid #003471;
+  }
+
+  #Principal_zone {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+  }
+
+  #Horaire {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0em;
+  }
+
+  #Theater {
+    display: none;
+  }
+
+  .Row_bas {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .Separation_info {
+    width: 100%;
+    margin: 1em;
+  }
+
+  .Point_mobile {
+    display: flex;
+    border: 0;
+    border-bottom: 2px dotted #003471;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+}
