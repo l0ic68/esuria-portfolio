@@ -1,4 +1,4 @@
-###Esuria Portofolio
+# Esuria Portofolio
 
 Pour lancer le projet, il faut d'abord le récuperer sur notre github: 
 
