@@ -44,7 +44,7 @@ class DotenvTest extends TestCase
             array('FOO=${FOO', "Unclosed braces on variable expansion in \".env\" at line 1.\n...FOO=\${FOO...\n           ^ line 1 offset 9"),
         );
 
-        if ('\\' !== \DIRECTORY_SEPARATOR) {
+        if ('\\' !== DIRECTORY_SEPARATOR) {
             $tests[] = array('FOO=$((1dd2))', "Issue expanding a command (%s\n) in \".env\" at line 1.\n...FOO=$((1dd2))...\n               ^ line 1 offset 13");
         }
 
@@ -66,20 +66,6 @@ class DotenvTest extends TestCase
         $_ENV['REMOTE'] = 'remote';
 
         $tests = array(
-            // backslashes
-            array('FOO=foo\\\\bar', array('FOO' => 'foo\\bar')),
-            array("FOO='foo\\\\bar'", array('FOO' => 'foo\\\\bar')),
-            array('FOO="foo\\\\bar"', array('FOO' => 'foo\\bar')),
-
-            // escaped backslash in front of variable
-            array("BAR=bar\nFOO=foo\\\\\$BAR", array('BAR' => 'bar', 'FOO' => 'foo\\bar')),
-            array("BAR=bar\nFOO='foo\\\\\$BAR'", array('BAR' => 'bar', 'FOO' => 'foo\\\\$BAR')),
-            array("BAR=bar\nFOO=\"foo\\\\\$BAR\"", array('BAR' => 'bar', 'FOO' => 'foo\\bar')),
-
-            array('FOO=foo\\\\\\$BAR', array('FOO' => 'foo\\$BAR')),
-            array('FOO=\'foo\\\\\\$BAR\'', array('FOO' => 'foo\\\\\\$BAR')),
-            array('FOO="foo\\\\\\$BAR"', array('FOO' => 'foo\\$BAR')),
-
             // spaces
             array('FOO=bar', array('FOO' => 'bar')),
             array(' FOO=bar ', array('FOO' => 'bar')),
@@ -153,7 +139,7 @@ class DotenvTest extends TestCase
             array('FOO=$NOTDEFINED', array('FOO' => '')),
         );
 
-        if ('\\' !== \DIRECTORY_SEPARATOR) {
+        if ('\\' !== DIRECTORY_SEPARATOR) {
             $tests = array_merge($tests, array(
                 // command expansion
                 array('FOO=$(echo foo)', array('FOO' => 'foo')),
@@ -185,7 +171,7 @@ class DotenvTest extends TestCase
         file_put_contents($path1, 'FOO=BAR');
         file_put_contents($path2, 'BAR=BAZ');
 
-        (new Dotenv())->load($path1, $path2);
+        (new DotEnv())->load($path1, $path2);
 
         $foo = getenv('FOO');
         $bar = getenv('BAR');
@@ -213,7 +199,7 @@ class DotenvTest extends TestCase
     {
         $originalValue = $_SERVER['argc'];
 
-        $dotenv = new Dotenv();
+        $dotenv = new DotEnv();
         $dotenv->populate(array('argc' => 'new_value'));
 
         $this->assertSame($originalValue, $_SERVER['argc']);
@@ -224,7 +210,7 @@ class DotenvTest extends TestCase
         putenv('TEST_ENV_VAR=original_value');
         $_SERVER['TEST_ENV_VAR'] = 'original_value';
 
-        $dotenv = new Dotenv();
+        $dotenv = new DotEnv();
         $dotenv->populate(array('TEST_ENV_VAR' => 'new_value'));
 
         $this->assertSame('original_value', getenv('TEST_ENV_VAR'));
@@ -234,7 +220,7 @@ class DotenvTest extends TestCase
     {
         $_SERVER['HTTP_TEST_ENV_VAR'] = 'http_value';
 
-        $dotenv = new Dotenv();
+        $dotenv = new DotEnv();
         $dotenv->populate(array('HTTP_TEST_ENV_VAR' => 'env_value'));
 
         $this->assertSame('env_value', getenv('HTTP_TEST_ENV_VAR'));
@@ -256,7 +242,7 @@ class DotenvTest extends TestCase
         unset($_SERVER['DATABASE_URL']);
         putenv('DATABASE_URL');
 
-        $dotenv = new Dotenv();
+        $dotenv = new DotEnv();
         $dotenv->populate(array('APP_DEBUG' => '1', 'DATABASE_URL' => 'mysql://root@localhost/db'));
 
         $this->assertSame('APP_DEBUG,DATABASE_URL', getenv('SYMFONY_DOTENV_VARS'));
@@ -273,7 +259,7 @@ class DotenvTest extends TestCase
         unset($_SERVER['DATABASE_URL']);
         putenv('DATABASE_URL');
 
-        $dotenv = new Dotenv();
+        $dotenv = new DotEnv();
         $dotenv->populate(array('APP_DEBUG' => '0', 'DATABASE_URL' => 'mysql://root@localhost/db'));
         $dotenv->populate(array('DATABASE_URL' => 'sqlite:///somedb.sqlite'));
 
@@ -282,14 +268,14 @@ class DotenvTest extends TestCase
 
     public function testOverridingEnvVarsWithNamesMemorizedInSpecialVar()
     {
-        putenv('SYMFONY_DOTENV_VARS='.$_SERVER['SYMFONY_DOTENV_VARS'] = 'FOO,BAR,BAZ');
+        putenv('SYMFONY_DOTENV_VARS=FOO,BAR,BAZ');
 
         putenv('FOO=foo');
         putenv('BAR=bar');
         putenv('BAZ=baz');
         putenv('DOCUMENT_ROOT=/var/www');
 
-        $dotenv = new Dotenv();
+        $dotenv = new DotEnv();
         $dotenv->populate(array('FOO' => 'foo1', 'BAR' => 'bar1', 'BAZ' => 'baz1', 'DOCUMENT_ROOT' => '/boot'));
 
         $this->assertSame('foo1', getenv('FOO'));

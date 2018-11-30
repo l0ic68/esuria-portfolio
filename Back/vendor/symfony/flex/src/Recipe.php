@@ -65,23 +65,20 @@ class Recipe
         return $this->data['origin'] ?? '';
     }
 
-    public function getURL(): string
-    {
-        if (!$this->data['origin']) {
-            return '';
-        }
-
-        // symfony/translation:3.3@github.com/symfony/recipes:master
-        if (!preg_match('/^([^\:]+?)\:([^\@]+)@([^\:]+)\:(.+)$/', $this->data['origin'], $matches)) {
-            // that excludes auto-generated recipes, which is what we want
-            return '';
-        }
-
-        return sprintf('https://%s/tree/%s/%s/%s', $matches[3], $matches[4], $matches[1], $matches[2]);
-    }
-
     public function isContrib(): bool
     {
         return $this->data['is_contrib'] ?? false;
+    }
+
+    // for BC, to be removed on 11/30/2017
+    public function isNotInstallable(): bool
+    {
+        return $this->data['not_installable'] ?? false;
+    }
+
+    // for BC, to be removed on 11/30/2017
+    public function isEmpty(): bool
+    {
+        return count($this->data) > 0;
     }
 }

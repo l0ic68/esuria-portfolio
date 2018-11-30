@@ -19,7 +19,7 @@ use Symfony\Component\Yaml\Command\LintCommand as BaseLintCommand;
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  * @author Robin Chalas <robin.chalas@gmail.com>
  *
- * @final
+ * @final since version 3.4
  */
 class YamlLintCommand extends BaseLintCommand
 {

@@ -12,8 +12,8 @@
 namespace Symfony\Component\Config\Definition\Builder;
 
 use Symfony\Component\Config\Definition\ArrayNode;
-use Symfony\Component\Config\Definition\Exception\InvalidDefinitionException;
 use Symfony\Component\Config\Definition\PrototypedArrayNode;
+use Symfony\Component\Config\Definition\Exception\InvalidDefinitionException;
 
 /**
  * This class provides a fluent interface for defining an array node.
@@ -48,7 +48,7 @@ class ArrayNodeDefinition extends NodeDefinition implements ParentNodeDefinition
     }
 
     /**
-     * {@inheritdoc}
+     * Sets a custom children builder.
      */
     public function setBuilder(NodeBuilder $builder)
     {
@@ -56,7 +56,9 @@ class ArrayNodeDefinition extends NodeDefinition implements ParentNodeDefinition
     }
 
     /**
-     * {@inheritdoc}
+     * Returns a builder to add children nodes.
+     *
+     * @return NodeBuilder
      */
     public function children()
     {
@@ -364,7 +366,17 @@ class ArrayNodeDefinition extends NodeDefinition implements ParentNodeDefinition
     }
 
     /**
-     * {@inheritdoc}
+     * Appends a node definition.
+     *
+     *     $node = new ArrayNodeDefinition()
+     *         ->children()
+     *             ->scalarNode('foo')->end()
+     *             ->scalarNode('baz')->end()
+     *         ->end()
+     *         ->append($this->getBarNodeDefinition())
+     *     ;
+     *
+     * @return $this
      */
     public function append(NodeDefinition $node)
     {
@@ -393,7 +405,7 @@ class ArrayNodeDefinition extends NodeDefinition implements ParentNodeDefinition
     protected function createNode()
     {
         if (null === $this->prototype) {
-            $node = new ArrayNode($this->name, $this->parent, $this->pathSeparator);
+            $node = new ArrayNode($this->name, $this->parent);
 
             $this->validateConcreteNode($node);
 
@@ -404,7 +416,7 @@ class ArrayNodeDefinition extends NodeDefinition implements ParentNodeDefinition
                 $node->addChild($child->getNode());
             }
         } else {
-            $node = new PrototypedArrayNode($this->name, $this->parent, $this->pathSeparator);
+            $node = new PrototypedArrayNode($this->name, $this->parent);
 
             $this->validatePrototypeNode($node);
 
@@ -468,7 +480,9 @@ class ArrayNodeDefinition extends NodeDefinition implements ParentNodeDefinition
         $path = $node->getPath();
 
         if (null !== $this->key) {
-            throw new InvalidDefinitionException(sprintf('->useAttributeAsKey() is not applicable to concrete nodes at path "%s"', $path));
+            throw new InvalidDefinitionException(
+                sprintf('->useAttributeAsKey() is not applicable to concrete nodes at path "%s"', $path)
+            );
         }
 
         if (false === $this->allowEmptyValue) {
@@ -476,15 +490,21 @@ class ArrayNodeDefinition extends NodeDefinition implements ParentNodeDefinition
         }
 
         if (true === $this->atLeastOne) {
-            throw new InvalidDefinitionException(sprintf('->requiresAtLeastOneElement() is not applicable to concrete nodes at path "%s"', $path));
+            throw new InvalidDefinitionException(
+                sprintf('->requiresAtLeastOneElement() is not applicable to concrete nodes at path "%s"', $path)
+            );
         }
 
         if ($this->default) {
-            throw new InvalidDefinitionException(sprintf('->defaultValue() is not applicable to concrete nodes at path "%s"', $path));
+            throw new InvalidDefinitionException(
+                sprintf('->defaultValue() is not applicable to concrete nodes at path "%s"', $path)
+            );
         }
 
         if (false !== $this->addDefaultChildren) {
-            throw new InvalidDefinitionException(sprintf('->addDefaultChildrenIfNoneSet() is not applicable to concrete nodes at path "%s"', $path));
+            throw new InvalidDefinitionException(
+                sprintf('->addDefaultChildrenIfNoneSet() is not applicable to concrete nodes at path "%s"', $path)
+            );
         }
     }
 
@@ -498,29 +518,29 @@ class ArrayNodeDefinition extends NodeDefinition implements ParentNodeDefinition
         $path = $node->getPath();
 
         if ($this->addDefaults) {
-            throw new InvalidDefinitionException(sprintf('->addDefaultsIfNotSet() is not applicable to prototype nodes at path "%s"', $path));
+            throw new InvalidDefinitionException(
+                sprintf('->addDefaultsIfNotSet() is not applicable to prototype nodes at path "%s"', $path)
+            );
         }
 
         if (false !== $this->addDefaultChildren) {
             if ($this->default) {
-                throw new InvalidDefinitionException(sprintf('A default value and default children might not be used together at path "%s"', $path));
+                throw new InvalidDefinitionException(
+                    sprintf('A default value and default children might not be used together at path "%s"', $path)
+                );
             }
 
-            if (null !== $this->key && (null === $this->addDefaultChildren || \is_int($this->addDefaultChildren) && $this->addDefaultChildren > 0)) {
-                throw new InvalidDefinitionException(sprintf('->addDefaultChildrenIfNoneSet() should set default children names as ->useAttributeAsKey() is used at path "%s"', $path));
+            if (null !== $this->key && (null === $this->addDefaultChildren || is_int($this->addDefaultChildren) && $this->addDefaultChildren > 0)) {
+                throw new InvalidDefinitionException(
+                    sprintf('->addDefaultChildrenIfNoneSet() should set default children names as ->useAttributeAsKey() is used at path "%s"', $path)
+                );
             }
 
-            if (null === $this->key && (\is_string($this->addDefaultChildren) || \is_array($this->addDefaultChildren))) {
-                throw new InvalidDefinitionException(sprintf('->addDefaultChildrenIfNoneSet() might not set default children names as ->useAttributeAsKey() is not used at path "%s"', $path));
+            if (null === $this->key && (is_string($this->addDefaultChildren) || is_array($this->addDefaultChildren))) {
+                throw new InvalidDefinitionException(
+                    sprintf('->addDefaultChildrenIfNoneSet() might not set default children names as ->useAttributeAsKey() is not used at path "%s"', $path)
+                );
             }
         }
-    }
-
-    /**
-     * @return NodeDefinition[]
-     */
-    public function getChildNodeDefinitions()
-    {
-        return $this->children;
     }
 }

@@ -17,7 +17,6 @@ use Symfony\Bundle\FullStack;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Lock\Store\SemaphoreStore;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class ConfigurationTest extends TestCase
 {
@@ -43,41 +42,6 @@ class ConfigurationTest extends TestCase
         $config = $processor->processConfiguration(new Configuration(true), array($input));
 
         $this->assertEquals(array('FrameworkBundle:Form'), $config['templating']['form']['resources']);
-    }
-
-    public function getTestValidSessionName()
-    {
-        return array(
-            array(null),
-            array('PHPSESSID'),
-            array('a&b'),
-            array(',_-!@#$%^*(){}:<>/?'),
-        );
-    }
-
-    /**
-     * @dataProvider getTestInvalidSessionName
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     */
-    public function testInvalidSessionName($sessionName)
-    {
-        $processor = new Processor();
-        $processor->processConfiguration(
-            new Configuration(true),
-            array(array('session' => array('name' => $sessionName)))
-        );
-    }
-
-    public function getTestInvalidSessionName()
-    {
-        return array(
-            array('a.b'),
-            array('a['),
-            array('a[]'),
-            array('a[b]'),
-            array('a=b'),
-            array('a+b'),
-        );
     }
 
     public function testAssetsCanBeEnabled()
@@ -188,7 +152,7 @@ class ConfigurationTest extends TestCase
             'translator' => array(
                 'enabled' => !class_exists(FullStack::class),
                 'fallbacks' => array('en'),
-                'logging' => false,
+                'logging' => true,
                 'formatter' => 'translator.formatter.default',
                 'paths' => array(),
                 'default_path' => '%kernel.project_dir%/translations',
@@ -198,6 +162,7 @@ class ConfigurationTest extends TestCase
                 'enable_annotations' => !class_exists(FullStack::class),
                 'static_method' => array('loadValidatorMetadata'),
                 'translation_domain' => 'validators',
+                'strict_email' => false,
                 'mapping' => array(
                     'paths' => array(),
                 ),
@@ -218,7 +183,7 @@ class ConfigurationTest extends TestCase
                 'throw_exception_on_invalid_index' => false,
             ),
             'property_info' => array(
-                'enabled' => !class_exists(FullStack::class),
+                'enabled' => false,
             ),
             'router' => array(
                 'enabled' => false,
@@ -284,20 +249,6 @@ class ConfigurationTest extends TestCase
                         class_exists(SemaphoreStore::class) && SemaphoreStore::isSupported() ? 'semaphore' : 'flock',
                     ),
                 ),
-            ),
-            'messenger' => array(
-                'enabled' => !class_exists(FullStack::class) && interface_exists(MessageBusInterface::class),
-                'routing' => array(),
-                'transports' => array(),
-                'serializer' => array(
-                    'enabled' => !class_exists(FullStack::class),
-                    'format' => 'json',
-                    'context' => array(),
-                ),
-                'encoder' => 'messenger.transport.serializer',
-                'decoder' => 'messenger.transport.serializer',
-                'default_bus' => null,
-                'buses' => array('messenger.bus.default' => array('default_middleware' => true, 'middleware' => array())),
             ),
         );
     }

@@ -13,27 +13,24 @@ namespace Symfony\Flex\Tests\Configurator;
 
 require_once __DIR__.'/TmpDirMock.php';
 
-use Composer\Composer;
-use Composer\IO\IOInterface;
-use PHPUnit\Framework\TestCase;
 use Symfony\Flex\Configurator\MakefileConfigurator;
 use Symfony\Flex\Options;
-use Symfony\Flex\Recipe;
+use PHPUnit\Framework\TestCase;
 
-class MakefileConfiguratorTest extends TestCase
+class MarkefileConfiguratorTest extends TestCase
 {
     public function testConfigure()
     {
         $configurator = new MakefileConfigurator(
-            $this->getMockBuilder(Composer::class)->getMock(),
-            $this->getMockBuilder(IOInterface::class)->getMock(),
+            $this->getMockBuilder('Composer\Composer')->getMock(),
+            $this->getMockBuilder('Composer\IO\IOInterface')->getMock(),
             new Options()
         );
 
-        $recipe1 = $this->getMockBuilder(Recipe::class)->disableOriginalConstructor()->getMock();
+        $recipe1 = $this->getMockBuilder('Symfony\Flex\Recipe')->disableOriginalConstructor()->getMock();
         $recipe1->expects($this->any())->method('getName')->will($this->returnValue('FooBundle'));
 
-        $recipe2 = $this->getMockBuilder(Recipe::class)->disableOriginalConstructor()->getMock();
+        $recipe2 = $this->getMockBuilder('Symfony\Flex\Recipe')->disableOriginalConstructor()->getMock();
         $recipe2->expects($this->any())->method('getName')->will($this->returnValue('BarBundle'));
 
         $makefile = sys_get_temp_dir().'/Makefile';

@@ -11,14 +11,12 @@
 
 namespace Symfony\Component\DependencyInjection\Exception;
 
-use Psr\Container\NotFoundExceptionInterface;
-
 /**
  * This exception is thrown when a non-existent parameter is used.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ParameterNotFoundException extends InvalidArgumentException implements NotFoundExceptionInterface
+class ParameterNotFoundException extends InvalidArgumentException
 {
     private $key;
     private $sourceId;
@@ -58,7 +56,7 @@ class ParameterNotFoundException extends InvalidArgumentException implements Not
         }
 
         if ($this->alternatives) {
-            if (1 == \count($this->alternatives)) {
+            if (1 == count($this->alternatives)) {
                 $this->message .= ' Did you mean this: "';
             } else {
                 $this->message .= ' Did you mean one of these: "';

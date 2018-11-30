@@ -12,7 +12,6 @@
 namespace Symfony\Bundle\FrameworkBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -29,7 +28,7 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Gábor Egyed <gabor.egyed@gmail.com>
  *
- * @final
+ * @final since version 3.4
  */
 class AssetsInstallCommand extends Command
 {
@@ -59,7 +58,6 @@ class AssetsInstallCommand extends Command
             ))
             ->addOption('symlink', null, InputOption::VALUE_NONE, 'Symlinks the assets instead of copying it')
             ->addOption('relative', null, InputOption::VALUE_NONE, 'Make relative symlinks')
-            ->addOption('no-cleanup', null, InputOption::VALUE_NONE, 'Do not remove the assets of the bundles that no longer exist')
             ->setDescription('Installs bundles web assets under a public directory')
             ->setHelp(<<<'EOT'
 The <info>%command.name%</info> command installs bundle assets into a given
@@ -96,7 +94,7 @@ EOT
             $targetArg = $kernel->getContainer()->getParameter('kernel.project_dir').'/'.$targetArg;
 
             if (!is_dir($targetArg)) {
-                throw new InvalidArgumentException(sprintf('The target directory "%s" does not exist.', $input->getArgument('target')));
+                throw new \InvalidArgumentException(sprintf('The target directory "%s" does not exist.', $input->getArgument('target')));
             }
         }
 
@@ -154,17 +152,17 @@ EOT
                 }
 
                 if ($method === $expectedMethod) {
-                    $rows[] = array(sprintf('<fg=green;options=bold>%s</>', '\\' === \DIRECTORY_SEPARATOR ? 'OK' : "\xE2\x9C\x94" /* HEAVY CHECK MARK (U+2714) */), $message, $method);
+                    $rows[] = array(sprintf('<fg=green;options=bold>%s</>', '\\' === DIRECTORY_SEPARATOR ? 'OK' : "\xE2\x9C\x94" /* HEAVY CHECK MARK (U+2714) */), $message, $method);
                 } else {
-                    $rows[] = array(sprintf('<fg=yellow;options=bold>%s</>', '\\' === \DIRECTORY_SEPARATOR ? 'WARNING' : '!'), $message, $method);
+                    $rows[] = array(sprintf('<fg=yellow;options=bold>%s</>', '\\' === DIRECTORY_SEPARATOR ? 'WARNING' : '!'), $message, $method);
                 }
             } catch (\Exception $e) {
                 $exitCode = 1;
-                $rows[] = array(sprintf('<fg=red;options=bold>%s</>', '\\' === \DIRECTORY_SEPARATOR ? 'ERROR' : "\xE2\x9C\x98" /* HEAVY BALLOT X (U+2718) */), $message, $e->getMessage());
+                $rows[] = array(sprintf('<fg=red;options=bold>%s</>', '\\' === DIRECTORY_SEPARATOR ? 'ERROR' : "\xE2\x9C\x98" /* HEAVY BALLOT X (U+2718) */), $message, $e->getMessage());
             }
         }
         // remove the assets of the bundles that no longer exist
-        if (!$input->getOption('no-cleanup') && is_dir($bundlesDir)) {
+        if (is_dir($bundlesDir)) {
             $dirsToRemove = Finder::create()->depth(0)->directories()->exclude($validAssetDirs)->in($bundlesDir);
             $this->filesystem->remove($dirsToRemove);
         }
@@ -228,8 +226,8 @@ EOT
     private function symlink(string $originDir, string $targetDir, bool $relative = false)
     {
         if ($relative) {
-            $this->filesystem->mkdir(\dirname($targetDir));
-            $originDir = $this->filesystem->makePathRelative($originDir, realpath(\dirname($targetDir)));
+            $this->filesystem->mkdir(dirname($targetDir));
+            $originDir = $this->filesystem->makePathRelative($originDir, realpath(dirname($targetDir)));
         }
         $this->filesystem->symlink($originDir, $targetDir);
         if (!file_exists($targetDir)) {

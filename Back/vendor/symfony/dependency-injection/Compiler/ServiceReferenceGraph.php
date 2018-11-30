@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  *
- * @final
+ * @final since version 3.4
  */
 class ServiceReferenceGraph
 {
@@ -73,7 +73,7 @@ class ServiceReferenceGraph
     /**
      * Connects 2 nodes together in the Graph.
      */
-    public function connect(?string $sourceId, $sourceValue, ?string $destId, $destValue = null, $reference = null, bool $lazy = false, bool $weak = false, bool $byConstructor = false)
+    public function connect(?string $sourceId, $sourceValue, ?string $destId, $destValue = null, $reference = null, bool $lazy = false, bool $weak = false)
     {
         if (null === $sourceId || null === $destId) {
             return;
@@ -81,7 +81,7 @@ class ServiceReferenceGraph
 
         $sourceNode = $this->createNode($sourceId, $sourceValue);
         $destNode = $this->createNode($destId, $destValue);
-        $edge = new ServiceReferenceGraphEdge($sourceNode, $destNode, $reference, $lazy, $weak, $byConstructor);
+        $edge = new ServiceReferenceGraphEdge($sourceNode, $destNode, $reference, $lazy, $weak);
 
         $sourceNode->addOutEdge($edge);
         $destNode->addInEdge($edge);

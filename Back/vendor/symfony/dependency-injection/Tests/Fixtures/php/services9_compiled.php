@@ -53,7 +53,6 @@ class ProjectServiceContainer extends Container
             'lazy_context_ignore_invalid_ref' => 'getLazyContextIgnoreInvalidRefService',
             'method_call1' => 'getMethodCall1Service',
             'new_factory_service' => 'getNewFactoryServiceService',
-            'runtime_error' => 'getRuntimeErrorService',
             'service_from_static_method' => 'getServiceFromStaticMethodService',
             'tagged_iterator' => 'getTaggedIteratorService',
         );
@@ -89,7 +88,6 @@ class ProjectServiceContainer extends Container
             'configurator_service_simple' => true,
             'decorated.pif-pouf' => true,
             'decorator_service.inner' => true,
-            'errored_definition' => true,
             'factory_simple' => true,
             'inlined' => true,
             'new_factory' => true,
@@ -301,6 +299,7 @@ class ProjectServiceContainer extends Container
         $this->services['foo_with_inline'] = $instance = new \Foo();
 
         $a = new \Bar();
+
         $a->pub = 'pub';
         $a->setBaz(($this->services['baz'] ?? $this->getBazService()));
 
@@ -374,16 +373,6 @@ class ProjectServiceContainer extends Container
     }
 
     /**
-     * Gets the public 'runtime_error' shared service.
-     *
-     * @return \stdClass
-     */
-    protected function getRuntimeErrorService()
-    {
-        return $this->services['runtime_error'] = new \stdClass(($this->privates['errored_definition'] ?? $this->getErroredDefinitionService()));
-    }
-
-    /**
      * Gets the public 'service_from_static_method' shared service.
      *
      * @return \Bar\FooClass
@@ -404,16 +393,6 @@ class ProjectServiceContainer extends Container
             yield 0 => ($this->services['foo'] ?? $this->getFooService());
             yield 1 => ($this->privates['tagged_iterator_foo'] ?? $this->privates['tagged_iterator_foo'] = new \Bar());
         }, 2));
-    }
-
-    /**
-     * Gets the private 'errored_definition' shared service.
-     *
-     * @return \stdClass
-     */
-    protected function getErroredDefinitionService()
-    {
-        throw new RuntimeException('Service "errored_definition" is broken.');
     }
 
     /**
@@ -475,7 +454,7 @@ class ProjectServiceContainer extends Container
     /**
      * Computes a dynamic parameter.
      *
-     * @param string $name The name of the dynamic parameter to load
+     * @param string The name of the dynamic parameter to load
      *
      * @return mixed The value of the dynamic parameter
      *

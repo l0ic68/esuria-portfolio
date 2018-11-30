@@ -54,7 +54,7 @@ trait AbstractTrait
     /**
      * Deletes all items in the pool.
      *
-     * @param string $namespace The prefix used for all identifiers managed by this pool
+     * @param string The prefix used for all identifiers managed by this pool
      *
      * @return bool True if the pool was successfully cleared, false otherwise
      */
@@ -104,18 +104,15 @@ trait AbstractTrait
      */
     public function clear()
     {
-        $this->deferred = array();
         if ($cleared = $this->versioningIsEnabled) {
-            $namespaceVersion = substr_replace(base64_encode(pack('V', mt_rand())), ':', 5);
-            try {
-                $cleared = $this->doSave(array('@'.$this->namespace => $namespaceVersion), 0);
-            } catch (\Exception $e) {
-                $cleared = false;
+            $this->namespaceVersion = 2;
+            foreach ($this->doFetch(array('@'.$this->namespace)) as $v) {
+                $this->namespaceVersion = 1 + (int) $v;
             }
-            if ($cleared = true === $cleared || array() === $cleared) {
-                $this->namespaceVersion = $namespaceVersion;
-            }
+            $this->namespaceVersion .= ':';
+            $cleared = $this->doSave(array('@'.$this->namespace => $this->namespaceVersion), 0);
         }
+        $this->deferred = array();
 
         try {
             return $this->doClear($this->namespace) || $cleared;
@@ -236,23 +233,16 @@ trait AbstractTrait
 
         if ($this->versioningIsEnabled && '' === $this->namespaceVersion) {
             $this->namespaceVersion = '1:';
-            try {
-                foreach ($this->doFetch(array('@'.$this->namespace)) as $v) {
-                    $this->namespaceVersion = $v;
-                }
-                if ('1:' === $this->namespaceVersion) {
-                    $this->namespaceVersion = substr_replace(base64_encode(pack('V', time())), ':', 5);
-                    $this->doSave(array('@'.$this->namespace => $this->namespaceVersion), 0);
-                }
-            } catch (\Exception $e) {
+            foreach ($this->doFetch(array('@'.$this->namespace)) as $v) {
+                $this->namespaceVersion = $v;
             }
         }
 
         if (null === $this->maxIdLength) {
             return $this->namespace.$this->namespaceVersion.$key;
         }
-        if (\strlen($id = $this->namespace.$this->namespaceVersion.$key) > $this->maxIdLength) {
-            $id = $this->namespace.$this->namespaceVersion.substr_replace(base64_encode(hash('sha256', $key, true)), ':', -(\strlen($this->namespaceVersion) + 22));
+        if (strlen($id = $this->namespace.$this->namespaceVersion.$key) > $this->maxIdLength) {
+            $id = $this->namespace.$this->namespaceVersion.substr_replace(base64_encode(hash('sha256', $key, true)), ':', -22);
         }
 
         return $id;

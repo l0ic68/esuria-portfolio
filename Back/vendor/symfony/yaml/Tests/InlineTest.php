@@ -748,13 +748,4 @@ class InlineTest extends TestCase
         $this->assertSame('bar', $value['foo']->getTag());
         $this->assertSame('', $value['foo']->getValue());
     }
-
-    /**
-     * @expectedException \Symfony\Component\Yaml\Exception\ParseException
-     * @expectedExceptionMessage Unexpected end of line, expected one of ",}" at line 1 (near "{abc: 'def'").
-     */
-    public function testUnfinishedInlineMap()
-    {
-        Inline::parse("{abc: 'def'");
-    }
 }

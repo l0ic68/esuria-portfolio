@@ -12,7 +12,6 @@
 namespace Symfony\Bundle\FrameworkBundle\Test;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ResettableContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -29,11 +28,6 @@ abstract class KernelTestCase extends TestCase
      * @var KernelInterface
      */
     protected static $kernel;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected static $container;
 
     /**
      * @return string The Kernel class name
@@ -65,9 +59,6 @@ abstract class KernelTestCase extends TestCase
 
         static::$kernel = static::createKernel($options);
         static::$kernel->boot();
-
-        $container = static::$kernel->getContainer();
-        static::$container = $container->has('test.service_container') ? $container->get('test.service_container') : $container;
 
         return static::$kernel;
     }
@@ -123,7 +114,6 @@ abstract class KernelTestCase extends TestCase
                 $container->reset();
             }
         }
-        static::$container = null;
     }
 
     /**

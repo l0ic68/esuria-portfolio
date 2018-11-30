@@ -57,8 +57,12 @@ class Response implements \JsonSerializable
         return $this->origHeaders;
     }
 
-    public static function fromJson(array $json): self
+    public static function fromJson(array $json): Response
     {
+        if (!isset($json['body']) || !isset($json['headers'])) {
+            throw new \LogicException('Old cache detected. Clear the Composer cache under "~/.composer/cache/repo/https---symfony.sh/".');
+        }
+
         $response = new self($json['body']);
         $response->headers = $json['headers'];
 

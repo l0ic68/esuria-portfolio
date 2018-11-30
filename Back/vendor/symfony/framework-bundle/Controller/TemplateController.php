@@ -20,7 +20,7 @@ use Twig\Environment;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
- * @final
+ * @final since version 3.4
  */
 class TemplateController
 {
@@ -66,10 +66,5 @@ class TemplateController
         }
 
         return $response;
-    }
-
-    public function __invoke(string $template, int $maxAge = null, int $sharedAge = null, bool $private = null): Response
-    {
-        return $this->templateAction($template, $maxAge, $sharedAge, $private);
     }
 }

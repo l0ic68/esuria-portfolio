@@ -40,7 +40,7 @@ class PhpArrayAdapter implements AdapterInterface, PruneableInterface, Resettabl
     {
         $this->file = $file;
         $this->pool = $fallbackPool;
-        $this->zendDetectUnicode = filter_var(ini_get('zend.detect_unicode'), FILTER_VALIDATE_BOOLEAN);
+        $this->zendDetectUnicode = ini_get('zend.detect_unicode');
         $this->createCacheItem = \Closure::bind(
             function ($key, $value, $isHit) {
                 $item = new CacheItem();
@@ -66,7 +66,7 @@ class PhpArrayAdapter implements AdapterInterface, PruneableInterface, Resettabl
     public static function create($file, CacheItemPoolInterface $fallbackPool)
     {
         // Shared memory is available in PHP 7.0+ with OPCache enabled
-        if (filter_var(ini_get('opcache.enable'), FILTER_VALIDATE_BOOLEAN)) {
+        if (ini_get('opcache.enable')) {
             if (!$fallbackPool instanceof AdapterInterface) {
                 $fallbackPool = new ProxyAdapter($fallbackPool);
             }
@@ -82,8 +82,8 @@ class PhpArrayAdapter implements AdapterInterface, PruneableInterface, Resettabl
      */
     public function getItem($key)
     {
-        if (!\is_string($key)) {
-            throw new InvalidArgumentException(sprintf('Cache key must be string, "%s" given.', \is_object($key) ? \get_class($key) : \gettype($key)));
+        if (!is_string($key)) {
+            throw new InvalidArgumentException(sprintf('Cache key must be string, "%s" given.', is_object($key) ? get_class($key) : gettype($key)));
         }
         if (null === $this->values) {
             $this->initialize();
@@ -97,10 +97,14 @@ class PhpArrayAdapter implements AdapterInterface, PruneableInterface, Resettabl
 
         if ('N;' === $value) {
             $value = null;
-        } elseif (\is_string($value) && isset($value[2]) && ':' === $value[1]) {
+        } elseif (is_string($value) && isset($value[2]) && ':' === $value[1]) {
             try {
+                $e = null;
                 $value = unserialize($value);
-            } catch (\Throwable $e) {
+            } catch (\Error $e) {
+            } catch (\Exception $e) {
+            }
+            if (null !== $e) {
                 $value = null;
                 $isHit = false;
             }
@@ -117,8 +121,8 @@ class PhpArrayAdapter implements AdapterInterface, PruneableInterface, Resettabl
     public function getItems(array $keys = array())
     {
         foreach ($keys as $key) {
-            if (!\is_string($key)) {
-                throw new InvalidArgumentException(sprintf('Cache key must be string, "%s" given.', \is_object($key) ? \get_class($key) : \gettype($key)));
+            if (!is_string($key)) {
+                throw new InvalidArgumentException(sprintf('Cache key must be string, "%s" given.', is_object($key) ? get_class($key) : gettype($key)));
             }
         }
         if (null === $this->values) {
@@ -133,8 +137,8 @@ class PhpArrayAdapter implements AdapterInterface, PruneableInterface, Resettabl
      */
     public function hasItem($key)
     {
-        if (!\is_string($key)) {
-            throw new InvalidArgumentException(sprintf('Cache key must be string, "%s" given.', \is_object($key) ? \get_class($key) : \gettype($key)));
+        if (!is_string($key)) {
+            throw new InvalidArgumentException(sprintf('Cache key must be string, "%s" given.', is_object($key) ? get_class($key) : gettype($key)));
         }
         if (null === $this->values) {
             $this->initialize();
@@ -148,8 +152,8 @@ class PhpArrayAdapter implements AdapterInterface, PruneableInterface, Resettabl
      */
     public function deleteItem($key)
     {
-        if (!\is_string($key)) {
-            throw new InvalidArgumentException(sprintf('Cache key must be string, "%s" given.', \is_object($key) ? \get_class($key) : \gettype($key)));
+        if (!is_string($key)) {
+            throw new InvalidArgumentException(sprintf('Cache key must be string, "%s" given.', is_object($key) ? get_class($key) : gettype($key)));
         }
         if (null === $this->values) {
             $this->initialize();
@@ -167,8 +171,8 @@ class PhpArrayAdapter implements AdapterInterface, PruneableInterface, Resettabl
         $fallbackKeys = array();
 
         foreach ($keys as $key) {
-            if (!\is_string($key)) {
-                throw new InvalidArgumentException(sprintf('Cache key must be string, "%s" given.', \is_object($key) ? \get_class($key) : \gettype($key)));
+            if (!is_string($key)) {
+                throw new InvalidArgumentException(sprintf('Cache key must be string, "%s" given.', is_object($key) ? get_class($key) : gettype($key)));
             }
 
             if (isset($this->values[$key])) {
@@ -231,10 +235,12 @@ class PhpArrayAdapter implements AdapterInterface, PruneableInterface, Resettabl
 
                 if ('N;' === $value) {
                     yield $key => $f($key, null, true);
-                } elseif (\is_string($value) && isset($value[2]) && ':' === $value[1]) {
+                } elseif (is_string($value) && isset($value[2]) && ':' === $value[1]) {
                     try {
                         yield $key => $f($key, unserialize($value), true);
-                    } catch (\Throwable $e) {
+                    } catch (\Error $e) {
+                        yield $key => $f($key, null, false);
+                    } catch (\Exception $e) {
                         yield $key => $f($key, null, false);
                     }
                 } else {

@@ -11,14 +11,14 @@
 
 namespace Symfony\Component\HttpKernel;
 
-use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
+use Symfony\Component\Config\Loader\LoaderInterface;
 
 /**
  * The Kernel is the heart of the Symfony system.
  *
- * It manages an environment made of application kernel and bundles.
+ * It manages an environment made of bundles.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -27,7 +27,7 @@ interface KernelInterface extends HttpKernelInterface, \Serializable
     /**
      * Returns an array of bundles to register.
      *
-     * @return iterable|BundleInterface[] An iterable of bundle instances
+     * @return BundleInterface[] An array of bundle instances
      */
     public function registerBundles();
 
@@ -67,7 +67,7 @@ interface KernelInterface extends HttpKernelInterface, \Serializable
     public function getBundle($name);
 
     /**
-     * Returns the file path for a given bundle resource.
+     * Returns the file path for a given resource.
      *
      * A Resource can be a file or a directory.
      *
@@ -127,7 +127,7 @@ interface KernelInterface extends HttpKernelInterface, \Serializable
     /**
      * Gets the current container.
      *
-     * @return ContainerInterface|null A ContainerInterface instance or null when the Kernel is shutdown
+     * @return ContainerInterface A ContainerInterface instance
      */
     public function getContainer();
 

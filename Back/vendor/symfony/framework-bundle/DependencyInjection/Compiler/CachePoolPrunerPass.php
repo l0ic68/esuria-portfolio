@@ -11,10 +11,11 @@
 
 namespace Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler;
 
+use Symfony\Bundle\FrameworkBundle\Command\CachePoolPruneCommand;
 use Symfony\Component\Cache\PruneableInterface;
 use Symfony\Component\DependencyInjection\Argument\IteratorArgument;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -26,7 +27,7 @@ class CachePoolPrunerPass implements CompilerPassInterface
     private $cacheCommandServiceId;
     private $cachePoolTag;
 
-    public function __construct(string $cacheCommandServiceId = 'console.command.cache_pool_prune', string $cachePoolTag = 'cache.pool')
+    public function __construct(string $cacheCommandServiceId = CachePoolPruneCommand::class, string $cachePoolTag = 'cache.pool')
     {
         $this->cacheCommandServiceId = $cacheCommandServiceId;
         $this->cachePoolTag = $cachePoolTag;

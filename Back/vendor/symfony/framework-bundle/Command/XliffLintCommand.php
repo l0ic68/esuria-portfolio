@@ -20,7 +20,7 @@ use Symfony\Component\Translation\Command\XliffLintCommand as BaseLintCommand;
  * @author Robin Chalas <robin.chalas@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  *
- * @final
+ * @final since version 3.4
  */
 class XliffLintCommand extends BaseLintCommand
 {

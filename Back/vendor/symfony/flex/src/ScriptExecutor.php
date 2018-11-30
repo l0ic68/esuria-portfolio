@@ -16,8 +16,8 @@ use Composer\EventDispatcher\ScriptExecutionException;
 use Composer\IO\IOInterface;
 use Composer\Semver\Constraint\EmptyConstraint;
 use Composer\Util\ProcessExecutor;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
@@ -48,7 +48,7 @@ class ScriptExecutor
             return;
         }
 
-        $cmdOutput = new StreamOutput(fopen('php://temp', 'rw'), OutputInterface::VERBOSITY_VERBOSE, $this->io->isDecorated());
+        $cmdOutput = new StreamOutput(fopen('php://memory', 'rw'), OutputInterface::VERBOSITY_VERBOSE, $this->io->isDecorated());
         $outputHandler = function ($type, $buffer) use ($cmdOutput) {
             $cmdOutput->write($buffer, false, OutputInterface::OUTPUT_RAW);
         };
@@ -116,7 +116,7 @@ class ScriptExecutor
 
         $arguments = $phpFinder->findArguments();
 
-        if ($env = (string) (getenv('COMPOSER_ORIGINAL_INIS'))) {
+        if ($env = strval(getenv('COMPOSER_ORIGINAL_INIS'))) {
             $paths = explode(PATH_SEPARATOR, $env);
             $ini = array_shift($paths);
         } else {

@@ -11,13 +11,13 @@
 
 namespace Symfony\Component\HttpKernel\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * TestSessionListener.
@@ -29,8 +29,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 abstract class AbstractTestSessionListener implements EventSubscriberInterface
 {
-    private $sessionId;
-
     public function onKernelRequest(GetResponseEvent $event)
     {
         if (!$event->isMasterRequest()) {
@@ -46,8 +44,7 @@ abstract class AbstractTestSessionListener implements EventSubscriberInterface
         $cookies = $event->getRequest()->cookies;
 
         if ($cookies->has($session->getName())) {
-            $this->sessionId = $cookies->get($session->getName());
-            $session->setId($this->sessionId);
+            $session->setId($cookies->get($session->getName()));
         }
     }
 
@@ -61,27 +58,17 @@ abstract class AbstractTestSessionListener implements EventSubscriberInterface
             return;
         }
 
-        $request = $event->getRequest();
-        if (!$request->hasSession()) {
+        if (!$session = $event->getRequest()->getSession()) {
             return;
         }
 
-        $session = $request->getSession();
         if ($wasStarted = $session->isStarted()) {
             $session->save();
         }
 
-        if ($session instanceof Session ? !$session->isEmpty() || (null !== $this->sessionId && $session->getId() !== $this->sessionId) : $wasStarted) {
+        if ($session instanceof Session ? !$session->isEmpty() : $wasStarted) {
             $params = session_get_cookie_params();
-
-            foreach ($event->getResponse()->headers->getCookies() as $cookie) {
-                if ($session->getName() === $cookie->getName() && $params['path'] === $cookie->getPath() && $params['domain'] == $cookie->getDomain()) {
-                    return;
-                }
-            }
-
             $event->getResponse()->headers->setCookie(new Cookie($session->getName(), $session->getId(), 0 === $params['lifetime'] ? 0 : time() + $params['lifetime'], $params['path'], $params['domain'], $params['secure'], $params['httponly']));
-            $this->sessionId = $session->getId();
         }
     }
 

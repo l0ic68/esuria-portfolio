@@ -52,7 +52,7 @@ class ArrayNode extends BaseNode implements PrototypeNodeInterface
      */
     protected function preNormalize($value)
     {
-        if (!$this->normalizeKeys || !\is_array($value)) {
+        if (!$this->normalizeKeys || !is_array($value)) {
             return $value;
         }
 
@@ -92,7 +92,7 @@ class ArrayNode extends BaseNode implements PrototypeNodeInterface
     /**
      * Gets the xml remappings that should be performed.
      *
-     * @return array an array of the form array(array(string, string))
+     * @return array $remappings an array of the form array(array(string, string))
      */
     public function getXmlRemappings()
     {
@@ -153,7 +153,9 @@ class ArrayNode extends BaseNode implements PrototypeNodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Sets the node Name.
+     *
+     * @param string $name The node's name
      */
     public function setName($name)
     {
@@ -161,7 +163,9 @@ class ArrayNode extends BaseNode implements PrototypeNodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Checks if the node has a default value.
+     *
+     * @return bool
      */
     public function hasDefaultValue()
     {
@@ -169,7 +173,11 @@ class ArrayNode extends BaseNode implements PrototypeNodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Retrieves the default value.
+     *
+     * @return array The default value
+     *
+     * @throws \RuntimeException if the node has no default value
      */
     public function getDefaultValue()
     {
@@ -196,7 +204,7 @@ class ArrayNode extends BaseNode implements PrototypeNodeInterface
     public function addChild(NodeInterface $node)
     {
         $name = $node->getName();
-        if (!\strlen($name)) {
+        if (!strlen($name)) {
             throw new \InvalidArgumentException('Child nodes must be named.');
         }
         if (isset($this->children[$name])) {
@@ -219,13 +227,15 @@ class ArrayNode extends BaseNode implements PrototypeNodeInterface
     protected function finalizeValue($value)
     {
         if (false === $value) {
-            throw new UnsetKeyException(sprintf('Unsetting key for path "%s", value: %s', $this->getPath(), json_encode($value)));
+            $msg = sprintf('Unsetting key for path "%s", value: %s', $this->getPath(), json_encode($value));
+            throw new UnsetKeyException($msg);
         }
 
         foreach ($this->children as $name => $child) {
             if (!array_key_exists($name, $value)) {
                 if ($child->isRequired()) {
-                    $ex = new InvalidConfigurationException(sprintf('The child node "%s" at path "%s" must be configured.', $name, $this->getPath()));
+                    $msg = sprintf('The child node "%s" at path "%s" must be configured.', $name, $this->getPath());
+                    $ex = new InvalidConfigurationException($msg);
                     $ex->setPath($this->getPath());
 
                     throw $ex;
@@ -261,8 +271,12 @@ class ArrayNode extends BaseNode implements PrototypeNodeInterface
      */
     protected function validateType($value)
     {
-        if (!\is_array($value) && (!$this->allowFalse || false !== $value)) {
-            $ex = new InvalidTypeException(sprintf('Invalid type for path "%s". Expected array, but got %s', $this->getPath(), \gettype($value)));
+        if (!is_array($value) && (!$this->allowFalse || false !== $value)) {
+            $ex = new InvalidTypeException(sprintf(
+                'Invalid type for path "%s". Expected array, but got %s',
+                $this->getPath(),
+                gettype($value)
+            ));
             if ($hint = $this->getInfo()) {
                 $ex->addHint($hint);
             }
@@ -292,10 +306,7 @@ class ArrayNode extends BaseNode implements PrototypeNodeInterface
         $normalized = array();
         foreach ($value as $name => $val) {
             if (isset($this->children[$name])) {
-                try {
-                    $normalized[$name] = $this->children[$name]->normalize($val);
-                } catch (UnsetKeyException $e) {
-                }
+                $normalized[$name] = $this->children[$name]->normalize($val);
                 unset($value[$name]);
             } elseif (!$this->removeExtraKeys) {
                 $normalized[$name] = $val;
@@ -303,8 +314,9 @@ class ArrayNode extends BaseNode implements PrototypeNodeInterface
         }
 
         // if extra fields are present, throw exception
-        if (\count($value) && !$this->ignoreExtraKeys) {
-            $ex = new InvalidConfigurationException(sprintf('Unrecognized option%s "%s" under "%s"', 1 === \count($value) ? '' : 's', implode(', ', array_keys($value)), $this->getPath()));
+        if (count($value) && !$this->ignoreExtraKeys) {
+            $msg = sprintf('Unrecognized option%s "%s" under "%s"', 1 === count($value) ? '' : 's', implode(', ', array_keys($value)), $this->getPath());
+            $ex = new InvalidConfigurationException($msg);
             $ex->setPath($this->getPath());
 
             throw $ex;
@@ -361,7 +373,13 @@ class ArrayNode extends BaseNode implements PrototypeNodeInterface
             // no conflict
             if (!array_key_exists($k, $leftSide)) {
                 if (!$this->allowNewKeys) {
-                    $ex = new InvalidConfigurationException(sprintf('You are not allowed to define new elements for path "%s". Please define all elements for this path in one config file. If you are trying to overwrite an element, make sure you redefine it with the same name.', $this->getPath()));
+                    $ex = new InvalidConfigurationException(sprintf(
+                        'You are not allowed to define new elements for path "%s". '
+                       .'Please define all elements for this path in one config file. '
+                       .'If you are trying to overwrite an element, make sure you redefine it '
+                       .'with the same name.',
+                        $this->getPath()
+                    ));
                     $ex->setPath($this->getPath());
 
                     throw $ex;
@@ -379,13 +397,5 @@ class ArrayNode extends BaseNode implements PrototypeNodeInterface
         }
 
         return $leftSide;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function allowPlaceholders(): bool
-    {
-        return false;
     }
 }

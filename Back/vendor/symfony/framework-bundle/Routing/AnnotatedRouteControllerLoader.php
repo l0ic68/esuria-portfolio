@@ -29,11 +29,7 @@ class AnnotatedRouteControllerLoader extends AnnotationClassLoader
      */
     protected function configureRoute(Route $route, \ReflectionClass $class, \ReflectionMethod $method, $annot)
     {
-        if ('__invoke' === $method->getName()) {
-            $route->setDefault('_controller', $class->getName());
-        } else {
-            $route->setDefault('_controller', $class->getName().'::'.$method->getName());
-        }
+        $route->setDefault('_controller', $class->getName().'::'.$method->getName());
     }
 
     /**

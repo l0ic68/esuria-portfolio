@@ -12,20 +12,19 @@
 namespace Symfony\Bundle\FrameworkBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Translation\Catalogue\MergeOperation;
-use Symfony\Component\Translation\DataCollectorTranslator;
 use Symfony\Component\Translation\Extractor\ExtractorInterface;
-use Symfony\Component\Translation\LoggingTranslator;
 use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\Reader\TranslationReaderInterface;
 use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\DataCollectorTranslator;
+use Symfony\Component\Translation\LoggingTranslator;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -34,7 +33,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  *
  * @author Florian Voutzinos <florian@voutzinos.com>
  *
- * @final
+ * @final since version 3.4
  */
 class TranslationDebugCommand extends Command
 {
@@ -69,7 +68,7 @@ class TranslationDebugCommand extends Command
         $this
             ->setDefinition(array(
                 new InputArgument('locale', InputArgument::REQUIRED, 'The locale'),
-                new InputArgument('bundle', InputArgument::OPTIONAL, 'The bundle name or directory where to load the messages'),
+                new InputArgument('bundle', InputArgument::OPTIONAL, 'The bundle name or directory where to load the messages, defaults to app/Resources folder'),
                 new InputOption('domain', null, InputOption::VALUE_OPTIONAL, 'The messages domain'),
                 new InputOption('only-missing', null, InputOption::VALUE_NONE, 'Displays only missing messages'),
                 new InputOption('only-unused', null, InputOption::VALUE_NONE, 'Displays only unused messages'),
@@ -79,7 +78,7 @@ class TranslationDebugCommand extends Command
             ->setHelp(<<<'EOF'
 The <info>%command.name%</info> command helps finding unused or missing translation
 messages and comparing them with the fallback ones by inspecting the
-templates and translation files of a given bundle or the default translations directory.
+templates and translation files of a given bundle or the app folder.
 
 You can display information about bundle translations in a specific locale:
 
@@ -97,7 +96,7 @@ You can only display unused messages:
 
   <info>php %command.full_name% --only-unused en AcmeDemoBundle</info>
 
-You can display information about application translations in a specific locale:
+You can display information about app translations in a specific locale:
 
   <info>php %command.full_name% en</info>
 
@@ -152,7 +151,7 @@ EOF
                 $viewsPaths = array($input->getArgument('bundle').'/Resources/views');
 
                 if (!is_dir($transPaths[0])) {
-                    throw new InvalidArgumentException(sprintf('"%s" is neither an enabled bundle nor a directory.', $transPaths[0]));
+                    throw new \InvalidArgumentException(sprintf('"%s" is neither an enabled bundle nor a directory.', $transPaths[0]));
                 }
             }
         } elseif ($input->getOption('all')) {
@@ -219,8 +218,8 @@ EOF
                     $states[] = self::MESSAGE_UNUSED;
                 }
 
-                if (!\in_array(self::MESSAGE_UNUSED, $states) && true === $input->getOption('only-unused')
-                    || !\in_array(self::MESSAGE_MISSING, $states) && true === $input->getOption('only-missing')) {
+                if (!in_array(self::MESSAGE_UNUSED, $states) && true === $input->getOption('only-unused')
+                    || !in_array(self::MESSAGE_MISSING, $states) && true === $input->getOption('only-missing')) {
                     continue;
                 }
 
@@ -284,7 +283,7 @@ EOF
             if (mb_strlen($string, $encoding) > $length) {
                 return mb_substr($string, 0, $length - 3, $encoding).'...';
             }
-        } elseif (\strlen($string) > $length) {
+        } elseif (strlen($string) > $length) {
             return substr($string, 0, $length - 3).'...';
         }
 

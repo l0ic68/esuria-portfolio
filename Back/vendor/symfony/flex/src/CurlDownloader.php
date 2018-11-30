@@ -49,7 +49,7 @@ class CurlDownloader
     {
         $this->multiHandle = $mh = curl_multi_init();
         curl_multi_setopt($mh, CURLMOPT_PIPELINING, /*CURLPIPE_HTTP1 | CURLPIPE_MULTIPLEX*/ 3);
-        if (\defined('CURLMOPT_MAX_HOST_CONNECTIONS')) {
+        if (defined('CURLMOPT_MAX_HOST_CONNECTIONS')) {
             curl_multi_setopt($mh, CURLMOPT_MAX_HOST_CONNECTIONS, 8);
         }
 
@@ -64,7 +64,7 @@ class CurlDownloader
         $params = stream_context_get_params($context);
 
         $ch = curl_init();
-        $hd = fopen('php://temp/maxmemory:32768', 'w+b');
+        $hd = fopen('php://memory', 'w+b');
         if ($file && !$fd = @fopen($file.'~', 'w+b')) {
             $file = null;
         }
@@ -77,9 +77,6 @@ class CurlDownloader
             curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
         } else {
             $headers[] = 'Connection: keep-alive';
-            if (0 === strpos($url, 'https://') && \defined('CURL_VERSION_HTTP2') && \defined('CURL_HTTP_VERSION_2_0') && (CURL_VERSION_HTTP2 & curl_version()['features'])) {
-                curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
-            }
         }
 
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -127,9 +124,6 @@ class CurlDownloader
                     try {
                         $this->onProgress($h, $job['callback'], $progress, $job['progress']);
 
-                        if ('' !== curl_error($h)) {
-                            throw new TransportException(curl_error($h));
-                        }
                         if ($job['file'] && CURLE_OK === curl_errno($h) && !isset($this->exceptions[$i])) {
                             fclose($job['fd']);
                             rename($job['file'].'~', $job['file']);
@@ -146,7 +140,7 @@ class CurlDownloader
                     $h = $this->jobs[$i]['ch'];
                     $progress = array_diff_key(curl_getinfo($h), self::$timeInfo);
 
-                    if ($this->jobs[$i]['progress'] !== $progress) {
+                    if ($progress !== $this->jobs[$i]['progress']) {
                         $previousProgress = $this->jobs[$i]['progress'];
                         $this->jobs[$i]['progress'] = $progress;
                         try {
@@ -160,7 +154,7 @@ class CurlDownloader
                 }
             }
 
-            if ('' !== curl_error($ch) || CURLE_OK !== curl_errno($ch)) {
+            if (CURLE_OK !== curl_errno($ch)) {
                 $this->exceptions[(int) $ch] = new TransportException(curl_error($ch), curl_getinfo($ch, CURLINFO_HTTP_CODE) ?: 0);
             }
             if (isset($this->exceptions[(int) $ch])) {

@@ -18,15 +18,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Routing\Matcher\TraceableUrlMatcher;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Matcher\TraceableUrlMatcher;
 
 /**
  * A console command to test route matching.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
- * @final
+ * @final since version 3.4
  */
 class RouterMatchCommand extends Command
 {

@@ -246,7 +246,6 @@
       <xsd:enumeration value="collection" />
       <xsd:enumeration value="string" />
       <xsd:enumeration value="constant" />
-      <xsd:enumeration value="binary" />
     </xsd:restriction>
   </xsd:simpleType>
 

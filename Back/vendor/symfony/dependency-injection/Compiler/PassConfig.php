@@ -49,7 +49,6 @@ class PassConfig
         );
 
         $this->optimizationPasses = array(array(
-            new ValidateEnvPlaceholdersPass(),
             new ResolveChildDefinitionsPass(),
             new ServiceLocatorTagPass(),
             new DecoratorServicePass(),
@@ -258,13 +257,13 @@ class PassConfig
      */
     private function sortPasses(array $passes)
     {
-        if (0 === \count($passes)) {
+        if (0 === count($passes)) {
             return array();
         }
 
         krsort($passes);
 
         // Flatten the array
-        return array_merge(...$passes);
+        return call_user_func_array('array_merge', $passes);
     }
 }

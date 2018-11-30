@@ -13,20 +13,20 @@ namespace Symfony\Bundle\FrameworkBundle\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Common features needed in controllers.
@@ -42,7 +42,7 @@ trait ControllerTrait
     /**
      * Returns true if the service id is defined.
      *
-     * @final
+     * @final since version 3.4
      */
     protected function has(string $id): bool
     {
@@ -54,7 +54,7 @@ trait ControllerTrait
      *
      * @return object The service
      *
-     * @final
+     * @final since version 3.4
      */
     protected function get(string $id)
     {
@@ -66,7 +66,7 @@ trait ControllerTrait
      *
      * @see UrlGeneratorInterface
      *
-     * @final
+     * @final since version 3.4
      */
     protected function generateUrl(string $route, array $parameters = array(), int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {
@@ -76,13 +76,14 @@ trait ControllerTrait
     /**
      * Forwards the request to another controller.
      *
-     * @param string $controller The controller name (a string like Bundle\BlogBundle\Controller\PostController::indexAction)
+     * @param string $controller The controller name (a string like BlogBundle:Post:index)
      *
-     * @final
+     * @final since version 3.4
      */
     protected function forward(string $controller, array $path = array(), array $query = array()): Response
     {
         $request = $this->container->get('request_stack')->getCurrentRequest();
+        $path['_forwarded'] = $request->attributes;
         $path['_controller'] = $controller;
         $subRequest = $request->duplicate($query, null, $path);
 
@@ -92,7 +93,7 @@ trait ControllerTrait
     /**
      * Returns a RedirectResponse to the given URL.
      *
-     * @final
+     * @final since version 3.4
      */
     protected function redirect(string $url, int $status = 302): RedirectResponse
     {
@@ -102,7 +103,7 @@ trait ControllerTrait
     /**
      * Returns a RedirectResponse to the given route with the given parameters.
      *
-     * @final
+     * @final since version 3.4
      */
     protected function redirectToRoute(string $route, array $parameters = array(), int $status = 302): RedirectResponse
     {
@@ -112,7 +113,7 @@ trait ControllerTrait
     /**
      * Returns a JsonResponse that uses the serializer component if enabled, or json_encode.
      *
-     * @final
+     * @final since version 3.4
      */
     protected function json($data, int $status = 200, array $headers = array(), array $context = array()): JsonResponse
     {
@@ -132,7 +133,7 @@ trait ControllerTrait
      *
      * @param \SplFileInfo|string $file File object or path to file to be sent as response
      *
-     * @final
+     * @final since version 3.4
      */
     protected function file($file, string $fileName = null, string $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT): BinaryFileResponse
     {
@@ -147,7 +148,7 @@ trait ControllerTrait
      *
      * @throws \LogicException
      *
-     * @final
+     * @final since version 3.4
      */
     protected function addFlash(string $type, string $message)
     {
@@ -163,7 +164,7 @@ trait ControllerTrait
      *
      * @throws \LogicException
      *
-     * @final
+     * @final since version 3.4
      */
     protected function isGranted($attributes, $subject = null): bool
     {
@@ -180,7 +181,7 @@ trait ControllerTrait
      *
      * @throws AccessDeniedException
      *
-     * @final
+     * @final since version 3.4
      */
     protected function denyAccessUnlessGranted($attributes, $subject = null, string $message = 'Access Denied.')
     {
@@ -196,7 +197,7 @@ trait ControllerTrait
     /**
      * Returns a rendered view.
      *
-     * @final
+     * @final since version 3.4
      */
     protected function renderView(string $view, array $parameters = array()): string
     {
@@ -214,7 +215,7 @@ trait ControllerTrait
     /**
      * Renders a view.
      *
-     * @final
+     * @final since version 3.4
      */
     protected function render(string $view, array $parameters = array(), Response $response = null): Response
     {
@@ -238,7 +239,7 @@ trait ControllerTrait
     /**
      * Streams a view.
      *
-     * @final
+     * @final since version 3.4
      */
     protected function stream(string $view, array $parameters = array(), StreamedResponse $response = null): StreamedResponse
     {
@@ -274,7 +275,7 @@ trait ControllerTrait
      *
      *     throw $this->createNotFoundException('Page not found!');
      *
-     * @final
+     * @final since version 3.4
      */
     protected function createNotFoundException(string $message = 'Not Found', \Exception $previous = null): NotFoundHttpException
     {
@@ -290,7 +291,7 @@ trait ControllerTrait
      *
      * @throws \LogicException If the Security component is not available
      *
-     * @final
+     * @final since version 3.4
      */
     protected function createAccessDeniedException(string $message = 'Access Denied.', \Exception $previous = null): AccessDeniedException
     {
@@ -304,7 +305,7 @@ trait ControllerTrait
     /**
      * Creates and returns a Form instance from the type of the form.
      *
-     * @final
+     * @final since version 3.4
      */
     protected function createForm(string $type, $data = null, array $options = array()): FormInterface
     {
@@ -314,7 +315,7 @@ trait ControllerTrait
     /**
      * Creates and returns a form builder instance.
      *
-     * @final
+     * @final since version 3.4
      */
     protected function createFormBuilder($data = null, array $options = array()): FormBuilderInterface
     {
@@ -326,7 +327,7 @@ trait ControllerTrait
      *
      * @throws \LogicException If DoctrineBundle is not available
      *
-     * @final
+     * @final since version 3.4
      */
     protected function getDoctrine(): ManagerRegistry
     {
@@ -346,7 +347,7 @@ trait ControllerTrait
      *
      * @see TokenInterface::getUser()
      *
-     * @final
+     * @final since version 3.4
      */
     protected function getUser()
     {
@@ -358,7 +359,7 @@ trait ControllerTrait
             return;
         }
 
-        if (!\is_object($user = $token->getUser())) {
+        if (!is_object($user = $token->getUser())) {
             // e.g. anonymous authentication
             return;
         }
@@ -369,33 +370,17 @@ trait ControllerTrait
     /**
      * Checks the validity of a CSRF token.
      *
-     * @param string      $id    The id used when generating the token
-     * @param string|null $token The actual token sent with the request that should be validated
+     * @param string $id    The id used when generating the token
+     * @param string $token The actual token sent with the request that should be validated
      *
-     * @final
+     * @final since version 3.4
      */
-    protected function isCsrfTokenValid(string $id, ?string $token): bool
+    protected function isCsrfTokenValid(string $id, string $token): bool
     {
         if (!$this->container->has('security.csrf.token_manager')) {
             throw new \LogicException('CSRF protection is not enabled in your application. Enable it with the "csrf_protection" key in "config/packages/framework.yaml".');
         }
 
         return $this->container->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($id, $token));
-    }
-
-    /**
-     * Dispatches a message to the bus.
-     *
-     * @param object $message The message to dispatch
-     *
-     * @final
-     */
-    protected function dispatchMessage($message)
-    {
-        if (!$this->container->has('message_bus')) {
-            throw new \LogicException('The message bus is not enabled in your application. Try running "composer require symfony/messenger".');
-        }
-
-        return $this->container->get('message_bus')->dispatch($message);
     }
 }

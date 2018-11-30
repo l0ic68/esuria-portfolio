@@ -15,7 +15,6 @@ use Symfony\Component\Console\Descriptor\DescriptorInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -72,11 +71,11 @@ abstract class Descriptor implements DescriptorInterface
             case $object instanceof EventDispatcherInterface:
                 $this->describeEventDispatcherListeners($object, $options);
                 break;
-            case \is_callable($object):
+            case is_callable($object):
                 $this->describeCallable($object, $options);
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf('Object of type "%s" is not describable.', \get_class($object)));
+                throw new \InvalidArgumentException(sprintf('Object of type "%s" is not describable.', get_class($object)));
         }
     }
 
@@ -181,11 +180,11 @@ abstract class Descriptor implements DescriptorInterface
      */
     protected function formatValue($value)
     {
-        if (\is_object($value)) {
-            return sprintf('object(%s)', \get_class($value));
+        if (is_object($value)) {
+            return sprintf('object(%s)', get_class($value));
         }
 
-        if (\is_string($value)) {
+        if (is_string($value)) {
             return $value;
         }
 
@@ -201,7 +200,7 @@ abstract class Descriptor implements DescriptorInterface
      */
     protected function formatParameter($value)
     {
-        if (\is_bool($value) || \is_array($value) || (null === $value)) {
+        if (is_bool($value) || is_array($value) || (null === $value)) {
             $jsonString = json_encode($value);
 
             if (preg_match('/^(.{60})./us', $jsonString, $matches)) {
@@ -231,21 +230,17 @@ abstract class Descriptor implements DescriptorInterface
             return $builder->getAlias($serviceId);
         }
 
-        if ('service_container' === $serviceId) {
-            return (new Definition(ContainerInterface::class))->setPublic(true)->setSynthetic(true);
-        }
-
         // the service has been injected in some special way, just return the service
         return $builder->get($serviceId);
     }
 
     /**
      * @param ContainerBuilder $builder
-     * @param bool             $showHidden
+     * @param bool             $showPrivate
      *
      * @return array
      */
-    protected function findDefinitionsByTag(ContainerBuilder $builder, $showHidden)
+    protected function findDefinitionsByTag(ContainerBuilder $builder, $showPrivate)
     {
         $definitions = array();
         $tags = $builder->findTags();
@@ -255,7 +250,7 @@ abstract class Descriptor implements DescriptorInterface
             foreach ($builder->findTaggedServiceIds($tag) as $serviceId => $attributes) {
                 $definition = $this->resolveServiceDefinition($builder, $serviceId);
 
-                if ($showHidden xor '.' === ($serviceId[0] ?? null)) {
+                if (!$definition instanceof Definition || !$showPrivate && !$definition->isPublic()) {
                     continue;
                 }
 

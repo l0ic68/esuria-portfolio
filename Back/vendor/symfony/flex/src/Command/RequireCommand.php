@@ -17,8 +17,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Flex\PackageResolver;
-use Symfony\Flex\Unpack\Operation;
 use Symfony\Flex\Unpacker;
+use Symfony\Flex\Unpack\Operation;
 
 class RequireCommand extends BaseRequireCommand
 {
@@ -49,14 +49,14 @@ class RequireCommand extends BaseRequireCommand
 
             $unpacker = new Unpacker($this->getComposer());
             $result = $unpacker->unpack($op);
-            $io = $this->getIO();
+            $io = $this->getIo();
             foreach ($result->getUnpacked() as $pkg) {
                 $io->writeError(sprintf('<info>Unpacked %s dependencies</>', $pkg->getName()));
             }
 
             $input->setArgument('packages', $result->getRequired());
         } elseif ($input->getOption('unpack')) {
-            $this->getIO()->writeError('<error>--unpack is incompatible with the interactive mode.</error>');
+            $this->getIo()->writeError('<error>--unpack is incompatible with the interactive mode.</error>');
 
             return 1;
         }

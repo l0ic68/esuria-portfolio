@@ -50,13 +50,6 @@ class Definition
     private static $defaultDeprecationTemplate = 'The "%service_id%" service is deprecated. You should stop using it, as it will soon be removed.';
 
     /**
-     * @internal
-     *
-     * Used to store the name of the inner id when using service decoration together with autowiring
-     */
-    public $innerServiceId;
-
-    /**
      * @param string|null $class     The service class
      * @param array       $arguments An array of arguments to pass to the service constructor
      */
@@ -103,7 +96,7 @@ class Definition
     {
         $this->changes['factory'] = true;
 
-        if (\is_string($factory) && false !== strpos($factory, '::')) {
+        if (is_string($factory) && false !== strpos($factory, '::')) {
             $factory = explode('::', $factory, 2);
         }
 
@@ -115,7 +108,7 @@ class Definition
     /**
      * Gets the factory.
      *
-     * @return string|array|null The PHP function or an array containing a class/Reference and a method to call
+     * @return string|array The PHP function or an array containing a class/Reference and a method to call
      */
     public function getFactory()
     {
@@ -125,8 +118,8 @@ class Definition
     /**
      * Sets the service that this service is decorating.
      *
-     * @param string|null $id        The decorated service id, use null to remove decoration
-     * @param string|null $renamedId The new decorated service id
+     * @param null|string $id        The decorated service id, use null to remove decoration
+     * @param null|string $renamedId The new decorated service id
      * @param int         $priority  The priority of decoration
      *
      * @return $this
@@ -135,7 +128,7 @@ class Definition
      */
     public function setDecoratedService($id, $renamedId = null, $priority = 0)
     {
-        if ($renamedId && $id === $renamedId) {
+        if ($renamedId && $id == $renamedId) {
             throw new InvalidArgumentException(sprintf('The decorated service inner name for "%s" must be different than the service name itself.', $id));
         }
 
@@ -153,7 +146,7 @@ class Definition
     /**
      * Gets the service that this service is decorating.
      *
-     * @return array|null An array composed of the decorated service id, the new id for it and the priority of decoration, null if no service is decorated
+     * @return null|array An array composed of the decorated service id, the new id for it and the priority of decoration, null if no service is decorated
      */
     public function getDecoratedService()
     {
@@ -261,12 +254,12 @@ class Definition
      */
     public function replaceArgument($index, $argument)
     {
-        if (0 === \count($this->arguments)) {
+        if (0 === count($this->arguments)) {
             throw new OutOfBoundsException('Cannot replace arguments if none have been configured yet.');
         }
 
-        if (\is_int($index) && ($index < 0 || $index > \count($this->arguments) - 1)) {
-            throw new OutOfBoundsException(sprintf('The index "%d" is not in the range [0, %d].', $index, \count($this->arguments) - 1));
+        if (is_int($index) && ($index < 0 || $index > count($this->arguments) - 1)) {
+            throw new OutOfBoundsException(sprintf('The index "%d" is not in the range [0, %d].', $index, count($this->arguments) - 1));
         }
 
         if (!array_key_exists($index, $this->arguments)) {
@@ -406,7 +399,7 @@ class Definition
     /**
      * Sets the definition templates to conditionally apply on the current definition, keyed by parent interface/class.
      *
-     * @param ChildDefinition[] $instanceof
+     * @param $instanceof ChildDefinition[]
      *
      * @return $this
      */
@@ -790,7 +783,7 @@ class Definition
     {
         $this->changes['configurator'] = true;
 
-        if (\is_string($configurator) && false !== strpos($configurator, '::')) {
+        if (is_string($configurator) && false !== strpos($configurator, '::')) {
             $configurator = explode('::', $configurator, 2);
         }
 
@@ -838,7 +831,7 @@ class Definition
     /**
      * Gets bindings.
      *
-     * @return array|BoundArgument[]
+     * @return array
      */
     public function getBindings()
     {
@@ -873,14 +866,10 @@ class Definition
      * Add an error that occurred when building this Definition.
      *
      * @param string $error
-     *
-     * @return $this
      */
     public function addError($error)
     {
         $this->errors[] = $error;
-
-        return $this;
     }
 
     /**

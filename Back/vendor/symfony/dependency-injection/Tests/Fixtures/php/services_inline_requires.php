@@ -101,8 +101,8 @@ class ProjectServiceContainer extends Container
      */
     protected function getC2Service()
     {
-        include_once $this->targetDirs[1].'/includes/HotPath/C2.php';
         include_once $this->targetDirs[1].'/includes/HotPath/C3.php';
+        include_once $this->targetDirs[1].'/includes/HotPath/C2.php';
 
         return $this->services['Symfony\Component\DependencyInjection\Tests\Fixtures\includes\HotPath\C2'] = new \Symfony\Component\DependencyInjection\Tests\Fixtures\includes\HotPath\C2(new \Symfony\Component\DependencyInjection\Tests\Fixtures\includes\HotPath\C3());
     }
@@ -152,7 +152,7 @@ class ProjectServiceContainer extends Container
     /**
      * Computes a dynamic parameter.
      *
-     * @param string $name The name of the dynamic parameter to load
+     * @param string The name of the dynamic parameter to load
      *
      * @return mixed The value of the dynamic parameter
      *

@@ -11,21 +11,24 @@
 
 namespace Symfony\Flex;
 
-use Composer\Cache as ComposerCache;
+use Composer\Cache;
 use Composer\Composer;
 use Composer\DependencyResolver\Operation\OperationInterface;
-use Composer\DependencyResolver\Operation\UninstallOperation;
 use Composer\DependencyResolver\Operation\UpdateOperation;
+use Composer\DependencyResolver\Operation\UninstallOperation;
 use Composer\Downloader\TransportException;
+use Composer\Factory;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
+use Composer\Plugin\PluginEvents;
+use Composer\Plugin\PreFileDownloadEvent;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class Downloader
 {
-    private static $DEFAULT_ENDPOINT = 'https://flex.symfony.com';
+    private static $DEFAULT_ENDPOINT = 'https://symfony.sh';
     private static $MAX_LENGTH = 1000;
 
     private $io;
@@ -36,27 +39,29 @@ class Downloader
     private $endpoint;
     private $caFile;
     private $flexId;
+    private $eventDispatcher;
 
     public function __construct(Composer $composer, IoInterface $io, ParallelDownloader $rfs)
     {
         if (getenv('SYMFONY_CAFILE')) {
             $this->caFile = getenv('SYMFONY_CAFILE');
         }
-
-        foreach (array_merge($composer->getPackage()->getRequires() ?? [], $composer->getPackage()->getDevRequires() ?? []) as $link) {
-            // recipes apply only when symfony/flex is found in "require" or "require-dev" in the root package
-            if ('symfony/flex' !== $link->getTarget()) {
-                continue;
-            }
-            $this->endpoint = rtrim(getenv('SYMFONY_ENDPOINT') ?: ($composer->getPackage()->getExtra()['symfony']['endpoint'] ?? self::$DEFAULT_ENDPOINT), '/');
-            break;
+        if (getenv('SYMFONY_ENDPOINT')) {
+            $endpoint = getenv('SYMFONY_ENDPOINT');
+        } else {
+            $endpoint = $composer->getPackage()->getExtra()['symfony']['endpoint'] ?? self::$DEFAULT_ENDPOINT;
         }
-
+        $this->endpoint = rtrim($endpoint, '/');
         $this->io = $io;
         $config = $composer->getConfig();
+        $this->eventDispatcher = $composer->getEventDispatcher();
         $this->rfs = $rfs;
-        $this->cache = new ComposerCache($io, $config->get('cache-repo-dir').'/'.preg_replace('{[^a-z0-9.]}i', '-', $this->endpoint));
+        $this->cache = new Cache($io, $config->get('cache-repo-dir').'/'.preg_replace('{[^a-z0-9.]}i', '-', $this->endpoint));
         $this->sess = bin2hex(random_bytes(16));
+
+        if (self::$DEFAULT_ENDPOINT !== $endpoint) {
+            $this->io->writeError('<warning>Warning: Using '.$endpoint.' as the Symfony endpoint</warning>');
+        }
     }
 
     public function getSessionId(): string
@@ -67,11 +72,6 @@ class Downloader
     public function setFlexId(string $id = null)
     {
         $this->flexId = $id;
-    }
-
-    public function getEndpoint()
-    {
-        return $this->endpoint;
     }
 
     /**
@@ -112,7 +112,7 @@ class Downloader
             if ($date = $package->getReleaseDate()) {
                 $path .= ','.$date->format('U');
             }
-            if (\strlen($chunk) + \strlen($path) > self::$MAX_LENGTH) {
+            if (strlen($chunk) + strlen($path) > self::$MAX_LENGTH) {
                 $paths[] = ['/p/'.$chunk];
                 $chunk = $path;
             } elseif ($chunk) {
@@ -123,10 +123,6 @@ class Downloader
         }
         if ($chunk) {
             $paths[] = ['/p/'.$chunk];
-        }
-
-        if (null !== $this->endpoint && self::$DEFAULT_ENDPOINT !== $this->endpoint) {
-            $this->io->writeError('<warning>Using "'.$this->endpoint.'" as the Symfony endpoint</warning>');
         }
 
         $bodies = [];
@@ -160,9 +156,6 @@ class Downloader
      */
     public function get(string $path, array $headers = [], $cache = true): Response
     {
-        if (null === $this->endpoint) {
-            return new Response([]);
-        }
         $headers[] = 'Package-Session: '.$this->sess;
         $url = $this->endpoint.'/'.ltrim($path, '/');
         $cacheKey = $cache ? ltrim($path, '/') : '';

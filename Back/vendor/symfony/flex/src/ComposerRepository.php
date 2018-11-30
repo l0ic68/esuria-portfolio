@@ -11,7 +11,11 @@
 
 namespace Symfony\Flex;
 
+use Composer\Config;
+use Composer\Downloader\TransportException;
+use Composer\IO\IOInterface;
 use Composer\Repository\ComposerRepository as BaseComposerRepository;
+use Composer\Util\RemoteFilesystem;
 
 /**
  * @author Nicolas Grekas <p@tchwork.com>

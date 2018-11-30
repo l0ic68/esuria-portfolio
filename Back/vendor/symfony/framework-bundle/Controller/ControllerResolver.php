@@ -12,8 +12,8 @@
 namespace Symfony\Bundle\FrameworkBundle\Controller;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\HttpKernel\Controller\ContainerControllerResolver;
 
 /**
@@ -37,13 +37,16 @@ class ControllerResolver extends ContainerControllerResolver
     {
         if (false === strpos($controller, '::') && 2 === substr_count($controller, ':')) {
             // controller in the a:b:c notation then
-            $deprecatedNotation = $controller;
-            $controller = $this->parser->parse($deprecatedNotation, false);
-
-            @trigger_error(sprintf('Referencing controllers with %s is deprecated since Symfony 4.1. Use %s instead.', $deprecatedNotation, $controller), E_USER_DEPRECATED);
+            $controller = $this->parser->parse($controller);
         }
 
-        return parent::createController($controller);
+        $resolvedController = parent::createController($controller);
+
+        if (1 === substr_count($controller, ':') && is_array($resolvedController)) {
+            $resolvedController[0] = $this->configureController($resolvedController[0]);
+        }
+
+        return $resolvedController;
     }
 
     /**

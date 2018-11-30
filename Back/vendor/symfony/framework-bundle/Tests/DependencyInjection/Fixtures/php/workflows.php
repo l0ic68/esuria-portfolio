@@ -48,29 +48,18 @@ $container->loadFromExtension('framework', array(
                 FrameworkExtensionTest::class,
             ),
             'initial_place' => 'start',
-            'metadata' => array(
-                'title' => 'workflow title',
-            ),
             'places' => array(
-                'start_name_not_used' => array(
-                    'name' => 'start',
-                    'metadata' => array(
-                        'title' => 'place start title',
-                    ),
-                ),
-                'coding' => null,
-                'travis' => null,
-                'review' => null,
-                'merged' => null,
-                'closed' => null,
+                'start',
+                'coding',
+                'travis',
+                'review',
+                'merged',
+                'closed',
             ),
             'transitions' => array(
                 'submit' => array(
                     'from' => 'start',
                     'to' => 'travis',
-                    'metadata' => array(
-                        'title' => 'transition submit title',
-                    ),
                 ),
                 'update' => array(
                     'from' => array('coding', 'travis', 'review'),
@@ -107,8 +96,8 @@ $container->loadFromExtension('framework', array(
                 FrameworkExtensionTest::class,
             ),
             'places' => array(
-                array('name' => 'first'),
-                array('name' => 'last'),
+                'first',
+                'last',
             ),
             'transitions' => array(
                 'go' => array(

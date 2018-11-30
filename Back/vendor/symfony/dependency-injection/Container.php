@@ -14,11 +14,11 @@ namespace Symfony\Component\DependencyInjection;
 use Symfony\Component\DependencyInjection\Exception\EnvNotFoundException;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\ParameterCircularReferenceException;
-use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\EnvPlaceholderParameterBag;
 use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * Container is a dependency injection container.
@@ -43,7 +43,6 @@ class Container implements ResettableContainerInterface
     protected $services = array();
     protected $fileMap = array();
     protected $methodMap = array();
-    protected $factories = array();
     protected $aliases = array();
     protected $loading = array();
     protected $resolving = array();
@@ -217,20 +216,20 @@ class Container implements ResettableContainerInterface
      */
     public function get($id, $invalidBehavior = /* self::EXCEPTION_ON_INVALID_REFERENCE */ 1)
     {
-        return $this->services[$id]
-            ?? $this->services[$id = $this->aliases[$id] ?? $id]
-            ?? ('service_container' === $id ? $this : ($this->factories[$id] ?? array($this, 'make'))($id, $invalidBehavior));
-    }
+        if (isset($this->aliases[$id])) {
+            $id = $this->aliases[$id];
+        }
 
-    /**
-     * Creates a service.
-     *
-     * As a separate method to allow "get()" to use the really fast `??` operator.
-     */
-    private function make(string $id, int $invalidBehavior)
-    {
+        // Re-use shared service instance if it exists.
+        if (isset($this->services[$id])) {
+            return $this->services[$id];
+        }
+        if ('service_container' === $id) {
+            return $this;
+        }
+
         if (isset($this->loading[$id])) {
-            throw new ServiceCircularReferenceException($id, array_merge(array_keys($this->loading), array($id)));
+            throw new ServiceCircularReferenceException($id, array_keys($this->loading));
         }
 
         $this->loading[$id] = true;
@@ -262,11 +261,8 @@ class Container implements ResettableContainerInterface
 
             $alternatives = array();
             foreach ($this->getServiceIds() as $knownId) {
-                if ('' === $knownId || '.' === $knownId[0]) {
-                    continue;
-                }
                 $lev = levenshtein($id, $knownId);
-                if ($lev <= \strlen($id) / 3 || false !== strpos($knownId, $id)) {
+                if ($lev <= strlen($id) / 3 || false !== strpos($knownId, $id)) {
                     $alternatives[] = $knownId;
                 }
             }
@@ -300,7 +296,7 @@ class Container implements ResettableContainerInterface
      */
     public function reset()
     {
-        $this->services = $this->factories = array();
+        $this->services = array();
     }
 
     /**

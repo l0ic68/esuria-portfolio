@@ -38,18 +38,10 @@ class RoutingConfigurator
      */
     final public function import($resource, $type = null, $ignoreErrors = false)
     {
-        $this->loader->setCurrentDir(\dirname($this->path));
-        $imported = $this->loader->import($resource, $type, $ignoreErrors, $this->file);
-        if (!\is_array($imported)) {
-            return new ImportConfigurator($this->collection, $imported);
-        }
+        $this->loader->setCurrentDir(dirname($this->path));
+        $subCollection = $this->loader->import($resource, $type, $ignoreErrors, $this->file);
 
-        $mergedCollection = new RouteCollection();
-        foreach ($imported as $subCollection) {
-            $mergedCollection->addCollection($subCollection);
-        }
-
-        return new ImportConfigurator($this->collection, $mergedCollection);
+        return new ImportConfigurator($this->collection, $subCollection);
     }
 
     /**

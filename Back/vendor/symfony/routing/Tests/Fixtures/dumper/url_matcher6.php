@@ -17,123 +17,183 @@ class ProjectUrlMatcher extends Symfony\Component\Routing\Matcher\UrlMatcher
 
     public function match($rawPathinfo)
     {
-        $allow = $allowSchemes = array();
-        $pathinfo = rawurldecode($rawPathinfo) ?: '/';
+        $allow = array();
+        $pathinfo = rawurldecode($rawPathinfo);
+        $trimmedPathinfo = rtrim($pathinfo, '/');
         $context = $this->context;
+        $request = $this->request;
         $requestMethod = $canonicalMethod = $context->getMethod();
+        $scheme = $context->getScheme();
 
         if ('HEAD' === $requestMethod) {
             $canonicalMethod = 'GET';
         }
 
-        switch ($trimmedPathinfo = '/' !== $pathinfo && '/' === $pathinfo[-1] ? substr($pathinfo, 0, -1) : $pathinfo) {
-            default:
-                $routes = array(
-                    '/trailing/simple/no-methods' => array(array('_route' => 'simple_trailing_slash_no_methods'), null, null, null, true),
-                    '/trailing/simple/get-method' => array(array('_route' => 'simple_trailing_slash_GET_method'), null, array('GET' => 0), null, true),
-                    '/trailing/simple/head-method' => array(array('_route' => 'simple_trailing_slash_HEAD_method'), null, array('HEAD' => 0), null, true),
-                    '/trailing/simple/post-method' => array(array('_route' => 'simple_trailing_slash_POST_method'), null, array('POST' => 0), null, true),
-                    '/not-trailing/simple/no-methods' => array(array('_route' => 'simple_not_trailing_slash_no_methods'), null, null, null, false),
-                    '/not-trailing/simple/get-method' => array(array('_route' => 'simple_not_trailing_slash_GET_method'), null, array('GET' => 0), null, false),
-                    '/not-trailing/simple/head-method' => array(array('_route' => 'simple_not_trailing_slash_HEAD_method'), null, array('HEAD' => 0), null, false),
-                    '/not-trailing/simple/post-method' => array(array('_route' => 'simple_not_trailing_slash_POST_method'), null, array('POST' => 0), null, false),
-                );
 
-                if (!isset($routes[$trimmedPathinfo])) {
-                    break;
-                }
-                list($ret, $requiredHost, $requiredMethods, $requiredSchemes, $hasTrailingSlash) = $routes[$trimmedPathinfo];
-
-                if ('/' !== $pathinfo && $hasTrailingSlash !== ('/' === $pathinfo[-1])) {
-                    break;
-                }
-
-                $hasRequiredScheme = !$requiredSchemes || isset($requiredSchemes[$context->getScheme()]);
-                if ($requiredMethods && !isset($requiredMethods[$canonicalMethod]) && !isset($requiredMethods[$requestMethod])) {
-                    if ($hasRequiredScheme) {
-                        $allow += $requiredMethods;
-                    }
-                    break;
-                }
-                if (!$hasRequiredScheme) {
-                    $allowSchemes += $requiredSchemes;
-                    break;
-                }
-
-                return $ret;
-        }
-
-        $matchedPathinfo = $pathinfo;
-        $regexList = array(
-            0 => '{^(?'
-                    .'|/trailing/regex/(?'
-                        .'|no\\-methods/([^/]++)(*:46)'
-                        .'|get\\-method/([^/]++)(*:73)'
-                        .'|head\\-method/([^/]++)(*:101)'
-                        .'|post\\-method/([^/]++)(*:130)'
-                    .')'
-                    .'|/not\\-trailing/regex/(?'
-                        .'|no\\-methods/([^/]++)(*:183)'
-                        .'|get\\-method/([^/]++)(*:211)'
-                        .'|head\\-method/([^/]++)(*:240)'
-                        .'|post\\-method/([^/]++)(*:269)'
-                    .')'
-                .')(?:/?)$}sD',
-        );
-
-        foreach ($regexList as $offset => $regex) {
-            while (preg_match($regex, $matchedPathinfo, $matches)) {
-                switch ($m = (int) $matches['MARK']) {
-                    default:
-                        $routes = array(
-                            46 => array(array('_route' => 'regex_trailing_slash_no_methods'), array('param'), null, null, true),
-                            73 => array(array('_route' => 'regex_trailing_slash_GET_method'), array('param'), array('GET' => 0), null, true),
-                            101 => array(array('_route' => 'regex_trailing_slash_HEAD_method'), array('param'), array('HEAD' => 0), null, true),
-                            130 => array(array('_route' => 'regex_trailing_slash_POST_method'), array('param'), array('POST' => 0), null, true),
-                            183 => array(array('_route' => 'regex_not_trailing_slash_no_methods'), array('param'), null, null, false),
-                            211 => array(array('_route' => 'regex_not_trailing_slash_GET_method'), array('param'), array('GET' => 0), null, false),
-                            240 => array(array('_route' => 'regex_not_trailing_slash_HEAD_method'), array('param'), array('HEAD' => 0), null, false),
-                            269 => array(array('_route' => 'regex_not_trailing_slash_POST_method'), array('param'), array('POST' => 0), null, false),
-                        );
-
-                        list($ret, $vars, $requiredMethods, $requiredSchemes, $hasTrailingSlash) = $routes[$m];
-
-                        if ('/' !== $pathinfo && $hasTrailingSlash !== ('/' === $pathinfo[-1])) {
-                            break;
-                        }
-
-                        foreach ($vars as $i => $v) {
-                            if (isset($matches[1 + $i])) {
-                                $ret[$v] = $matches[1 + $i];
-                            }
-                        }
-
-                        $hasRequiredScheme = !$requiredSchemes || isset($requiredSchemes[$context->getScheme()]);
-                        if ($requiredMethods && !isset($requiredMethods[$canonicalMethod]) && !isset($requiredMethods[$requestMethod])) {
-                            if ($hasRequiredScheme) {
-                                $allow += $requiredMethods;
-                            }
-                            break;
-                        }
-                        if (!$hasRequiredScheme) {
-                            $allowSchemes += $requiredSchemes;
-                            break;
-                        }
-
-                        return $ret;
-                }
-
-                if (269 === $m) {
-                    break;
-                }
-                $regex = substr_replace($regex, 'F', $m - $offset, 1 + strlen($m));
-                $offset += strlen($m);
+        if (0 === strpos($pathinfo, '/trailing/simple')) {
+            // simple_trailing_slash_no_methods
+            if ('/trailing/simple/no-methods/' === $pathinfo) {
+                return array('_route' => 'simple_trailing_slash_no_methods');
             }
-        }
-        if ('/' === $pathinfo && !$allow && !$allowSchemes) {
-            throw new Symfony\Component\Routing\Exception\NoConfigurationException();
+
+            // simple_trailing_slash_GET_method
+            if ('/trailing/simple/get-method/' === $pathinfo) {
+                if ('GET' !== $canonicalMethod) {
+                    $allow[] = 'GET';
+                    goto not_simple_trailing_slash_GET_method;
+                }
+
+                return array('_route' => 'simple_trailing_slash_GET_method');
+            }
+            not_simple_trailing_slash_GET_method:
+
+            // simple_trailing_slash_HEAD_method
+            if ('/trailing/simple/head-method/' === $pathinfo) {
+                if ('HEAD' !== $requestMethod) {
+                    $allow[] = 'HEAD';
+                    goto not_simple_trailing_slash_HEAD_method;
+                }
+
+                return array('_route' => 'simple_trailing_slash_HEAD_method');
+            }
+            not_simple_trailing_slash_HEAD_method:
+
+            // simple_trailing_slash_POST_method
+            if ('/trailing/simple/post-method/' === $pathinfo) {
+                if ('POST' !== $canonicalMethod) {
+                    $allow[] = 'POST';
+                    goto not_simple_trailing_slash_POST_method;
+                }
+
+                return array('_route' => 'simple_trailing_slash_POST_method');
+            }
+            not_simple_trailing_slash_POST_method:
+
         }
 
-        throw $allow ? new MethodNotAllowedException(array_keys($allow)) : new ResourceNotFoundException();
+        elseif (0 === strpos($pathinfo, '/trailing/regex')) {
+            // regex_trailing_slash_no_methods
+            if (0 === strpos($pathinfo, '/trailing/regex/no-methods') && preg_match('#^/trailing/regex/no\\-methods/(?P<param>[^/]++)/$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'regex_trailing_slash_no_methods')), array ());
+            }
+
+            // regex_trailing_slash_GET_method
+            if (0 === strpos($pathinfo, '/trailing/regex/get-method') && preg_match('#^/trailing/regex/get\\-method/(?P<param>[^/]++)/$#s', $pathinfo, $matches)) {
+                if ('GET' !== $canonicalMethod) {
+                    $allow[] = 'GET';
+                    goto not_regex_trailing_slash_GET_method;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'regex_trailing_slash_GET_method')), array ());
+            }
+            not_regex_trailing_slash_GET_method:
+
+            // regex_trailing_slash_HEAD_method
+            if (0 === strpos($pathinfo, '/trailing/regex/head-method') && preg_match('#^/trailing/regex/head\\-method/(?P<param>[^/]++)/$#s', $pathinfo, $matches)) {
+                if ('HEAD' !== $requestMethod) {
+                    $allow[] = 'HEAD';
+                    goto not_regex_trailing_slash_HEAD_method;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'regex_trailing_slash_HEAD_method')), array ());
+            }
+            not_regex_trailing_slash_HEAD_method:
+
+            // regex_trailing_slash_POST_method
+            if (0 === strpos($pathinfo, '/trailing/regex/post-method') && preg_match('#^/trailing/regex/post\\-method/(?P<param>[^/]++)/$#s', $pathinfo, $matches)) {
+                if ('POST' !== $canonicalMethod) {
+                    $allow[] = 'POST';
+                    goto not_regex_trailing_slash_POST_method;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'regex_trailing_slash_POST_method')), array ());
+            }
+            not_regex_trailing_slash_POST_method:
+
+        }
+
+        elseif (0 === strpos($pathinfo, '/not-trailing/simple')) {
+            // simple_not_trailing_slash_no_methods
+            if ('/not-trailing/simple/no-methods' === $pathinfo) {
+                return array('_route' => 'simple_not_trailing_slash_no_methods');
+            }
+
+            // simple_not_trailing_slash_GET_method
+            if ('/not-trailing/simple/get-method' === $pathinfo) {
+                if ('GET' !== $canonicalMethod) {
+                    $allow[] = 'GET';
+                    goto not_simple_not_trailing_slash_GET_method;
+                }
+
+                return array('_route' => 'simple_not_trailing_slash_GET_method');
+            }
+            not_simple_not_trailing_slash_GET_method:
+
+            // simple_not_trailing_slash_HEAD_method
+            if ('/not-trailing/simple/head-method' === $pathinfo) {
+                if ('HEAD' !== $requestMethod) {
+                    $allow[] = 'HEAD';
+                    goto not_simple_not_trailing_slash_HEAD_method;
+                }
+
+                return array('_route' => 'simple_not_trailing_slash_HEAD_method');
+            }
+            not_simple_not_trailing_slash_HEAD_method:
+
+            // simple_not_trailing_slash_POST_method
+            if ('/not-trailing/simple/post-method' === $pathinfo) {
+                if ('POST' !== $canonicalMethod) {
+                    $allow[] = 'POST';
+                    goto not_simple_not_trailing_slash_POST_method;
+                }
+
+                return array('_route' => 'simple_not_trailing_slash_POST_method');
+            }
+            not_simple_not_trailing_slash_POST_method:
+
+        }
+
+        elseif (0 === strpos($pathinfo, '/not-trailing/regex')) {
+            // regex_not_trailing_slash_no_methods
+            if (0 === strpos($pathinfo, '/not-trailing/regex/no-methods') && preg_match('#^/not\\-trailing/regex/no\\-methods/(?P<param>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'regex_not_trailing_slash_no_methods')), array ());
+            }
+
+            // regex_not_trailing_slash_GET_method
+            if (0 === strpos($pathinfo, '/not-trailing/regex/get-method') && preg_match('#^/not\\-trailing/regex/get\\-method/(?P<param>[^/]++)$#s', $pathinfo, $matches)) {
+                if ('GET' !== $canonicalMethod) {
+                    $allow[] = 'GET';
+                    goto not_regex_not_trailing_slash_GET_method;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'regex_not_trailing_slash_GET_method')), array ());
+            }
+            not_regex_not_trailing_slash_GET_method:
+
+            // regex_not_trailing_slash_HEAD_method
+            if (0 === strpos($pathinfo, '/not-trailing/regex/head-method') && preg_match('#^/not\\-trailing/regex/head\\-method/(?P<param>[^/]++)$#s', $pathinfo, $matches)) {
+                if ('HEAD' !== $requestMethod) {
+                    $allow[] = 'HEAD';
+                    goto not_regex_not_trailing_slash_HEAD_method;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'regex_not_trailing_slash_HEAD_method')), array ());
+            }
+            not_regex_not_trailing_slash_HEAD_method:
+
+            // regex_not_trailing_slash_POST_method
+            if (0 === strpos($pathinfo, '/not-trailing/regex/post-method') && preg_match('#^/not\\-trailing/regex/post\\-method/(?P<param>[^/]++)$#s', $pathinfo, $matches)) {
+                if ('POST' !== $canonicalMethod) {
+                    $allow[] = 'POST';
+                    goto not_regex_not_trailing_slash_POST_method;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'regex_not_trailing_slash_POST_method')), array ());
+            }
+            not_regex_not_trailing_slash_POST_method:
+
+        }
+
+        throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();
     }
 }

@@ -1,7 +1,6 @@
 {
     "name": "symfony/flex",
     "type": "composer-plugin",
-    "description": "Composer plugin for Symfony",
     "license": "MIT",
     "authors": [
         {
@@ -24,7 +23,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1-dev"
+            "dev-master": "1.0-dev"
         },
         "class": "Symfony\\Flex\\Flex"
     }

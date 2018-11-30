@@ -19,8 +19,9 @@ class SerializerTest extends WebTestCase
     public function testDeserializeArrayOfObject()
     {
         static::bootKernel(array('test_case' => 'Serializer'));
+        $container = static::$kernel->getContainer();
 
-        $result = static::$container->get('serializer')->deserialize('{"bars": [{"id": 1}, {"id": 2}]}', Foo::class, 'json');
+        $result = $container->get('serializer')->deserialize('{"bars": [{"id": 1}, {"id": 2}]}', Foo::class, 'json');
 
         $bar1 = new Bar();
         $bar1->id = 1;

@@ -13,9 +13,9 @@ namespace Symfony\Bundle\FrameworkBundle\Translation;
 
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
+use Symfony\Component\Translation\Translator as BaseTranslator;
 use Symfony\Component\Translation\Exception\InvalidArgumentException;
 use Symfony\Component\Translation\Formatter\MessageFormatterInterface;
-use Symfony\Component\Translation\Translator as BaseTranslator;
 
 /**
  * Translator.
@@ -46,8 +46,6 @@ class Translator extends BaseTranslator implements WarmableInterface
      */
     private $resources = array();
 
-    private $resourceFiles;
-
     /**
      * Constructor.
      *
@@ -77,7 +75,7 @@ class Translator extends BaseTranslator implements WarmableInterface
 
         $this->options = array_merge($this->options, $options);
         $this->resourceLocales = array_keys($this->options['resource_files']);
-        $this->resourceFiles = $this->options['resource_files'];
+        $this->addResourceFiles($this->options['resource_files']);
 
         parent::__construct($defaultLocale, $formatter, $this->options['cache_dir'], $this->options['debug']);
     }
@@ -105,9 +103,6 @@ class Translator extends BaseTranslator implements WarmableInterface
 
     public function addResource($format, $resource, $locale, $domain = null)
     {
-        if ($this->resourceFiles) {
-            $this->addResourceFiles();
-        }
         $this->resources[] = array($format, $resource, $locale, $domain);
     }
 
@@ -122,9 +117,6 @@ class Translator extends BaseTranslator implements WarmableInterface
 
     protected function initialize()
     {
-        if ($this->resourceFiles) {
-            $this->addResourceFiles();
-        }
         foreach ($this->resources as $key => $params) {
             list($format, $resource, $locale, $domain) = $params;
             parent::addResource($format, $resource, $locale, $domain);
@@ -138,11 +130,8 @@ class Translator extends BaseTranslator implements WarmableInterface
         }
     }
 
-    private function addResourceFiles()
+    private function addResourceFiles($filesByLocale)
     {
-        $filesByLocale = $this->resourceFiles;
-        $this->resourceFiles = array();
-
         foreach ($filesByLocale as $locale => $files) {
             foreach ($files as $key => $file) {
                 // filename is domain.locale.format

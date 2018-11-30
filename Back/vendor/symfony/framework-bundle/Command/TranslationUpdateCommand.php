@@ -12,15 +12,14 @@
 namespace Symfony\Bundle\FrameworkBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Translation\Catalogue\MergeOperation;
 use Symfony\Component\Translation\Catalogue\TargetOperation;
+use Symfony\Component\Translation\Catalogue\MergeOperation;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Translation\Extractor\ExtractorInterface;
 use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\Reader\TranslationReaderInterface;
@@ -32,7 +31,7 @@ use Symfony\Component\Translation\Writer\TranslationWriterInterface;
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  *
- * @final
+ * @final since version 3.4
  */
 class TranslationUpdateCommand extends Command
 {
@@ -65,7 +64,7 @@ class TranslationUpdateCommand extends Command
         $this
             ->setDefinition(array(
                 new InputArgument('locale', InputArgument::REQUIRED, 'The locale'),
-                new InputArgument('bundle', InputArgument::OPTIONAL, 'The bundle name or directory where to load the messages'),
+                new InputArgument('bundle', InputArgument::OPTIONAL, 'The bundle name or directory where to load the messages, defaults to app/Resources folder'),
                 new InputOption('prefix', null, InputOption::VALUE_OPTIONAL, 'Override the default prefix', '__'),
                 new InputOption('output-format', null, InputOption::VALUE_OPTIONAL, 'Override the default output format', 'yml'),
                 new InputOption('dump-messages', null, InputOption::VALUE_NONE, 'Should the messages be dumped in the console'),
@@ -77,7 +76,7 @@ class TranslationUpdateCommand extends Command
             ->setDescription('Updates the translation file')
             ->setHelp(<<<'EOF'
 The <info>%command.name%</info> command extracts translation strings from templates
-of a given bundle or the default translations directory. It can display them or merge the new ones into the translation files.
+of a given bundle or the app folder. It can display them or merge the new ones into the translation files.
 
 When new translation strings are found it can automatically add a prefix to the translation
 message.
@@ -86,7 +85,7 @@ Example running against a Bundle (AcmeBundle)
   <info>php %command.full_name% --dump-messages en AcmeBundle</info>
   <info>php %command.full_name% --force --prefix="new_" fr AcmeBundle</info>
 
-Example running against default messages directory
+Example running against app messages (app/Resources folder)
   <info>php %command.full_name% --dump-messages en</info>
   <info>php %command.full_name% --force --prefix="new_" fr</info>
 EOF
@@ -111,7 +110,7 @@ EOF
 
         // check format
         $supportedFormats = $this->writer->getFormats();
-        if (!\in_array($input->getOption('output-format'), $supportedFormats)) {
+        if (!in_array($input->getOption('output-format'), $supportedFormats)) {
             $errorIo->error(array('Wrong output format', 'Supported formats are: '.implode(', ', $supportedFormats).'.'));
 
             return 1;
@@ -128,7 +127,7 @@ EOF
         if ($this->defaultViewsPath) {
             $viewsPaths[] = $this->defaultViewsPath;
         }
-        $currentName = 'default directory';
+        $currentName = 'app folder';
 
         // Override with provided Bundle info
         if (null !== $input->getArgument('bundle')) {
@@ -152,7 +151,7 @@ EOF
                 $currentName = $transPaths[0];
 
                 if (!is_dir($transPaths[0])) {
-                    throw new InvalidArgumentException(sprintf('"%s" is neither an enabled bundle nor a directory.', $transPaths[0]));
+                    throw new \InvalidArgumentException(sprintf('<error>"%s" is neither an enabled bundle nor a directory.</error>', $transPaths[0]));
                 }
             }
         }
@@ -190,7 +189,7 @@ EOF
             : new MergeOperation($currentCatalogue, $extractedCatalogue);
 
         // Exit if no messages found.
-        if (!\count($operation->getDomains())) {
+        if (!count($operation->getDomains())) {
             $errorIo->warning('No translation messages were found.');
 
             return;
@@ -216,7 +215,7 @@ EOF
                     }, array_keys($operation->getObsoleteMessages($domain)))
                 );
 
-                $domainMessagesCount = \count($list);
+                $domainMessagesCount = count($list);
 
                 $io->section(sprintf('Messages extracted for domain "<info>%s</info>" (%d message%s)', $domain, $domainMessagesCount, $domainMessagesCount > 1 ? 's' : ''));
                 $io->listing($list);

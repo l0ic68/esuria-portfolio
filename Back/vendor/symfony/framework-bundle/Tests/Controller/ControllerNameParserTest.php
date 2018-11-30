@@ -12,13 +12,10 @@
 namespace Symfony\Bundle\FrameworkBundle\Tests\Controller;
 
 use Composer\Autoload\ClassLoader;
-use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
+use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\HttpKernel\Kernel;
 
-/**
- * @group legacy
- */
 class ControllerNameParserTest extends TestCase
 {
     protected $loader;

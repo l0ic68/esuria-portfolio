@@ -13,10 +13,9 @@ namespace Symfony\Flex\Tests\Configurator;
 
 require_once __DIR__.'/TmpDirMock.php';
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Flex\Configurator\BundlesConfigurator;
+use PHPUnit\Framework\TestCase;
 use Symfony\Flex\Options;
-use Symfony\Flex\Recipe;
 
 class BundlesConfiguratorTest extends TestCase
 {
@@ -30,7 +29,7 @@ class BundlesConfiguratorTest extends TestCase
             new Options(['config-dir' => dirname($config)])
         );
 
-        $recipe = $this->getMockBuilder(Recipe::class)->disableOriginalConstructor()->getMock();
+        $recipe = $this->getMockBuilder('Symfony\Flex\Recipe')->disableOriginalConstructor()->getMock();
 
         @unlink($config);
         $configurator->configure($recipe, [

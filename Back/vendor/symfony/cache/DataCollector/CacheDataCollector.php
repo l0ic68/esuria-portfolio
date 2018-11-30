@@ -57,7 +57,8 @@ class CacheDataCollector extends DataCollector implements LateDataCollectorInter
     {
         $this->data = array();
         foreach ($this->instances as $instance) {
-            $instance->clearCalls();
+            // Calling getCalls() will clear the calls.
+            $instance->getCalls();
         }
     }
 
@@ -119,30 +120,31 @@ class CacheDataCollector extends DataCollector implements LateDataCollectorInter
             );
             /** @var TraceableAdapterEvent $call */
             foreach ($calls as $call) {
-                ++$statistics[$name]['calls'];
+                $statistics[$name]['calls'] += 1;
                 $statistics[$name]['time'] += $call->end - $call->start;
                 if ('getItem' === $call->name) {
-                    ++$statistics[$name]['reads'];
+                    $statistics[$name]['reads'] += 1;
                     if ($call->hits) {
-                        ++$statistics[$name]['hits'];
+                        $statistics[$name]['hits'] += 1;
                     } else {
-                        ++$statistics[$name]['misses'];
+                        $statistics[$name]['misses'] += 1;
                     }
                 } elseif ('getItems' === $call->name) {
-                    $statistics[$name]['reads'] += $call->hits + $call->misses;
+                    $count = $call->hits + $call->misses;
+                    $statistics[$name]['reads'] += $count;
                     $statistics[$name]['hits'] += $call->hits;
-                    $statistics[$name]['misses'] += $call->misses;
+                    $statistics[$name]['misses'] += $count - $call->misses;
                 } elseif ('hasItem' === $call->name) {
-                    ++$statistics[$name]['reads'];
+                    $statistics[$name]['reads'] += 1;
                     if (false === $call->result) {
-                        ++$statistics[$name]['misses'];
+                        $statistics[$name]['misses'] += 1;
                     } else {
-                        ++$statistics[$name]['hits'];
+                        $statistics[$name]['hits'] += 1;
                     }
                 } elseif ('save' === $call->name) {
-                    ++$statistics[$name]['writes'];
+                    $statistics[$name]['writes'] += 1;
                 } elseif ('deleteItem' === $call->name) {
-                    ++$statistics[$name]['deletes'];
+                    $statistics[$name]['deletes'] += 1;
                 }
             }
             if ($statistics[$name]['reads']) {

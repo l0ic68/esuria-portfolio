@@ -17,19 +17,23 @@ class ProjectUrlMatcher extends Symfony\Component\Routing\Matcher\UrlMatcher
 
     public function match($rawPathinfo)
     {
-        $allow = $allowSchemes = array();
-        $pathinfo = rawurldecode($rawPathinfo) ?: '/';
+        $allow = array();
+        $pathinfo = rawurldecode($rawPathinfo);
+        $trimmedPathinfo = rtrim($pathinfo, '/');
         $context = $this->context;
+        $request = $this->request;
         $requestMethod = $canonicalMethod = $context->getMethod();
+        $scheme = $context->getScheme();
 
         if ('HEAD' === $requestMethod) {
             $canonicalMethod = 'GET';
         }
 
-        if ('/' === $pathinfo && !$allow && !$allowSchemes) {
+
+        if ('/' === $pathinfo) {
             throw new Symfony\Component\Routing\Exception\NoConfigurationException();
         }
 
-        throw $allow ? new MethodNotAllowedException(array_keys($allow)) : new ResourceNotFoundException();
+        throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();
     }
 }
