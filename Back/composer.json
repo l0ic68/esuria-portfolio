@@ -8,6 +8,7 @@
         "symfony/console": "4.1.*",
         "symfony/flex": "^1.1",
         "symfony/framework-bundle": "4.1.*",
+        "symfony/maker-bundle": "^1.9",
         "symfony/orm-pack": "^1.0",
         "symfony/yaml": "4.1.*"
     },
