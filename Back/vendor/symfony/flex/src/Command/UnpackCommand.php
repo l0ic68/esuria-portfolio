@@ -23,8 +23,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Flex\PackageResolver;
-use Symfony\Flex\Unpacker;
 use Symfony\Flex\Unpack\Operation;
+use Symfony\Flex\Unpacker;
 
 class UnpackCommand extends BaseCommand
 {
@@ -37,12 +37,13 @@ class UnpackCommand extends BaseCommand
 
     protected function configure()
     {
-        $this->setName('unpack')
-            ->setDescription('Unpack a Symfony pack.')
-            ->setDefinition(array(
+        $this->setName('symfony:unpack')
+            ->setAliases(['unpack'])
+            ->setDescription('Unpacks a Symfony pack.')
+            ->setDefinition([
                 new InputArgument('packages', InputArgument::IS_ARRAY | InputArgument::REQUIRED, 'Installed packages to unpack.'),
                 new InputOption('sort-packages', null, InputOption::VALUE_NONE, 'Sorts packages'),
-            ))
+            ])
         ;
     }
 
@@ -50,7 +51,7 @@ class UnpackCommand extends BaseCommand
     {
         $composer = $this->getComposer();
         $packages = $this->resolver->resolve($input->getArgument('packages'), true);
-        $io = $this->getIo();
+        $io = $this->getIO();
         $json = new JsonFile(Factory::getComposerFile());
         $manipulator = new JsonConfigSource($json);
         $locker = $composer->getLocker();
@@ -75,7 +76,7 @@ class UnpackCommand extends BaseCommand
                 }
             }
 
-            $op->addPackage($package['name'], '*', $dev);
+            $op->addPackage($pkg->getName(), $pkg->getVersion(), $dev);
         }
 
         $unpacker = new Unpacker($composer);
@@ -84,6 +85,7 @@ class UnpackCommand extends BaseCommand
         // remove the packages themselves
         if (!$result->getUnpacked()) {
             $io->writeError('<info>Nothing to unpack</>');
+
             return;
         }
 
