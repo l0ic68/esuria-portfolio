@@ -39,7 +39,7 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
-  background-image: url("../Images/Background.png");
+  background-image: url("../../Images/Background.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;

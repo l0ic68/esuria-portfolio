@@ -78,4 +78,20 @@ class DefaultController extends Controller
     {
         return $this->render('base/contact.html.twig');
     }
+
+    /**
+     * @Route("/lecture_article", name="lecture_article")
+     */
+    public function lecture_article()
+    {
+        return $this->render('base/lecture_article.html.twig');
+    }
+
+    /**
+     * @Route("/CMS", name="CMS")
+     */
+    public function CMS()
+    {
+        return $this->render('base/CMS.html.twig');
+    }
 }
