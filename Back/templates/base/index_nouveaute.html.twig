@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+<title>Esuria // Acceuil</title>
+{% endblock %}
+{% block css %}
+<link type="text/css" rel="stylesheet" href={{asset("css/Index_nouveauté.css")}} />
+{% endblock %}
+{% block content %}
+		<!-- CONTENU -->
+		<div id="Zone">
+			<div id="Hobbies_Switch">
+				<a href="#"><i class="far fa-chevron-left"></i><span class="Current">Nouveauté</span><i class="far fa-chevron-right"></i></a>
+				<a href="/presentation">Présentation</a>
+				<a href="/biographie">Biographie</a>
+			</div>
+			<div id="Zone_haut">
+				<h1 class="Titre">- Derniere Vidéo -</h1>
+					<iframe src="https://www.youtube.com/embed/rZUppxT38Zk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+				<h1 class="Titre">- Derniers Articles -</h1>
+				<div class="Article_element">
+					<div class="Une_Boite">
+						<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
+						<div class="Sous_Bandeau">
+							<h2 class="Titre_article">
+								Titre de l'article
+							</h2>
+							<p class="Date">
+								<span class="Couleur_slash">// </span>Vendredi 5 Mai 2017
+							</p>
+							<p class="Description">
+								Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
+							</p>
+						</div>
+					</div>
+					<div class="Une_Boite">
+						<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
+						<div class="Sous_Bandeau">
+							<h2 class="Titre_article">
+								Titre de l'article
+							</h2>
+							<p class="Date">
+								<span class="Couleur_slash">// </span>Vendredi 5 Mai 2017
+							</p>
+							<p class="Description">
+								Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
+							</p>
+						</div>
+					</div>
+					<div class="Une_Boite">
+						<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
+						<div class="Sous_Bandeau">
+							<h2 class="Titre_article">
+								Titre de l'article
+							</h2>
+							<p class="Date">
+								<span class="Couleur_slash">// </span>Vendredi 5 Mai 2017
+							</p>
+							<p class="Description">
+								Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
+							</p>
+						</div>
+					</div>
+
+				</div>
+				<h1 class="Titre">- Instagram -</h1>
+			</div>
+		</div>
+{% endblock %}

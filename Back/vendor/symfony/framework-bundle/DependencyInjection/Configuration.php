@@ -18,9 +18,13 @@ use Symfony\Component\Asset\Package;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Lock\Lock;
 use Symfony\Component\Lock\Store\SemaphoreStore;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Translation\Translator;
@@ -31,6 +35,7 @@ use Symfony\Component\WebLink\HttpHeaderSerializer;
  * FrameworkExtension configuration structure.
  *
  * @author Jeremy Mikola <jmikola@gmail.com>
+ * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */
 class Configuration implements ConfigurationInterface
 {
@@ -51,8 +56,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('framework');
+        $treeBuilder = new TreeBuilder('framework');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->beforeNormalization()
@@ -101,6 +106,7 @@ class Configuration implements ConfigurationInterface
         $this->addPhpErrorsSection($rootNode);
         $this->addWebLinkSection($rootNode);
         $this->addLockSection($rootNode);
+        $this->addMessengerSection($rootNode);
 
         return $treeBuilder;
     }
@@ -216,8 +222,20 @@ class Configuration implements ConfigurationInterface
                                 $workflows = $v;
                                 unset($workflows['enabled']);
 
-                                if (1 === count($workflows) && isset($workflows[0]['enabled'])) {
+                                if (1 === \count($workflows) && isset($workflows[0]['enabled']) && 1 === \count($workflows[0])) {
                                     $workflows = array();
+                                }
+
+                                if (1 === \count($workflows) && isset($workflows['workflows']) && array_keys($workflows['workflows']) !== range(0, \count($workflows) - 1) && !empty(array_diff(array_keys($workflows['workflows']), array('audit_trail', 'type', 'marking_store', 'supports', 'support_strategy', 'initial_place', 'places', 'transitions')))) {
+                                    $workflows = $workflows['workflows'];
+                                }
+
+                                foreach ($workflows as $key => $workflow) {
+                                    if (isset($workflow['enabled']) && false === $workflow['enabled']) {
+                                        throw new LogicException(sprintf('Cannot disable a single workflow. Remove the configuration for the workflow "%s" instead.', $workflow['name']));
+                                    }
+
+                                    unset($workflows[$key]['enabled']);
                                 }
 
                                 $v = array(
@@ -280,8 +298,8 @@ class Configuration implements ConfigurationInterface
                                         ->prototype('scalar')
                                             ->cannotBeEmpty()
                                             ->validate()
-                                                ->ifTrue(function ($v) { return !class_exists($v); })
-                                                ->thenInvalid('The supported class %s does not exist.')
+                                                ->ifTrue(function ($v) { return !class_exists($v) && !interface_exists($v, false); })
+                                                ->thenInvalid('The supported class or interface "%s" does not exist.')
                                             ->end()
                                         ->end()
                                     ->end()
@@ -292,23 +310,61 @@ class Configuration implements ConfigurationInterface
                                         ->defaultNull()
                                     ->end()
                                     ->arrayNode('places')
+                                        ->beforeNormalization()
+                                            ->always()
+                                            ->then(function ($places) {
+                                                // It's an indexed array of shape  ['place1', 'place2']
+                                                if (isset($places[0]) && \is_string($places[0])) {
+                                                    return array_map(function (string $place) {
+                                                        return array('name' => $place);
+                                                    }, $places);
+                                                }
+
+                                                // It's an indexed array, we let the validation occur
+                                                if (isset($places[0]) && \is_array($places[0])) {
+                                                    return $places;
+                                                }
+
+                                                foreach ($places as $name => $place) {
+                                                    if (\is_array($place) && array_key_exists('name', $place)) {
+                                                        continue;
+                                                    }
+                                                    $place['name'] = $name;
+                                                    $places[$name] = $place;
+                                                }
+
+                                                return array_values($places);
+                                            })
+                                        ->end()
                                         ->isRequired()
                                         ->requiresAtLeastOneElement()
-                                        ->prototype('scalar')
-                                            ->cannotBeEmpty()
+                                        ->prototype('array')
+                                            ->children()
+                                                ->scalarNode('name')
+                                                    ->isRequired()
+                                                    ->cannotBeEmpty()
+                                                ->end()
+                                                ->arrayNode('metadata')
+                                                    ->normalizeKeys(false)
+                                                    ->defaultValue(array())
+                                                    ->example(array('color' => 'blue', 'description' => 'Workflow to manage article.'))
+                                                    ->prototype('variable')
+                                                    ->end()
+                                                ->end()
+                                            ->end()
                                         ->end()
                                     ->end()
                                     ->arrayNode('transitions')
                                         ->beforeNormalization()
                                             ->always()
                                             ->then(function ($transitions) {
-                                                // It's an indexed array, we let the validation occurs
-                                                if (isset($transitions[0])) {
+                                                // It's an indexed array, we let the validation occur
+                                                if (isset($transitions[0]) && \is_array($transitions[0])) {
                                                     return $transitions;
                                                 }
 
                                                 foreach ($transitions as $name => $transition) {
-                                                    if (array_key_exists('name', $transition)) {
+                                                    if (\is_array($transition) && array_key_exists('name', $transition)) {
                                                         continue;
                                                     }
                                                     $transition['name'] = $name;
@@ -329,7 +385,7 @@ class Configuration implements ConfigurationInterface
                                                 ->scalarNode('guard')
                                                     ->cannotBeEmpty()
                                                     ->info('An expression to block the transition')
-                                                    ->example('is_fully_authenticated() and has_role(\'ROLE_JOURNALIST\') and subject.getTitle() == \'My first article\'')
+                                                    ->example('is_fully_authenticated() and is_granted(\'ROLE_JOURNALIST\') and subject.getTitle() == \'My first article\'')
                                                 ->end()
                                                 ->arrayNode('from')
                                                     ->beforeNormalization()
@@ -351,7 +407,21 @@ class Configuration implements ConfigurationInterface
                                                         ->cannotBeEmpty()
                                                     ->end()
                                                 ->end()
+                                                ->arrayNode('metadata')
+                                                    ->normalizeKeys(false)
+                                                    ->defaultValue(array())
+                                                    ->example(array('color' => 'blue', 'description' => 'Workflow to manage article.'))
+                                                    ->prototype('variable')
+                                                    ->end()
+                                                ->end()
                                             ->end()
+                                        ->end()
+                                    ->end()
+                                    ->arrayNode('metadata')
+                                        ->normalizeKeys(false)
+                                        ->defaultValue(array())
+                                        ->example(array('color' => 'blue', 'description' => 'Workflow to manage article.'))
+                                        ->prototype('variable')
                                         ->end()
                                     ->end()
                                 ->end()
@@ -396,6 +466,7 @@ class Configuration implements ConfigurationInterface
                             )
                             ->defaultTrue()
                         ->end()
+                        ->booleanNode('utf8')->defaultFalse()->end()
                     ->end()
                 ->end()
             ->end()
@@ -412,19 +483,29 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('storage_id')->defaultValue('session.storage.native')->end()
                         ->scalarNode('handler_id')->defaultValue('session.handler.native_file')->end()
-                        ->scalarNode('name')->end()
+                        ->scalarNode('name')
+                            ->validate()
+                                ->ifTrue(function ($v) {
+                                    parse_str($v, $parsed);
+
+                                    return implode('&', array_keys($parsed)) !== (string) $v;
+                                })
+                                ->thenInvalid('Session name %s contains illegal character(s)')
+                            ->end()
+                        ->end()
                         ->scalarNode('cookie_lifetime')->end()
                         ->scalarNode('cookie_path')->end()
                         ->scalarNode('cookie_domain')->end()
-                        ->booleanNode('cookie_secure')->end()
+                        ->enumNode('cookie_secure')->values(array(true, false, 'auto'))->end()
                         ->booleanNode('cookie_httponly')->defaultTrue()->end()
+                        ->enumNode('cookie_samesite')->values(array(null, Cookie::SAMESITE_LAX, Cookie::SAMESITE_STRICT))->defaultNull()->end()
                         ->booleanNode('use_cookies')->end()
                         ->scalarNode('gc_divisor')->end()
                         ->scalarNode('gc_probability')->defaultValue(1)->end()
                         ->scalarNode('gc_maxlifetime')->end()
                         ->scalarNode('save_path')->defaultValue('%kernel.cache_dir%/sessions')->end()
                         ->integerNode('metadata_update_threshold')
-                            ->defaultValue('0')
+                            ->defaultValue(0)
                             ->info('seconds to wait between 2 session metadata updates')
                         ->end()
                     ->end()
@@ -446,11 +527,11 @@ class Configuration implements ConfigurationInterface
                             ->useAttributeAsKey('name')
                             ->prototype('array')
                                 ->beforeNormalization()
-                                    ->ifTrue(function ($v) { return is_array($v) && isset($v['mime_type']); })
+                                    ->ifTrue(function ($v) { return \is_array($v) && isset($v['mime_type']); })
                                     ->then(function ($v) { return $v['mime_type']; })
                                 ->end()
                                 ->beforeNormalization()
-                                    ->ifTrue(function ($v) { return !is_array($v); })
+                                    ->ifTrue(function ($v) { return !\is_array($v); })
                                     ->then(function ($v) { return array($v); })
                                 ->end()
                                 ->prototype('scalar')->end()
@@ -470,7 +551,7 @@ class Configuration implements ConfigurationInterface
                     ->info('templating configuration')
                     ->canBeEnabled()
                     ->beforeNormalization()
-                        ->ifTrue(function ($v) { return false === $v || is_array($v) && false === $v['enabled']; })
+                        ->ifTrue(function ($v) { return false === $v || \is_array($v) && false === $v['enabled']; })
                         ->then(function () { return array('enabled' => false, 'engines' => false); })
                     ->end()
                     ->children()
@@ -484,7 +565,7 @@ class Configuration implements ConfigurationInterface
                                     ->addDefaultChildrenIfNoneSet()
                                     ->prototype('scalar')->defaultValue('FrameworkBundle:Form')->end()
                                     ->validate()
-                                        ->ifTrue(function ($v) {return !in_array('FrameworkBundle:Form', $v); })
+                                        ->ifTrue(function ($v) {return !\in_array('FrameworkBundle:Form', $v); })
                                         ->then(function ($v) {
                                             return array_merge(array('FrameworkBundle:Form'), $v);
                                         })
@@ -501,7 +582,7 @@ class Configuration implements ConfigurationInterface
                             ->requiresAtLeastOneElement()
                             ->canBeUnset()
                             ->beforeNormalization()
-                                ->ifTrue(function ($v) { return !is_array($v) && false !== $v; })
+                                ->ifTrue(function ($v) { return !\is_array($v) && false !== $v; })
                                 ->then(function ($v) { return array($v); })
                             ->end()
                             ->prototype('scalar')->end()
@@ -511,7 +592,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->arrayNode('loaders')
                             ->beforeNormalization()
-                                ->ifTrue(function ($v) { return !is_array($v); })
+                                ->ifTrue(function ($v) { return !\is_array($v); })
                                 ->then(function ($v) { return array($v); })
                              ->end()
                             ->prototype('scalar')->end()
@@ -539,7 +620,7 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('base_urls')
                             ->requiresAtLeastOneElement()
                             ->beforeNormalization()
-                                ->ifTrue(function ($v) { return !is_array($v); })
+                                ->ifTrue(function ($v) { return !\is_array($v); })
                                 ->then(function ($v) { return array($v); })
                             ->end()
                             ->prototype('scalar')->end()
@@ -583,7 +664,7 @@ class Configuration implements ConfigurationInterface
                                     ->arrayNode('base_urls')
                                         ->requiresAtLeastOneElement()
                                         ->beforeNormalization()
-                                            ->ifTrue(function ($v) { return !is_array($v); })
+                                            ->ifTrue(function ($v) { return !\is_array($v); })
                                             ->then(function ($v) { return array($v); })
                                         ->end()
                                         ->prototype('scalar')->end()
@@ -630,7 +711,7 @@ class Configuration implements ConfigurationInterface
                             ->prototype('scalar')->end()
                             ->defaultValue(array('en'))
                         ->end()
-                        ->booleanNode('logging')->defaultValue($this->debug)->end()
+                        ->booleanNode('logging')->defaultValue(false)->end()
                         ->scalarNode('formatter')->defaultValue('translator.formatter.default')->end()
                         ->scalarNode('default_path')
                             ->info('The default path used to load translations')
@@ -652,6 +733,27 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('validation')
                     ->info('validation configuration')
                     ->{!class_exists(FullStack::class) && class_exists(Validation::class) ? 'canBeDisabled' : 'canBeEnabled'}()
+                    ->validate()
+                        ->ifTrue(function ($v) { return isset($v['strict_email']) && isset($v['email_validation_mode']); })
+                        ->thenInvalid('"strict_email" and "email_validation_mode" cannot be used together.')
+                    ->end()
+                    ->beforeNormalization()
+                        ->ifTrue(function ($v) { return isset($v['strict_email']); })
+                        ->then(function ($v) {
+                            @trigger_error('The "framework.validation.strict_email" configuration key has been deprecated in Symfony 4.1. Use the "framework.validation.email_validation_mode" configuration key instead.', E_USER_DEPRECATED);
+
+                            return $v;
+                        })
+                    ->end()
+                    ->beforeNormalization()
+                        ->ifTrue(function ($v) { return isset($v['strict_email']) && !isset($v['email_validation_mode']); })
+                        ->then(function ($v) {
+                            $v['email_validation_mode'] = $v['strict_email'] ? 'strict' : 'loose';
+                            unset($v['strict_email']);
+
+                            return $v;
+                        })
+                    ->end()
                     ->children()
                         ->scalarNode('cache')->end()
                         ->booleanNode('enable_annotations')->{!class_exists(FullStack::class) && class_exists(Annotation::class) ? 'defaultTrue' : 'defaultFalse'}()->end()
@@ -660,12 +762,13 @@ class Configuration implements ConfigurationInterface
                             ->prototype('scalar')->end()
                             ->treatFalseLike(array())
                             ->validate()
-                                ->ifTrue(function ($v) { return !is_array($v); })
+                                ->ifTrue(function ($v) { return !\is_array($v); })
                                 ->then(function ($v) { return (array) $v; })
                             ->end()
                         ->end()
                         ->scalarNode('translation_domain')->defaultValue('validators')->end()
-                        ->booleanNode('strict_email')->defaultFalse()->end()
+                        ->booleanNode('strict_email')->end()
+                        ->enumNode('email_validation_mode')->values(array('html5', 'loose', 'strict'))->end()
                         ->arrayNode('mapping')
                             ->addDefaultsIfNotSet()
                             ->fixXmlConfig('path')
@@ -709,6 +812,7 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('enable_annotations')->{!class_exists(FullStack::class) && class_exists(Annotation::class) ? 'defaultTrue' : 'defaultFalse'}()->end()
                         ->scalarNode('name_converter')->end()
                         ->scalarNode('circular_reference_handler')->end()
+                        ->scalarNode('max_depth_handler')->end()
                         ->arrayNode('mapping')
                             ->addDefaultsIfNotSet()
                             ->fixXmlConfig('path')
@@ -746,7 +850,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('property_info')
                     ->info('Property info configuration')
-                    ->canBeEnabled()
+                    ->{!class_exists(FullStack::class) && interface_exists(PropertyInfoExtractorInterface::class) ? 'canBeDisabled' : 'canBeEnabled'}()
                 ->end()
             ->end()
         ;
@@ -778,15 +882,17 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('default_psr6_provider')->end()
                         ->scalarNode('default_redis_provider')->defaultValue('redis://localhost')->end()
                         ->scalarNode('default_memcached_provider')->defaultValue('memcached://localhost')->end()
+                        ->scalarNode('default_pdo_provider')->defaultValue('doctrine.dbal.default_connection')->end()
                         ->arrayNode('pools')
                             ->useAttributeAsKey('name')
                             ->prototype('array')
                                 ->children()
                                     ->scalarNode('adapter')->defaultValue('cache.app')->end()
+                                    ->scalarNode('tags')->defaultNull()->end()
                                     ->booleanNode('public')->defaultFalse()->end()
                                     ->integerNode('default_lifetime')->end()
                                     ->scalarNode('provider')
-                                        ->info('The service name to use as provider when the specified adapter needs one.')
+                                        ->info('Overwrite the setting from the default provider for this adapter.')
                                     ->end()
                                     ->scalarNode('clearer')->end()
                                 ->end()
@@ -810,10 +916,15 @@ class Configuration implements ConfigurationInterface
                     ->info('PHP errors handling configuration')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->booleanNode('log')
-                            ->info('Use the app logger instead of the PHP logger for logging PHP errors.')
+                        ->scalarNode('log')
+                            ->info('Use the application logger instead of the PHP logger for logging PHP errors.')
+                            ->example('"true" to use the default configuration: log all errors. "false" to disable. An integer bit field of E_* constants.')
                             ->defaultValue($this->debug)
                             ->treatNullLike($this->debug)
+                            ->validate()
+                                ->ifTrue(function ($v) { return !(\is_int($v) || \is_bool($v)); })
+                                ->thenInvalid('The "php_errors.log" parameter should be either an integer or a boolean.')
+                            ->end()
                         ->end()
                         ->booleanNode('throw')
                             ->info('Throw PHP errors as \ErrorException instances.')
@@ -837,7 +948,7 @@ class Configuration implements ConfigurationInterface
                         ->ifString()->then(function ($v) { return array('enabled' => true, 'resources' => $v); })
                     ->end()
                     ->beforeNormalization()
-                        ->ifTrue(function ($v) { return is_array($v) && !isset($v['resources']); })
+                        ->ifTrue(function ($v) { return \is_array($v) && !isset($v['resources']); })
                         ->then(function ($v) {
                             $e = $v['enabled'];
                             unset($v['enabled']);
@@ -855,7 +966,7 @@ class Configuration implements ConfigurationInterface
                                 ->ifString()->then(function ($v) { return array('default' => $v); })
                             ->end()
                             ->beforeNormalization()
-                                ->ifTrue(function ($v) { return is_array($v) && array_keys($v) === range(0, count($v) - 1); })
+                                ->ifTrue(function ($v) { return \is_array($v) && array_keys($v) === range(0, \count($v) - 1); })
                                 ->then(function ($v) { return array('default' => $v); })
                             ->end()
                             ->prototype('array')
@@ -876,6 +987,161 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('web_link')
                     ->info('web links configuration')
                     ->{!class_exists(FullStack::class) && class_exists(HttpHeaderSerializer::class) ? 'canBeDisabled' : 'canBeEnabled'}()
+                ->end()
+            ->end()
+        ;
+    }
+
+    private function addMessengerSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('messenger')
+                    ->info('Messenger configuration')
+                    ->{!class_exists(FullStack::class) && interface_exists(MessageBusInterface::class) ? 'canBeDisabled' : 'canBeEnabled'}()
+                    ->fixXmlConfig('transport')
+                    ->fixXmlConfig('bus', 'buses')
+                    ->children()
+                        ->arrayNode('routing')
+                            ->useAttributeAsKey('message_class')
+                            ->beforeNormalization()
+                                ->always()
+                                ->then(function ($config) {
+                                    if (!\is_array($config)) {
+                                        return array();
+                                    }
+
+                                    $newConfig = array();
+                                    foreach ($config as $k => $v) {
+                                        if (!\is_int($k)) {
+                                            $newConfig[$k] = array(
+                                                'senders' => $v['senders'] ?? (\is_array($v) ? array_values($v) : array($v)),
+                                                'send_and_handle' => $v['send_and_handle'] ?? false,
+                                            );
+                                        } else {
+                                            $newConfig[$v['message-class']]['senders'] = array_map(
+                                                function ($a) {
+                                                    return \is_string($a) ? $a : $a['service'];
+                                                },
+                                                array_values($v['sender'])
+                                            );
+                                            $newConfig[$v['message-class']]['send-and-handle'] = $v['send-and-handle'] ?? false;
+                                        }
+                                    }
+
+                                    return $newConfig;
+                                })
+                            ->end()
+                            ->prototype('array')
+                                ->children()
+                                    ->arrayNode('senders')
+                                        ->requiresAtLeastOneElement()
+                                        ->prototype('scalar')->end()
+                                    ->end()
+                                    ->booleanNode('send_and_handle')->defaultFalse()->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('serializer')
+                            ->addDefaultsIfNotSet()
+                            ->beforeNormalization()
+                                ->always()
+                                ->then(function ($config) {
+                                    if (false === $config) {
+                                        return array('id' => null);
+                                    }
+
+                                    if (\is_string($config)) {
+                                        return array('id' => $config);
+                                    }
+
+                                    return $config;
+                                })
+                            ->end()
+                            ->children()
+                                ->scalarNode('id')->defaultValue('messenger.transport.symfony_serializer')->end()
+                                ->scalarNode('format')->defaultValue('json')->end()
+                                ->arrayNode('context')
+                                    ->normalizeKeys(false)
+                                    ->useAttributeAsKey('name')
+                                    ->defaultValue(array())
+                                    ->prototype('variable')->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('transports')
+                            ->useAttributeAsKey('name')
+                            ->arrayPrototype()
+                                ->beforeNormalization()
+                                    ->ifString()
+                                    ->then(function (string $dsn) {
+                                        return array('dsn' => $dsn);
+                                    })
+                                ->end()
+                                ->fixXmlConfig('option')
+                                ->children()
+                                    ->scalarNode('dsn')->end()
+                                    ->arrayNode('options')
+                                        ->normalizeKeys(false)
+                                        ->defaultValue(array())
+                                        ->prototype('variable')
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->scalarNode('default_bus')->defaultNull()->end()
+                        ->arrayNode('buses')
+                            ->defaultValue(array('messenger.bus.default' => array('default_middleware' => true, 'middleware' => array())))
+                            ->useAttributeAsKey('name')
+                            ->arrayPrototype()
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    ->enumNode('default_middleware')
+                                        ->values(array(true, false, 'allow_no_handlers'))
+                                        ->defaultTrue()
+                                    ->end()
+                                    ->arrayNode('middleware')
+                                        ->beforeNormalization()
+                                            ->ifTrue(function ($v) { return \is_string($v) || (\is_array($v) && !\is_int(key($v))); })
+                                            ->then(function ($v) { return array($v); })
+                                        ->end()
+                                        ->defaultValue(array())
+                                        ->arrayPrototype()
+                                            ->beforeNormalization()
+                                                ->always()
+                                                ->then(function ($middleware): array {
+                                                    if (!\is_array($middleware)) {
+                                                        return array('id' => $middleware);
+                                                    }
+                                                    if (isset($middleware['id'])) {
+                                                        return $middleware;
+                                                    }
+                                                    if (1 < \count($middleware)) {
+                                                        throw new \InvalidArgumentException(sprintf('Invalid middleware at path "framework.messenger": a map with a single factory id as key and its arguments as value was expected, %s given.', json_encode($middleware)));
+                                                    }
+
+                                                    return array(
+                                                        'id' => key($middleware),
+                                                        'arguments' => current($middleware),
+                                                    );
+                                                })
+                                            ->end()
+                                            ->fixXmlConfig('argument')
+                                            ->children()
+                                                ->scalarNode('id')->isRequired()->cannotBeEmpty()->end()
+                                                ->arrayNode('arguments')
+                                                    ->normalizeKeys(false)
+                                                    ->defaultValue(array())
+                                                    ->prototype('variable')
+                                                ->end()
+                                            ->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ;

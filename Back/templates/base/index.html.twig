@@ -1,5 +1,176 @@
 {% extends 'base.html.twig' %}
-{% block body%}
-Start
+{% block title %}
+<title>Esuria // Présentation</title>
+{% endblock %}
+{% block css %}
+<link type="text/css" rel="stylesheet" href={{asset("css//Index.css")}} />
+{% endblock %}
+{% block content %}
+<div id="Zone">
+  <div id="Hobbies_Switch">
+    <a href="/acceuil">Nouveauté</a>
+    <a href="#"><i class="far fa-chevron-left"></i><span class="Current">Présentation</span><i class="far fa-chevron-right"></i></a>
+    <a href="/biographie">Biographie</a>
+  </div>
+  <div id="Zone_haut">
+    <div id="Presentation">
+      <h1>- Présentation -</h1>
+      <p>Lorem Ipsum</p>
+    </div>
+    <div id="Parcours">
+      <h1>- Parcours -</h1>
+      <div id="Timeline">
+        <div id="Info">
+          <p class="Periode active" id="Periode_2012_2015">2012 - 2015</p>
+          <p class="Titre_periode active" id="Titre_lycee">Lycée Charles Jully</p>
+
+          <p class="Periode" id="Periode_2012_">2012 -</p>
+          <p class="Titre_periode" id="Titre_Faeriths">Faerith's</p>
+
+          <p class="Periode" id="Periode_2015">2015</p>
+          <p class="Titre_periode" id="Titre_Viessmann">Viessmann</p>
+
+          <p class="Periode" id="Periode_2015_2017">2015 - 2017</p>
+          <p class="Titre_periode" id="Titre_SUP">SUPINFO - The International Institute of Information Technology</p>
+
+          <p class="Periode" id="Periode_2016">2016</p>
+          <p class="Titre_periode" id="Titre_CH">Centre Hospitalier de Saint-Avold</p>
+
+          <p class="Periode" id="Periode_2017_">2017 -</p>
+          <p class="Titre_periode" id="Titre_Com4Up">Com4Up</p>
+
+          <p class="Periode" id="Periode_2018_">2018 -</p>
+          <p class="Titre_periode" id="Titre_SS">Streaming School</p>
+        </div>
+      </div>
+
+      <div id="Timeline_bar">
+        <div class="Bar Bar1"></div>
+        <div class="BigCircle CircleActive ColorActive" id="2012_Circle">
+          <div class="InsideCircle"></div>
+        </div>
+        <div class="Bar Bar2 Bar_active"></div>
+        <div class="LitleCircle ColorActive" id="Faeriths_Circle">
+          <div class="InsideCircle"></div>
+        </div>
+        <div class="Bar Bar3 Bar_active"></div>
+        <div class="LitleCircle ColorActive" id="Viessmann_Circle">
+          <div class="InsideCircle"></div>
+        </div>
+
+        <div class="Bar Bar4 Bar_active"></div>
+        <div class="BigCircle ColorActive" id="2015_Circle">
+          <div class="InsideCircle"></div>
+        </div>
+        <div class="Bar Bar5"></div>
+        <div class="LitleCircle" id="CH_Circle">
+          <div class="InsideCircle"></div>
+        </div>
+
+        <div class="Bar Bar6"></div>
+        <div class="BigCircle" id="2017_Circle">
+          <div class="InsideCircle"></div>
+        </div>
+        <div class="Bar Bar7"></div>
+        <div class="LitleCircle">
+          <div class="InsideCircle"></div>
+        </div>
+        <div class="Bar Bar8"></div>
+        <div class="LitleCircle">
+          <div class="InsideCircle"></div>
+        </div>
+        <div class="Bar Bar9"></div>
+        <div class="LitleCircle">
+          <div class="InsideCircle"></div>
+        </div>
+        <div class="Bar Bar10"></div>
+        <div class="BigCircle" id="2018_Circle">
+          <div class="InsideCircle"></div>
+        </div>
+        <div class="Bar Bar11"></div>
+      </div>
+
+      <div id="Description">
+        <p class=" Description_Data active" id="Description_Lycee">En Juin 2015 je passe et obtiens mon BAC STI2D (Sciences et Technologies de l'Industrie et du Développement Durable) spécialité SIN (Système d'Information et Numérique).</p>
+
+        <p class=" Description_Data" id="Description_Faeriths">Au mois de Mai je fonde "Faerith's", initialement une communauté Multi-Gaming se retrouvant sur un serveur Mumble.</p>
+        <p class=" Description_Data">Migration de la communauté "Faerith's" de Mumble vers Discord</p>
+        <p class=" Description_Data">Faerith's a l'ambition de devenir un collectif de créateurs en plus d'une communauté Multi-Gaming. Début de l'UX Design du site web.</p>
+        <p class=" Description_Data">Finalisation de l'UX Design, réalisation de l'UI Design et commencement du développement Front-End et Back-End du site web.</p>
+        <p class=" Description_Data">Lancement du site web.</p>
+
+        <p class=" Description_Data" id="Description_Viessmann">Vacataire durant le mois de Juillet en tant que : Technicien de Maintenance au Département Travaux Neufs</p>
+
+        <p class=" Description_Data" id="Description_SUP">Je rejoins SUPINFO en 2015 et y valide en Novembre 2017 avec 120 Crédits ECTS le cursus "Associate of Science, Technicien en Informatique".</br>J'ai participé et valider l'option de spécialisation : Optimiser les UI et les UX pour la conception
+          logicielle</p>
+
+        <p class=" Description_Data" id="Description_CH">Stage en Juillet / Août (2 Mois) avec comme tâche :</br>Participation à l’élaboration du schéma réseau informatique de l’hôpital de Saint-Avold (VLAN – WIFI), la mise en place d’une méthodologie optimisant la gestion des VLAN sur le site, ainsi
+          que le Support installation / paramétrage des postes informatiques.</p>
+
+        <p class=" Description_Data" id="Description_Com4Up">Lancement en Novembre 2017 de l'entreprise Com4Up, une Agence de Communication Digitale.</br>Nous accompagnons les entreprises, associations et particuliers vers le numérique via la création de sites web, de vidéos, de réseaux sociaux ainsi que
+          l’installation et maintenance matériel adaptée à leurs activités.</p>
+
+        <p class=" Description_Data" id="Description_SS">Lancement de "Streaming School", une plateforme proposant Formations / Tutoriels / Astuces concernant le domaine de l'Audiovisuel sur Internet.</p>
+      </div>
+    </div>
+
+    <!--	<div class="flex-parent">
+      <div class="input-flex-container">
+
+        <div class="input">
+          <span data-year="2012s" data-info="Lycée Charles Jully 2012 - 2015"></span>
+        </div>
+        <div class="input">
+          <span data-year="2014s" data-info="wireless LAN"></span>
+        </div>
+        <div class="input">
+          <span data-year="2015s" data-info="2015 - 2017 SUPINFO"></span>
+        </div>
+        <div class="input">
+          <span data-year="2016s" data-info="World Wide Web"></span>
+        </div>
+        <div class="input">
+          <span data-year="2017s" data-info="Google AdWords"></span>
+        </div>
+      </div>
+      <div class="description-flex-container">
+        <p class="active">And the world rejoiced.</p>
+        <p>Because building roads is inconvenient.</p>
+        <p>Ain’t nobody got time to rake.</p>
+        <p>Because paper currency is for noobs.</p>
+      </div>
+    </div> -->
+
+    <div id="Competences">
+      <h1>- Compétences -</h1>
+      <div id="Competences_data">
+        <div class="Competences_line">
+          <i class="fal fa-sitemap"></i>
+          <p>Expérience Utilisateur</p>
+        </div>
+        <div class="Competences_line">
+          <i class="fal fa-paint-brush"></i>
+          <p>Interface Utilisateur</p>
+        </div>
+        <div class="Competences_line">
+          <i class="fab fa-html5"></i>
+          <p>HTML5 / CSS3</p>
+        </div>
+        <div class="Competences_line">
+          <i class="fal fa-share-alt"></i>
+          <p>Réseaux Sociaux</p>
+        </div>
+        <div class="Competences_line">
+          <i class="fal fa-video"></i>
+          <p>Audiovisuel</p>
+        </div>
+        <div class="Competences_line">
+          <i class="fal fa-cog"></i>
+          <p>Hardware</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

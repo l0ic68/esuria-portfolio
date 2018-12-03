@@ -12,21 +12,26 @@
 namespace Symfony\Bundle\FrameworkBundle\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Fig\Link\GenericLinkProvider;
+use Fig\Link\Link;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\WebLink\EventListener\AddLinkHeaderListener;
 
 /**
  * Common features needed in controllers.
@@ -42,7 +47,7 @@ trait ControllerTrait
     /**
      * Returns true if the service id is defined.
      *
-     * @final since version 3.4
+     * @final
      */
     protected function has(string $id): bool
     {
@@ -54,7 +59,7 @@ trait ControllerTrait
      *
      * @return object The service
      *
-     * @final since version 3.4
+     * @final
      */
     protected function get(string $id)
     {
@@ -66,7 +71,7 @@ trait ControllerTrait
      *
      * @see UrlGeneratorInterface
      *
-     * @final since version 3.4
+     * @final
      */
     protected function generateUrl(string $route, array $parameters = array(), int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {
@@ -76,14 +81,13 @@ trait ControllerTrait
     /**
      * Forwards the request to another controller.
      *
-     * @param string $controller The controller name (a string like BlogBundle:Post:index)
+     * @param string $controller The controller name (a string like Bundle\BlogBundle\Controller\PostController::indexAction)
      *
-     * @final since version 3.4
+     * @final
      */
     protected function forward(string $controller, array $path = array(), array $query = array()): Response
     {
         $request = $this->container->get('request_stack')->getCurrentRequest();
-        $path['_forwarded'] = $request->attributes;
         $path['_controller'] = $controller;
         $subRequest = $request->duplicate($query, null, $path);
 
@@ -93,7 +97,7 @@ trait ControllerTrait
     /**
      * Returns a RedirectResponse to the given URL.
      *
-     * @final since version 3.4
+     * @final
      */
     protected function redirect(string $url, int $status = 302): RedirectResponse
     {
@@ -103,7 +107,7 @@ trait ControllerTrait
     /**
      * Returns a RedirectResponse to the given route with the given parameters.
      *
-     * @final since version 3.4
+     * @final
      */
     protected function redirectToRoute(string $route, array $parameters = array(), int $status = 302): RedirectResponse
     {
@@ -113,7 +117,7 @@ trait ControllerTrait
     /**
      * Returns a JsonResponse that uses the serializer component if enabled, or json_encode.
      *
-     * @final since version 3.4
+     * @final
      */
     protected function json($data, int $status = 200, array $headers = array(), array $context = array()): JsonResponse
     {
@@ -133,7 +137,7 @@ trait ControllerTrait
      *
      * @param \SplFileInfo|string $file File object or path to file to be sent as response
      *
-     * @final since version 3.4
+     * @final
      */
     protected function file($file, string $fileName = null, string $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT): BinaryFileResponse
     {
@@ -148,7 +152,7 @@ trait ControllerTrait
      *
      * @throws \LogicException
      *
-     * @final since version 3.4
+     * @final
      */
     protected function addFlash(string $type, string $message)
     {
@@ -164,7 +168,7 @@ trait ControllerTrait
      *
      * @throws \LogicException
      *
-     * @final since version 3.4
+     * @final
      */
     protected function isGranted($attributes, $subject = null): bool
     {
@@ -181,7 +185,7 @@ trait ControllerTrait
      *
      * @throws AccessDeniedException
      *
-     * @final since version 3.4
+     * @final
      */
     protected function denyAccessUnlessGranted($attributes, $subject = null, string $message = 'Access Denied.')
     {
@@ -197,7 +201,7 @@ trait ControllerTrait
     /**
      * Returns a rendered view.
      *
-     * @final since version 3.4
+     * @final
      */
     protected function renderView(string $view, array $parameters = array()): string
     {
@@ -215,7 +219,7 @@ trait ControllerTrait
     /**
      * Renders a view.
      *
-     * @final since version 3.4
+     * @final
      */
     protected function render(string $view, array $parameters = array(), Response $response = null): Response
     {
@@ -239,7 +243,7 @@ trait ControllerTrait
     /**
      * Streams a view.
      *
-     * @final since version 3.4
+     * @final
      */
     protected function stream(string $view, array $parameters = array(), StreamedResponse $response = null): StreamedResponse
     {
@@ -275,7 +279,7 @@ trait ControllerTrait
      *
      *     throw $this->createNotFoundException('Page not found!');
      *
-     * @final since version 3.4
+     * @final
      */
     protected function createNotFoundException(string $message = 'Not Found', \Exception $previous = null): NotFoundHttpException
     {
@@ -291,7 +295,7 @@ trait ControllerTrait
      *
      * @throws \LogicException If the Security component is not available
      *
-     * @final since version 3.4
+     * @final
      */
     protected function createAccessDeniedException(string $message = 'Access Denied.', \Exception $previous = null): AccessDeniedException
     {
@@ -305,7 +309,7 @@ trait ControllerTrait
     /**
      * Creates and returns a Form instance from the type of the form.
      *
-     * @final since version 3.4
+     * @final
      */
     protected function createForm(string $type, $data = null, array $options = array()): FormInterface
     {
@@ -315,7 +319,7 @@ trait ControllerTrait
     /**
      * Creates and returns a form builder instance.
      *
-     * @final since version 3.4
+     * @final
      */
     protected function createFormBuilder($data = null, array $options = array()): FormBuilderInterface
     {
@@ -327,7 +331,7 @@ trait ControllerTrait
      *
      * @throws \LogicException If DoctrineBundle is not available
      *
-     * @final since version 3.4
+     * @final
      */
     protected function getDoctrine(): ManagerRegistry
     {
@@ -347,7 +351,7 @@ trait ControllerTrait
      *
      * @see TokenInterface::getUser()
      *
-     * @final since version 3.4
+     * @final
      */
     protected function getUser()
     {
@@ -359,7 +363,7 @@ trait ControllerTrait
             return;
         }
 
-        if (!is_object($user = $token->getUser())) {
+        if (!\is_object($user = $token->getUser())) {
             // e.g. anonymous authentication
             return;
         }
@@ -370,17 +374,56 @@ trait ControllerTrait
     /**
      * Checks the validity of a CSRF token.
      *
-     * @param string $id    The id used when generating the token
-     * @param string $token The actual token sent with the request that should be validated
+     * @param string      $id    The id used when generating the token
+     * @param string|null $token The actual token sent with the request that should be validated
      *
-     * @final since version 3.4
+     * @final
      */
-    protected function isCsrfTokenValid(string $id, string $token): bool
+    protected function isCsrfTokenValid(string $id, ?string $token): bool
     {
         if (!$this->container->has('security.csrf.token_manager')) {
             throw new \LogicException('CSRF protection is not enabled in your application. Enable it with the "csrf_protection" key in "config/packages/framework.yaml".');
         }
 
         return $this->container->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($id, $token));
+    }
+
+    /**
+     * Dispatches a message to the bus.
+     *
+     * @param object|Envelope $message The message or the message pre-wrapped in an envelope
+     *
+     * @final
+     */
+    protected function dispatchMessage($message): Envelope
+    {
+        if (!$this->container->has('message_bus')) {
+            $message = class_exists(Envelope::class) ? 'You need to define the "messenger.default_bus" configuration option.' : 'Try running "composer require symfony/messenger".';
+            throw new \LogicException('The message bus is not enabled in your application. '.$message);
+        }
+
+        return $this->container->get('message_bus')->dispatch($message);
+    }
+
+    /**
+     * Adds a Link HTTP header to the current response.
+     *
+     * @see https://tools.ietf.org/html/rfc5988
+     *
+     * @final
+     */
+    protected function addLink(Request $request, Link $link)
+    {
+        if (!class_exists(AddLinkHeaderListener::class)) {
+            throw new \LogicException('You can not use the "addLink" method if the WebLink component is not available. Try running "composer require symfony/web-link".');
+        }
+
+        if (null === $linkProvider = $request->attributes->get('_links')) {
+            $request->attributes->set('_links', new GenericLinkProvider(array($link)));
+
+            return;
+        }
+
+        $request->attributes->set('_links', $linkProvider->withLink($link));
     }
 }

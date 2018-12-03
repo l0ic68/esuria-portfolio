@@ -1,0 +1,215 @@
+#Zone {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#Zone_haut {
+  width: 80%;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#Hobbies_Switch {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-height: 5vh;
+  max-height: 5vh;
+  height: 5vh;
+  width: 100%;
+  border-bottom: solid #003471 2px;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+#Hobbies_Switch a {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-family: "Cinzel", serif;
+  min-width: 33.33%;
+  max-width: 33.33%;
+  text-decoration: none;
+  color: white;
+  font-size: 2em;
+}
+
+#Hobbies_Switch a:hover {
+  cursor: pointer;
+  color: #bd7a00;
+}
+
+.fa-chevron-left, .fa-chevron-right, .Current {
+  color: #bd7a00;
+}
+
+.fa-chevron-left, .fa-chevron-right {
+  font-size: 0.75em;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+#Presentation {
+      margin-top: 1em;
+}
+
+#Presentation h1 {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-top: 2px dashed #003471;
+    border-bottom: 2px dashed #003471;
+    font-family: Cinzel;
+    color: #bd7a00;
+}
+
+#Presentation p {
+    font-family: Roboto;
+    color: white;
+}
+
+#Parcours {
+      margin-top: 1em;
+}
+
+#Parcours h1 {
+    background-color: rgba(0, 0, 0, 0.3);
+  border-top: 2px dashed #003471;
+  border-bottom: 2px dashed #003471;
+    font-family: Cinzel;
+    color: #bd7a00;
+}
+
+
+.Periode, .Titre_periode, .Description_Data{
+  color: white;
+  display: none;
+}
+.active {
+  display: block;
+}
+
+#Timeline_bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.BigCircle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-radius: 50%;
+  position: relative;
+  width: 2em;
+  height: 2em;
+  min-width: 2em;
+  min-height: 2em;
+}
+
+.LitleCircle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+   border-radius: 50%;
+   position: relative;
+  width: 1em;
+  height: 1em;
+  min-width: 1em;
+  min-height: 1em;
+}
+
+.BigCircle:hover, .LitleCircle:hover {
+  cursor: pointer;
+}
+
+.InsideCircle {
+  -webkit-transition: width 0.5s, height 0.5s; /* Safari */
+  transition: width 0.5s, height 0.5s;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #000031;
+  border-radius:50%;
+  width: 90%;
+  height: 90%;
+}
+
+
+.ColorActive>.InsideCircle {
+    background-color: #003471;
+}
+
+.CircleActive>.InsideCircle  {
+    background-color: #e29000;
+    width: 90%;
+    height: 90%;
+}
+
+.Bar {
+  background-color: white;
+  height: 0.2em;
+  width: 100%;
+}
+
+.Bar_active {
+  background-color: #bd7a00;
+  height: 0.2em;
+  width: 100%;
+}
+#Competences {
+      margin-top: 1em;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+}
+
+#Competences h1 {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-top: 2px dashed #003471;
+  border-bottom: 2px dashed #003471;
+  font-family: Cinzel;
+  color: #bd7a00;
+}
+
+#Competences p {
+    font-family: Roboto;
+    color: white;
+}
+
+#Competences_data {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.Competences_line {
+  width: 40%;
+  color: white;
+  font-size: 1.3em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.Competences_line i {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 25%;
+  font-size: 2.2em;
+  height: 1.5em;
+}

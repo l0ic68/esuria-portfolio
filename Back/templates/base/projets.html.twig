@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+<title>Esuria // Projets</title>
+{% endblock %}
+{% block css %}
+<link type="text/css" rel="stylesheet" href={{asset("css/Projets.css")}} />
+{% endblock %}
+{% block content %}
+			<!-- CONTENU -->
+			<div id="Zone">
+
+				<div id="Hobbies_Switch">
+					<a href="Projet_web.html"><i class="fal fa-desktop"></i></a>
+					<a href="Projet_Photo.html"><i class="fal fa-camera-alt"></i></a>
+					<a href="Projet_video.html"><i class="fal fa-video"></i></a>
+					<a href="Projet_Wrench.html"><i class="fal fa-wrench"></i></a>
+					<a href="Projet_Map.html"><i class="fal fa-map"></i></a>
+				</div>
+				<div id="Sort_Select">
+					<p>-</p>
+					<p class="Sort_Select">Tout</p>
+					<p>/</p>
+					<p class="sort">Réalisation</p>
+					<p>/</p>
+					<p class="sort">Ecriture</p>
+					<p>/</p>
+					<p class="sort">Personnel</p>
+					<p>/</p>
+					<p class="sort">Professionnel</p>
+					<p>-</p>
+				</div>
+				<select id="Sort_Select_Mobile">
+					<option value="valeur1">Tout</option>
+					<option value="valeur2">Réalisation</option>
+					<option value="valeur3">Ecriture</option>
+					<option value="valeur4">Personnel</option>
+					<option value="valeur5">Professionnel</option>
+				</select>
+
+				<div id="Project_Content">
+					<div class="Project_Data">
+						<img src="http://via.placeholder.com/300x150">
+						<div class="Project_Info Web">
+							<div class="Project_Type">Site Web</div>
+							<div class="Project_Date">- <span class="Project_Date_Data">14 Septembre 2017</span> -</div>
+						</div>
+					</div>
+					<div class="Project_Data">
+						<img src="http://via.placeholder.com/300x150">
+						<div class="Project_Info Photo">
+							<div class="Project_Type">Site Web</div>
+							<div class="Project_Date">- <span class="Project_Date_Data">14 Septembre 2017</span> -</div>
+						</div>
+					</div>
+					<div class="Project_Data">
+						<img src="http://via.placeholder.com/300x150">
+						<div class="Project_Info Video">
+							<div class="Project_Type">Site Web</div>
+							<div class="Project_Date">- <span class="Project_Date_Data">14 Septembre 2017</span> -</div>
+						</div>
+					</div>
+					<div class="Project_Data">
+						<img src="http://via.placeholder.com/300x150">
+						<div class="Project_Info Div">
+							<div class="Project_Type">Site Web</div>
+							<div class="Project_Date">- <span class="Project_Date_Data">14 Septembre 2017</span> -</div>
+						</div>
+					</div>
+
+					<div class="Project_Data">
+						<img src="http://via.placeholder.com/300x150">
+						<div class="Project_Info Div">
+							<div class="Project_Type">Site Web</div>
+							<div class="Project_Date">- <span class="Project_Date_Data">14 Septembre 2017</span> -</div>
+						</div>
+					</div>
+
+					<div class="Project_Data">
+						<img src="http://via.placeholder.com/300x150">
+						<div class="Project_Info Div">
+							<div class="Project_Type">Site Web</div>
+							<div class="Project_Date">- <span class="Project_Date_Data">14 Septembre 2017</span> -</div>
+						</div>
+					</div>
+
+					<div class="Project_Data">
+						<img src="http://via.placeholder.com/300x150">
+						<div class="Project_Info Div">
+							<div class="Project_Type">Site Web</div>
+							<div class="Project_Date">- <span class="Project_Date_Data">14 Septembre 2017</span> -</div>
+						</div>
+					</div>
+
+					<div class="Project_Data hidden">
+					</div>
+
+					<div class="Project_Data hidden">
+					</div>
+				</div>
+			</div>
+{% endblock %}

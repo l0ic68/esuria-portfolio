@@ -7,6 +7,12 @@
     <services>
         <defaults public="false" />
 
+        <service id="parameter_bag" class="Symfony\Component\DependencyInjection\ParameterBag\ContainerBag">
+            <argument type="service" id="service_container" />
+        </service>
+        <service id="Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface" alias="parameter_bag" />
+        <service id="Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface" alias="parameter_bag" />
+
         <service id="event_dispatcher" class="Symfony\Component\EventDispatcher\EventDispatcher" public="true">
             <tag name="container.hot_path" />
         </service>
@@ -26,6 +32,8 @@
 
         <service id="cache_warmer" class="Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerAggregate" public="true">
             <argument type="tagged" tag="kernel.cache_warmer" />
+            <argument>%kernel.debug%</argument>
+            <argument>%kernel.cache_dir%/%kernel.container_class%Deprecations.log</argument>
         </service>
 
         <service id="cache_clearer" class="Symfony\Component\HttpKernel\CacheClearer\ChainCacheClearer" public="true">

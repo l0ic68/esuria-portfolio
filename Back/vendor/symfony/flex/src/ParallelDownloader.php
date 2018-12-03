@@ -26,6 +26,7 @@ class ParallelDownloader extends RemoteFilesystem
     private $io;
     private $downloader;
     private $quiet = true;
+    private $progress = true;
     private $nextCallback;
     private $downloadCount;
     private $nextOptions = [];
@@ -41,7 +42,7 @@ class ParallelDownloader extends RemoteFilesystem
         $this->io = $io;
         if (!method_exists(parent::class, 'getRemoteContents')) {
             $this->io->writeError('Composer >=1.7 not found, downloads will happen in sequence', true, IOInterface::DEBUG);
-        } elseif (!extension_loaded('curl')) {
+        } elseif (!\extension_loaded('curl')) {
             $this->io->writeError('ext-curl not found, downloads will happen in sequence', true, IOInterface::DEBUG);
         } else {
             $this->downloader = new CurlDownloader();
@@ -49,10 +50,12 @@ class ParallelDownloader extends RemoteFilesystem
         parent::__construct($io, $config, $options, $disableTls);
     }
 
-    public function download(array &$nextArgs, callable $nextCallback, bool $quiet = true)
+    public function download(array &$nextArgs, callable $nextCallback, bool $quiet = true, bool $progress = true)
     {
+        $previousState = [$this->quiet, $this->progress, $this->downloadCount, $this->nextCallback, $this->sharedState];
         $this->quiet = $quiet;
-        $this->downloadCount = count($nextArgs);
+        $this->progress = $progress;
+        $this->downloadCount = \count($nextArgs);
         $this->nextCallback = $nextCallback;
         $this->sharedState = (object) [
             'bytesMaxCount' => 0,
@@ -69,25 +72,29 @@ class ParallelDownloader extends RemoteFilesystem
             if (!$this->downloader && method_exists(parent::class, 'getRemoteContents')) {
                 $this->io->writeError('<warning>Enable the "cURL" PHP extension for faster downloads</warning>');
             }
-            $note = '\\' === DIRECTORY_SEPARATOR ? '' : (false !== stripos(PHP_OS, 'darwin') ? '🎵' : '🎶');
-            $note .= $this->downloader ? ('\\' !== DIRECTORY_SEPARATOR ? ' 💨' : '') : '';
+            $note = '\\' === \DIRECTORY_SEPARATOR ? '' : (false !== stripos(PHP_OS, 'darwin') ? '🎵' : '🎶');
+            $note .= $this->downloader ? ('\\' !== \DIRECTORY_SEPARATOR ? ' 💨' : '') : '';
             $this->io->writeError('');
             $this->io->writeError(sprintf('<info>Prefetching %d packages</info> %s', $this->downloadCount, $note));
             $this->io->writeError('  - Downloading', false);
-            $this->io->writeError(' (<comment>0%</comment>)', false);
+            if ($this->progress) {
+                $this->io->writeError(' (<comment>0%</comment>)', false);
+            }
         }
         try {
             $this->getNext();
-            if (!$this->quiet) {
+            if ($this->quiet) {
+                // no-op
+            } elseif ($this->progress) {
                 $this->io->overwriteError(' (<comment>100%</comment>)');
+            } else {
+                $this->io->writeError(' (<comment>100%</comment>)');
             }
         } finally {
             if (!$this->quiet) {
                 $this->io->writeError('');
             }
-            $this->nextCallback = null;
-            $this->sharedState = null;
-            $this->quiet = true;
+            list($this->quiet, $this->progress, $this->downloadCount, $this->nextCallback, $this->sharedState) = $previousState;
         }
     }
 
@@ -123,9 +130,10 @@ class ParallelDownloader extends RemoteFilesystem
         $this->nextOptions = [];
         $rfs = clone $this;
         $rfs->fileName = $fileName;
+        $rfs->progress = $this->progress && $progress;
 
         try {
-            return $rfs->get($originUrl, $fileUrl, $options, $fileName, $progress);
+            return $rfs->get($originUrl, $fileUrl, $options, $fileName, $rfs->progress);
         } finally {
             $rfs->lastHeaders = null;
             $this->lastHeaders = $rfs->getLastHeaders();
@@ -179,7 +187,7 @@ class ParallelDownloader extends RemoteFilesystem
             $state->bytesTransferred += $bytesMax;
         }
 
-        if (null !== $state->nextArgs && !$this->quiet && 1 <= $progress - $state->lastProgress) {
+        if (null !== $state->nextArgs && !$this->quiet && $this->progress && 1 <= $progress - $state->lastProgress) {
             $progressTime = microtime(true);
 
             if (5 <= $progress - $state->lastProgress || 1 <= $progressTime - $state->lastUpdate) {
@@ -203,28 +211,51 @@ class ParallelDownloader extends RemoteFilesystem
     /**
      * {@inheritdoc}
      */
-    protected function getRemoteContents($originUrl, $fileUrl, $context)
+    protected function getRemoteContents($originUrl, $fileUrl, $context, array &$responseHeaders = null)
     {
         if (isset(self::$cache[$fileUrl])) {
-            return self::$cache[$fileUrl];
+            $result = self::$cache[$fileUrl];
+
+            if (3 < \func_num_args()) {
+                list($responseHeaders, $result) = $result;
+            }
+
+            return $result;
         }
 
         if (self::$cacheNext) {
             self::$cacheNext = false;
 
-            return self::$cache[$fileUrl] = $this->getRemoteContents($originUrl, $fileUrl, $context);
+            if (3 < \func_num_args()) {
+                $result = $this->getRemoteContents($originUrl, $fileUrl, $context, $responseHeaders);
+                self::$cache[$fileUrl] = [$responseHeaders, $result];
+            } else {
+                $result = $this->getRemoteContents($originUrl, $fileUrl, $context);
+                self::$cache[$fileUrl] = $result;
+            }
+
+            return $result;
         }
 
         if (!$this->downloader) {
-            return parent::getRemoteContents($originUrl, $fileUrl, $context);
+            return parent::getRemoteContents($originUrl, $fileUrl, $context, $responseHeaders);
         }
 
         try {
-            return $this->downloader->get($originUrl, $fileUrl, $context, $this->fileName);
+            $result = $this->downloader->get($originUrl, $fileUrl, $context, $this->fileName);
+
+            if (3 < \func_num_args()) {
+                list($responseHeaders, $result) = $result;
+            }
+
+            return $result;
         } catch (TransportException $e) {
             $this->io->writeError('Retrying download: '.$e->getMessage(), true, IOInterface::DEBUG);
 
-            return parent::getRemoteContents($originUrl, $fileUrl, $context);
+            return parent::getRemoteContents($originUrl, $fileUrl, $context, $responseHeaders);
+        } catch (\Throwable $e) {
+            $responseHeaders = [];
+            throw $e;
         }
     }
 

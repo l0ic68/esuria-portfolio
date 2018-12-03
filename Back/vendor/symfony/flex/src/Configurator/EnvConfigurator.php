@@ -23,7 +23,9 @@ class EnvConfigurator extends AbstractConfigurator
         $this->write('Added environment variable defaults');
 
         $this->configureEnvDist($recipe, $vars);
-        $this->configurePhpUnit($recipe, $vars);
+        if (!file_exists(getcwd().'/.env.test')) {
+            $this->configurePhpUnit($recipe, $vars);
+        }
     }
 
     public function unconfigure(Recipe $recipe, $vars)
@@ -34,34 +36,34 @@ class EnvConfigurator extends AbstractConfigurator
 
     private function configureEnvDist(Recipe $recipe, $vars)
     {
-        $distenv = getcwd().'/.env.dist';
-        if (!is_file($distenv) || $this->isFileMarked($recipe, $distenv)) {
-            return;
-        }
-
-        $data = '';
-        foreach ($vars as $key => $value) {
-            if ('%generate(secret)%' === $value) {
-                $value = bin2hex(random_bytes(16));
-            }
-            if ('#' === $key[0] && is_numeric(substr($key, 1))) {
-                $data .= '# '.$value."\n";
-
+        foreach (['.env.dist', '.env'] as $file) {
+            $env = getcwd().'/'.$file;
+            if (!is_file($env)) {
                 continue;
             }
 
-            $value = $this->options->expandTargetDir($value);
-            if (false !== strpbrk($value, " \t\n&!\"")) {
-                $value = '"'.str_replace(['\\', '"', "\t", "\n"], ['\\\\', '\\"', '\t', '\n'], $value).'"';
+            if ($this->isFileMarked($recipe, $env)) {
+                continue;
             }
-            $data .= "$key=$value\n";
+
+            $data = '';
+            foreach ($vars as $key => $value) {
+                $value = $this->evaluateValue($value);
+                if ('#' === $key[0] && is_numeric(substr($key, 1))) {
+                    $data .= '# '.$value."\n";
+
+                    continue;
+                }
+
+                $value = $this->options->expandTargetDir($value);
+                if (false !== strpbrk($value, " \t\n&!\"")) {
+                    $value = '"'.str_replace(['\\', '"', "\t", "\n"], ['\\\\', '\\"', '\t', '\n'], $value).'"';
+                }
+                $data .= "$key=$value\n";
+            }
+            $data = $this->markData($recipe, $data);
+            file_put_contents($env, $data, FILE_APPEND);
         }
-        if (!file_exists(getcwd().'/.env')) {
-            copy($distenv, getcwd().'/.env');
-        }
-        $data = $this->markData($recipe, $data);
-        file_put_contents($distenv, $data, FILE_APPEND);
-        file_put_contents(getcwd().'/.env', $data, FILE_APPEND);
     }
 
     private function configurePhpUnit(Recipe $recipe, $vars)
@@ -78,9 +80,7 @@ class EnvConfigurator extends AbstractConfigurator
 
             $data = '';
             foreach ($vars as $key => $value) {
-                if ('%generate(secret)%' === $value) {
-                    $value = bin2hex(random_bytes(16));
-                }
+                $value = $this->evaluateValue($value);
                 if ('#' === $key[0]) {
                     if (is_numeric(substr($key, 1))) {
                         $doc = new \DOMDocument();
@@ -141,5 +141,22 @@ class EnvConfigurator extends AbstractConfigurator
             $this->write(sprintf('Removed environment variables from %s', $file));
             file_put_contents($phpunit, $contents);
         }
+    }
+
+    private function evaluateValue($value)
+    {
+        if ('%generate(secret)%' === $value) {
+            return $this->generateRandomBytes();
+        }
+        if (preg_match('~^%generate\(secret,\s*([0-9]+)\)%$~', $value, $matches)) {
+            return $this->generateRandomBytes($matches[1]);
+        }
+
+        return $value;
+    }
+
+    private function generateRandomBytes($length = 16)
+    {
+        return bin2hex(random_bytes($length));
     }
 }

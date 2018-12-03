@@ -1,0 +1,200 @@
+#Zone {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#Hobbies_Switch {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-height: 10vh;
+  max-height: 10vh;
+  height: 10vh;
+  width: 100%;
+  border-bottom: solid #003471 2px;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+#Hobbies_Switch a {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-width: 20%;
+  max-width: 20%;
+  text-decoration: none;
+  color: white;
+  font-size: 3em;
+}
+
+#Hobbies_Switch a:hover {
+  cursor: pointer;
+  color: #bd7a00;
+}
+
+.Hobbies_Select {
+  color: #bd7a00;
+}
+
+#Sort_Select {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 70%;
+  height: 3em;
+  min-height: 3em;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-top: 2px dashed #003471;
+  border-bottom: 2px dashed #003471;
+  font-family: 'Roboto Slab', serif;
+  font-size: 1.2em;
+  margin-top: 1em;
+  color: #FFFFFF;
+}
+
+#Sort_Select_Mobile {
+  display: none;
+}
+
+#Sort_Select .sort:hover {
+  color: #bd7a00;
+  cursor: pointer;
+}
+
+.Sort_Select {
+  color: #bd7a00;
+}
+
+#Project_Content {
+  width: 100%;
+  overflow: hidden;
+  overflow-y: scroll;
+  padding-bottom: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hidden {
+  visibility: hidden;
+  margin: 0 15px;
+  height: 0;
+}
+
+#Project_Content::-webkit-scrollbar {
+  width: 0.2em;
+}
+
+#Project_Content::-webkit-scrollbar-track {
+  background-color: none;
+}
+
+#Project_Content::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #bd7a00;
+}
+
+.Project_Data {
+  width: 300px;
+  padding: 0;
+  margin: 2%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.Project_Data img {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: auto;
+}
+
+.Project_Info {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.Web {
+  border-top: solid #6f0505 1px;
+}
+
+.Video {
+  border-top: solid #004a80 1px;
+}
+
+.Photo {
+  border-top: solid #008716 1px;
+}
+
+.Div {
+  border-top: solid 1px #4b0049;
+}
+
+.Project_Type {
+  font-family: Cinzel, serif;
+  font-size: 1.5em;
+  color: #FFFFFF;
+  margin: 0;
+  padding: 0;
+}
+
+.Project_Date {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto Slab', serif;
+  font-size: 1em;
+  color: #FFFFFF;
+}
+
+@media screen and (max-width:1024px)
+/* Mobile */
+
+  {
+    #Hobbies_Switch {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      min-height: 10vh;
+      max-height: 10vh;
+      height: 10vh;
+      width: 100%;
+      border-bottom: solid #003471 2px;
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+    
+  #Sort_Select {
+    display: none;
+  }
+
+  #Sort_Select_Mobile {
+    display: block;
+    width: 100%;
+    height: 7vw;
+    background: none;
+    border: none;
+    border-bottom: 2px dashed #003471;
+    background-color: rgba(0, 0, 0, 0.3);
+      font-family: 'Roboto Slab', serif;
+    font-size: 1.5em;
+    color: #FFFFFF;
+  }
+  #Sort_Select_Mobile:focus {
+  outline:none;
+}
+}

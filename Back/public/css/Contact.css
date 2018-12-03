@@ -1,0 +1,198 @@
+.icone_jaune {
+  color: #bd7a00;
+  font-size: 2em;
+}
+
+.Police_i {
+  display: flex;
+  min-width: 1.5em;
+  text-align: center;
+}
+
+.fa-pencil-alt {
+  margin-top: 0.2em;
+}
+
+.icone_bas {
+  color: #bd7a00;
+  font-size: 1.5em;
+  margin-right: 0.25em;
+}
+
+#Zone {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+#Zone form {
+  width: 80%;
+}
+
+.En_ligne {
+  display: flex;
+  align-items: center;
+  margin-top: 2em;
+  border: 2px solid #003471;
+  max-height: 3em;
+  width: 100%;
+}
+
+.En_ligne input {
+  color: white;
+  height: 3em;
+  width: 95%;
+  padding-left: 0.5em;
+  border: none;
+  border-left: 2px solid #003471;
+  background: none;
+  font-family: "Roboto", sans-serif;
+  font-size: 1em;
+}
+
+.En_ligne_text {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2em;
+  border: 2px solid #003471;
+  max-height: 16.5em;
+  width: 100%;
+}
+
+.En_ligne_text textarea {
+  color: white;
+  font-family: "Roboto", sans-serif;
+  font-size: 1em;
+  height: 16em;
+  width: 95%;
+  padding: 0.5em 0 0 0.5em;
+  border: none;
+  border-left: 2px solid #003471;
+  background: none;
+}
+
+.Police_bas {
+  font-family: "Cinzel", serif;
+}
+
+.Bas_ligne {
+  display: flex;
+  align-items: center;
+}
+
+.espace_fa {
+  margin-right: 0.25em;
+}
+
+.Police_mail a {
+  text-decoration: none;
+  color: white;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.9em;
+  margin-top: 0.2em;
+}
+
+.Police_mail a:hover {
+  color: #bd7a00;
+}
+
+#Ensemble {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  border-top: 2px solid #003471;
+}
+
+.Bas_ligne {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0.5em 1em 0.5em 1em;
+}
+
+.Bas_ligne p {
+  display: flex;
+  align-items: center;
+  font-size: 1.2em;
+  margin: 0;
+}
+
+#Message {
+  resize: none;
+}
+
+#Bouton_envoie {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #003471;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: auto;
+  font-family: "Cinzel", serif;
+  font-size: 1.25em;
+}
+
+#Bouton_envoie p {
+  margin: 0.5em 0em 0.5em 0.5em;
+}
+
+#ico_send {
+  margin-left: 0.7em;
+  margin-right: 0.5em;
+}
+
+#Bouton_envoie:hover {
+  color: #bd7a00;
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+@media screen and (max-width:1280px) {
+  #Zone {
+    min-height: 45em;
+    height: 100vh;
+  }
+
+  .En_ligne_text {
+    max-height: 20.5em;
+  }
+
+  .En_ligne_text textarea {
+    height: 20em;
+  }
+}
+
+@media screen and (max-width:1024px)
+
+/* Mobile */
+  {
+  #Zone {
+    min-height: 55em;
+    height: 100vh;
+  }
+
+  #Ensemble {
+    flex-direction: column;
+  }
+
+  .En_ligne_text {
+    max-height: 16.5em;
+  }
+
+  .En_ligne_text textarea {
+    height: 16em;
+  }
+
+  .Bas_ligne {
+    border-bottom: dashed 2px #003471;
+    width: 100%;
+    padding: 1em 1em 1em 0em;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+  }
+}

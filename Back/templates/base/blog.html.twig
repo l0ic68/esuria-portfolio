@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+<title>Esuria // Blog</title>
+{% endblock %}
+{% block css %}
+<link type="text/css" rel="stylesheet" href={{asset("css/Blog.css")}} />
+{% endblock %}
+{% block content %}
+
+			<!-- CONTENU -->
+			<div id="search">
+				<input placeholder="Recherche" class="noselect"></input>
+				<i class="far fa-search"></i>
+			</div>
+			<div id="Sort_Select">
+				<p class="Sort_Select">News</p>
+				<p class="sort">Ecritures</p>
+				<p class="sort">Voyages</p>
+				<p class="sort">Autres</p>
+			</div>
+			<select id="Sort_Select_Mobile">
+				<option value="valeur1">Tout</option>
+				<option value="valeur2">Réalisation</option>
+				<option value="valeur3">Ecriture</option>
+				<option value="valeur4">Personnel</option>
+				<option value="valeur5">Professionnel</option>
+			</select>
+			<div class="Article_element">
+				<div class="Une_Boite">
+					<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
+					<div class="Sous_Bandeau">
+						<h2 class="Titre_article">
+							Titre de l'article
+						</h2>
+						<p class="Date">
+							<span class="Couleur_slash">// </span>Vendredi 5 Mai 2017
+						</p>
+						<p class="Description">
+							Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
+						</p>
+					</div>
+				</div>
+				<div class="Une_Boite">
+					<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
+					<div class="Sous_Bandeau">
+						<h2 class="Titre_article">
+							Titre de l'article
+						</h2>
+						<p class="Date">
+							<span class="Couleur_slash">// </span>Vendredi 5 Mai 2017
+						</p>
+						<p class="Description">
+							Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
+						</p>
+					</div>
+				</div>
+				<div class="Une_Boite">
+					<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
+					<div class="Sous_Bandeau">
+						<h2 class="Titre_article">
+							Titre de l'article
+						</h2>
+						<p class="Date">
+							<span class="Couleur_slash">// </span>Vendredi 5 Mai 2017
+						</p>
+						<p class="Description">
+							Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
+						</p>
+					</div>
+				</div>
+
+				<div class="Une_Boite">
+					<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
+					<div class="Sous_Bandeau">
+						<h2 class="Titre_article">
+							Titre de l'article
+						</h2>
+						<p class="Date">
+							<span class="Couleur_slash">// </span>Vendredi 5 Mai 2017
+						</p>
+						<p class="Description">
+							Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
+						</p>
+					</div>
+				</div>
+
+
+				<div class="Une_Boite">
+					<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
+					<div class="Sous_Bandeau">
+						<h2 class="Titre_article">
+							Titre de l'article
+						</h2>
+						<p class="Date">
+							<span class="Couleur_slash">// </span>Vendredi 5 Mai 2017
+						</p>
+						<p class="Description">
+							Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
+						</p>
+					</div>
+				</div>
+
+
+
+				<div class="Une_Boite hidden">
+				</div>
+
+				<div class="Une_Boite hidden">
+				</div>
+
+
+			</div>
+
+			<div id="Centre_chiffre">
+				<p id="Chiffre">
+					1 2 3 ... 8
+				</p>
+			</div>
+
+
+{% endblock %}
