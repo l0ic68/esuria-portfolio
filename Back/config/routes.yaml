@@ -8,13 +8,12 @@ index:
     controller: App\Controller\DefaultController::index
 
 index_nouveaute:
-    path: /acceuil
+    path: /accueil
     controller: App\Controller\DefaultController::index_nouveaute
 
 index_biographie:
     path: /biographie
     controller: App\Controller\DefaultController::index_biographie
-
 
 projets:
     path: /projets

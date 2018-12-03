@@ -16,7 +16,7 @@ class DefaultController extends Controller
       return $this->render('base/index_nouveaute.html.twig');
   }
     /**
-     * @Route("/acceuil", name="acceuil")
+     * @Route("/accueil", name="accueil")
      */
     public function index()
     {
