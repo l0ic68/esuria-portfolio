@@ -2061,6 +2061,7 @@
         },
         {
             "name": "symfony/contracts",
+<<<<<<< HEAD
             "version": "v1.0.0",
             "source": {
                 "type": "git",
@@ -2071,6 +2072,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/contracts/zipball/4a33574d5771f4b04334cd4f7d43de96a92efb62",
                 "reference": "4a33574d5771f4b04334cd4f7d43de96a92efb62",
+=======
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/contracts.git",
+                "reference": "3edf0ab943d1985a356721952cba36ff31bd6e5f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/contracts/zipball/3edf0ab943d1985a356721952cba36ff31bd6e5f",
+                "reference": "3edf0ab943d1985a356721952cba36ff31bd6e5f",
+>>>>>>> e2b379577e751d5edc5a4b4e2b32d5457361326d
                 "shasum": ""
             },
             "require": {
@@ -2125,7 +2138,11 @@
                 "interoperability",
                 "standards"
             ],
+<<<<<<< HEAD
             "time": "2018-10-31T08:00:32+00:00"
+=======
+            "time": "2018-11-24T09:35:08+00:00"
+>>>>>>> e2b379577e751d5edc5a4b4e2b32d5457361326d
         },
         {
             "name": "symfony/debug",
@@ -2895,7 +2912,109 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
+<<<<<<< HEAD
             "time": "2018-11-30T09:16:14+00:00"
+=======
+<<<<<<< HEAD
+            "time": "2018-11-30T09:16:14+00:00"
+=======
+            "time": "2018-11-26T14:52:15+00:00"
+        },
+        {
+            "name": "symfony/maker-bundle",
+            "version": "v1.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/maker-bundle.git",
+                "reference": "e873047b6022a0343c9354f65d5d47b9e351dd53"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/e873047b6022a0343c9354f65d5d47b9e351dd53",
+                "reference": "e873047b6022a0343c9354f65d5d47b9e351dd53",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/inflector": "^1.2",
+                "nikic/php-parser": "^4.0",
+                "php": "^7.0.8",
+                "symfony/config": "^3.4|^4.0",
+                "symfony/console": "^3.4|^4.0",
+                "symfony/dependency-injection": "^3.4|^4.0",
+                "symfony/filesystem": "^3.4|^4.0",
+                "symfony/finder": "^3.4|^4.0",
+                "symfony/framework-bundle": "^3.4|^4.0",
+                "symfony/http-kernel": "^3.4|^4.0"
+            },
+            "require-dev": {
+                "allocine/twigcs": "^3.0",
+                "doctrine/doctrine-bundle": "^1.8",
+                "doctrine/orm": "^2.3",
+                "friendsofphp/php-cs-fixer": "^2.8",
+                "symfony/phpunit-bridge": "^3.4|^4.0",
+                "symfony/process": "^3.4|^4.0",
+                "symfony/yaml": "^3.4|^4.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Bundle\\MakerBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Maker helps you create empty commands, controllers, form classes, tests and more so you can forget about writing boilerplate code.",
+            "homepage": "https://symfony.com/doc/current/bundles/SymfonyMakerBundle/index.html",
+            "keywords": [
+                "code generator",
+                "generator",
+                "scaffold",
+                "scaffolding"
+            ],
+            "time": "2018-11-03T18:25:11+00:00"
+        },
+        {
+            "name": "symfony/orm-pack",
+            "version": "v1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/orm-pack.git",
+                "reference": "1b58f752cd917a08c9c8df020781d9c46a2275b1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/orm-pack/zipball/1b58f752cd917a08c9c8df020781d9c46a2275b1",
+                "reference": "1b58f752cd917a08c9c8df020781d9c46a2275b1",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/doctrine-bundle": "^1.6.10",
+                "doctrine/doctrine-migrations-bundle": "^1.3",
+                "doctrine/orm": "^2.5.11",
+                "php": "^7.0"
+            },
+            "type": "symfony-pack",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A pack for the Doctrine ORM",
+            "time": "2017-12-12T01:47:50+00:00"
+>>>>>>> master
+>>>>>>> e2b379577e751d5edc5a4b4e2b32d5457361326d
         },
         {
             "name": "symfony/inflector",
@@ -3029,6 +3148,7 @@
                 "localization"
             ],
             "time": "2018-11-11T19:52:12+00:00"
+<<<<<<< HEAD
         },
         {
             "name": "symfony/lts",
@@ -3112,6 +3232,8 @@
             "homepage": "https://symfony.com",
             "abandoned": "symfony/flex",
             "time": "2018-10-03T12:03:19+00:00"
+=======
+>>>>>>> e2b379577e751d5edc5a4b4e2b32d5457361326d
         },
         {
             "name": "symfony/maker-bundle",
@@ -3756,6 +3878,7 @@
                 "type": "git",
                 "url": "https://github.com/symfony/security-core.git",
                 "reference": "faad8794fb93779a32d41cd312265480a417b375"
+<<<<<<< HEAD
             },
             "dist": {
                 "type": "zip",
@@ -3763,6 +3886,15 @@
                 "reference": "faad8794fb93779a32d41cd312265480a417b375",
                 "shasum": ""
             },
+=======
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/security-core/zipball/faad8794fb93779a32d41cd312265480a417b375",
+                "reference": "faad8794fb93779a32d41cd312265480a417b375",
+                "shasum": ""
+            },
+>>>>>>> e2b379577e751d5edc5a4b4e2b32d5457361326d
             "require": {
                 "php": "^7.1.3",
                 "symfony/contracts": "^1.0"
@@ -4932,9 +5064,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "symfony/lts": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

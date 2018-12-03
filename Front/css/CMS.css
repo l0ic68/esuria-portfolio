@@ -1,0 +1,256 @@
+#Nav_cms {
+  width: 100%;
+  font-family: "Roboto Slab", serif;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  color: #bd7a00;
+  border: none;
+  border-bottom: solid 2px #003471;
+  background: none;
+}
+
+.CMS_wrap {
+  display: none;
+  width: 100%;
+
+
+}
+
+/* presentation */
+
+#Presentation_cms {
+  flex-direction: column;
+  font-family: "Roboto Slab", serif;
+  font-size: 1.5em;
+  color: white;
+}
+
+#Presentation_cms p {
+  margin-left: 2%;
+  cursor: pointer;
+}
+
+
+/* projet */
+
+#Projets_cms {
+  flex-direction: column;
+  align-items: center;
+  font-family: "Roboto Slab", serif;
+  color: white;
+}
+
+#Projets_Switch {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-height: 10vh;
+  max-height: 10vh;
+  height: 10vh;
+  width: 100%;
+}
+
+#Projets_Switch a {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-width: 20%;
+  max-width: 20%;
+  text-decoration: none;
+  color: white;
+  font-size: 3em;
+}
+
+#Projets_Switch a:hover {
+  cursor: pointer;
+  color: #bd7a00;
+}
+
+.Hobbies_Select {
+  color: #bd7a00;
+}
+
+.cms_hr {
+  background-color: white;
+  width: 90%;
+  height: 1px;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+#Sort_Select {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 70%;
+  height: 3em;
+  min-height: 3em;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-top: 2px dashed #003471;
+  border-bottom: 2px dashed #003471;
+  font-family: 'Roboto Slab', serif;
+  font-size: 1.2em;
+  margin-top: 1em;
+  color: #FFFFFF;
+}
+
+#Sort_Select_Mobile {
+  display: none;
+}
+
+#Sort_Select .sort:hover {
+  color: #bd7a00;
+  cursor: pointer;
+}
+
+.Sort_Select {
+  color: #bd7a00;
+}
+
+.Article_list {
+  width: 60%;
+}
+.Article_line {
+  color: white;
+  font-size: 1.2em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Article_date {
+  font-family: 'Roboto Slab', serif;
+}
+
+.Article_nom {
+  font-family: "Cinzel", serif;
+}
+
+.Article_Interaction i {
+  cursor: pointer;
+}
+
+/* hobbies */
+
+#Hobbies_cms {
+  flex-direction: column;
+  align-items: center;
+  font-family: "Roboto Slab", serif;
+  color: white;
+}
+
+#Hobbies_Switch {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-height: 10vh;
+  max-height: 10vh;
+  height: 10vh;
+  width: 100%;
+}
+
+#Hobbies_Switch a {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-width: 25%;
+  max-width: 25%;
+  text-decoration: none;
+  color: white;
+  font-size: 3em;
+}
+
+#Hobbies_Switch a:hover {
+  cursor: pointer;
+  color: #bd7a00;
+}
+
+
+.fa-chevron-left, .fa-chevron-right  {
+  color: #bd7a00;
+}
+
+.Coloractive {
+  color: #bd7a00;
+}
+
+.fa-chevron-left, .fa-chevron-right {
+  font-size: 0.75em;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.CMS_Hobbies {
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  overflow-y: scroll;
+  width: 90%;
+  height: 40em;
+}
+
+.CMS_Hobbies::-webkit-scrollbar {
+  width: 0.2em;
+}
+
+.CMS_Hobbies::-webkit-scrollbar-track {
+  background-color: none;
+}
+
+.CMS_Hobbies::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #bd7a00;
+}
+.CMS_Titre {
+  color: #bd7a00;
+  font-size: 1.5em;
+  font-family: "Cinzel", serif;
+
+}
+
+.Hobbies_Line {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1.2em;
+  min-height: 1.3em;
+  font-family: "Roboto Slab", serif;
+}
+
+.Hobbies_image {
+  cursor: pointer;
+}
+
+.Hobbies_Link {
+  cursor: pointer;
+  margin-left: 8em;
+}
+/* Blog */
+
+#Blog_cms {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto Slab", serif;
+  color: white;
+}
+
+/* Agenda */
+
+#Agenda_cms {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto Slab", serif;
+  color: white;
+}
+
+.active {
+  display: flex;
+}
