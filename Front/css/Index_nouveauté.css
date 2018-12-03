@@ -79,6 +79,7 @@
  .Titre {
    width: 80%;
    height: 2em;
+   min-height: 2em;
     background-color: rgba(0, 0, 0, 0.3);
     border-top: 2px dashed #003471;
     border-bottom: 2px dashed #003471;
@@ -92,6 +93,7 @@
 
 .Article_element {
   width: 100%;
+  min-height: 23em;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -117,7 +119,6 @@
   padding: 0;
   border-bottom: 4px solid #003471;
   width: 320px;
-  height: 180px;
 }
 
 .Titre_article {
@@ -153,4 +154,10 @@
   margin-left: 0.5em;
   margin-right: 0.5em;
   font-family: "Roboto", sans-serif;
+}
+
+.hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 0;
 }
