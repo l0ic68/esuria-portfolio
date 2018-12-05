@@ -31,6 +31,15 @@ class Article
      */
     private $texte;
 
+    public function __construct()
+    {
+        $date = \DateTime::createFromFormat('d-m-Y','now');
+        $timeZone = new \DateTimeZone('Europe/Paris');
+        $date2 = new \DateTime($date);
+        $date2->setTimeZone($timeZone);
+        $this->date = $date2;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

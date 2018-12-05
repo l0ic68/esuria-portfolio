@@ -13,7 +13,8 @@
 				<i class="far fa-search"></i>
 			</div>
 			<div id="Sort_Select">
-				<p class="Sort_Select">News</p>
+				<p class="Sort_Select">Tout</p>
+				<p class="sort">News</p>
 				<p class="sort">Ecritures</p>
 				<p class="sort">Voyages</p>
 				<p class="sort">Autres</p>
@@ -26,89 +27,25 @@
 				<option value="valeur5">Professionnel</option>
 			</select>
 			<div class="Article_element">
-				<div class="Une_Boite">
+				<div v-for="article in articles" class="Une_Boite">
 					<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
 					<div class="Sous_Bandeau">
 						<h2 class="Titre_article">
-							Titre de l'article
+							{article.titre}
 						</h2>
 						<p class="Date">
 							<span class="Couleur_slash">// </span>Vendredi 5 Mai 2017
 						</p>
 						<p class="Description">
-							Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
+							{article.texte}
 						</p>
 					</div>
 				</div>
-				<div class="Une_Boite">
-					<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
-					<div class="Sous_Bandeau">
-						<h2 class="Titre_article">
-							Titre de l'article
-						</h2>
-						<p class="Date">
-							<span class="Couleur_slash">// </span>Vendredi 5 Mai 2017
-						</p>
-						<p class="Description">
-							Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
-						</p>
-					</div>
-				</div>
-				<div class="Une_Boite">
-					<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
-					<div class="Sous_Bandeau">
-						<h2 class="Titre_article">
-							Titre de l'article
-						</h2>
-						<p class="Date">
-							<span class="Couleur_slash">// </span>Vendredi 5 Mai 2017
-						</p>
-						<p class="Description">
-							Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
-						</p>
-					</div>
-				</div>
-
-				<div class="Une_Boite">
-					<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
-					<div class="Sous_Bandeau">
-						<h2 class="Titre_article">
-							Titre de l'article
-						</h2>
-						<p class="Date">
-							<span class="Couleur_slash">// </span>Vendredi 5 Mai 2017
-						</p>
-						<p class="Description">
-							Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
-						</p>
-					</div>
-				</div>
-
-
-				<div class="Une_Boite">
-					<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
-					<div class="Sous_Bandeau">
-						<h2 class="Titre_article">
-							Titre de l'article
-						</h2>
-						<p class="Date">
-							<span class="Couleur_slash">// </span>Vendredi 5 Mai 2017
-						</p>
-						<p class="Description">
-							Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
-						</p>
-					</div>
-				</div>
-
-
-
 				<div class="Une_Boite hidden">
 				</div>
 
 				<div class="Une_Boite hidden">
 				</div>
-
-
 			</div>
 
 			<div id="Centre_chiffre">
@@ -121,6 +58,10 @@
 
 {% endblock %}
 {% block js %}
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 
@@ -129,15 +70,58 @@ var app = new Vue({
   el: '#app',
   delimiters: ['{','}'],
   data: {
-    message: 'Hello Vue!'
+    articles : [],
   },
   mounted(){
   	this.sayHello();
+	this.getArticle();
   },
   methods : {
 	  sayHello(){
 		  console.log("Hello");
 	  },
+	  getArticle(){
+         axios({
+            
+            method : 'POST',
+            url : '/get-article',
+            data: {
+                //id :this.biens[0],
+                //lastBien : this.biens[0].dateCreation,
+            }
+        })
+            .then( response => {
+              var getUrl = window.location;
+              var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+              baseUrl = baseUrl.replace("annonce","");
+               var json = JSON.parse(response.data);
+               var object = this;
+               console.log(json);
+               $.each(json,function(key,value){
+                object.articles.push({"titre" : value.titre,"texte" : value.texte,"date" : value.date });
+               });
+//               this.formatPrix('prix');
+
+                
+               
+               /*this.nbrRefresh += 1;
+                 var object = this;
+                 
+               $.each(json, function(key,value) {
+                 if(value.type == "PDF")
+                  {
+                   object.previousConversation.unshift({"message" : value.message ,'pseudo':value.expediteur,"dateEnvoi":value.dateEnvoi,"type":value.type,"name" : name[name.length-1]});
+                  }
+                  else{
+                    object.previousConversation.unshift({"message" : value.message ,'pseudo':value.expediteur,"dateEnvoi":value.dateEnvoi,"type":value.type});
+                  }
+                });
+                this.loadingPreviousChat = false;
+                this.isPreviousChatLoading= false;*/
+              
+             
+        })
+      },
   }
 })
 </script>

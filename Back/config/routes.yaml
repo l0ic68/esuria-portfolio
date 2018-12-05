@@ -27,6 +27,10 @@ blog:
     path: /blog
     controller: App\Controller\DefaultController::blog
 
+getArticle:
+    path: /get-article
+    controller: App\Controller\ArticleController::getArticle
+
 agenda:
     path: /agenda
     controller: App\Controller\DefaultController::agenda

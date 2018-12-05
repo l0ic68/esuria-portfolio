@@ -35,6 +35,15 @@ class ArticleRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function myGetAnnonce()
+    {
+        return $this->createQueryBuilder('b')
+        ->setMaxResults(6)
+        ->orderBy('b.date','ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
 
     /*
     public function findOneBySomeField($value): ?Article
