@@ -1,6 +1,6 @@
 default:
-    path: /
-    controller: App\Controller\DefaultController::default
+    path: /accueil
+    controller: App\Controller\DefaultController::index
 
 
 index:
@@ -8,7 +8,7 @@ index:
     controller: App\Controller\DefaultController::index
 
 index_nouveaute:
-    path: /accueil
+    path: /nouveaute
     controller: App\Controller\DefaultController::index_nouveaute
 
 index_biographie:

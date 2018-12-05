@@ -17,4 +17,12 @@ class ArticleController extends AbstractController
             'path' => 'src/Controller/ArticleController.php',
         ]);
     }
+
+    /**
+     * @Route("/get_article",name="getArticle")
+     */
+    public function getArticle()
+    {
+        return new Response("Article");
+    }
 }

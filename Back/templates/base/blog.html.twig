@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 {% block title %}
-<title>Esuria // Blog</title>
+ {{parent()}} Blog
 {% endblock %}
 {% block css %}
 <link type="text/css" rel="stylesheet" href={{asset("css/Blog.css")}} />
 {% endblock %}
 {% block content %}
-
+<div id="app" style="display: flex;flex-direction: column;">
 			<!-- CONTENU -->
 			<div id="search">
 				<input placeholder="Recherche" class="noselect"></input>
@@ -116,6 +116,29 @@
 					1 2 3 ... 8
 				</p>
 			</div>
+</div>
 
 
+{% endblock %}
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+
+<script>
+var app = new Vue({
+  el: '#app',
+  delimiters: ['{','}'],
+  data: {
+    message: 'Hello Vue!'
+  },
+  mounted(){
+  	this.sayHello();
+  },
+  methods : {
+	  sayHello(){
+		  console.log("Hello");
+	  },
+  }
+})
+</script>
 {% endblock %}
