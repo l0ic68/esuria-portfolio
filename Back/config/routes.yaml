@@ -31,6 +31,18 @@ getArticle:
     path: /get-article
     controller: App\Controller\ArticleController::getArticle
 
+getArticleByType:
+    path: /get-article-selection
+    controller: App\Controller\ArticleController::getArticleBYType
+
+countArticle:
+    path: /count-article
+    controller: App\Controller\ArticleController::countArticle
+
+searchArticle:
+    path: /search-article
+    controller: App\Controller\ArticleController::searchArticle
+
 agenda:
     path: /agenda
     controller: App\Controller\DefaultController::agenda

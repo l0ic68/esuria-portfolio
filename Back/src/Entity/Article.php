@@ -31,6 +31,11 @@ class Article
      */
     private $texte;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $type;
+
     public function __construct()
     {
         $date = \DateTime::createFromFormat('d-m-Y','now');
@@ -53,6 +58,17 @@ class Article
     public function setTitre(string $titre): self
     {
         $this->titre = $titre;
+
+        return $this;
+    }
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

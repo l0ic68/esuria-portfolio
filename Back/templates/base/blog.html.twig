@@ -1,128 +1,194 @@
 {% extends 'base.html.twig' %}
 {% block title %}
- {{parent()}} Blog
+    {{parent()}}
+    Blog
 {% endblock %}
 {% block css %}
-<link type="text/css" rel="stylesheet" href={{asset("css/Blog.css")}} />
+    <link type="text/css" rel="stylesheet" href="{{asset("css/Blog.css")}}"/>
 {% endblock %}
 {% block content %}
-<div id="app" style="display: flex;flex-direction: column;">
-			<!-- CONTENU -->
-			<div id="search">
-				<input placeholder="Recherche" class="noselect"></input>
-				<i class="far fa-search"></i>
-			</div>
-			<div id="Sort_Select">
-				<p class="Sort_Select">Tout</p>
-				<p class="sort">News</p>
-				<p class="sort">Ecritures</p>
-				<p class="sort">Voyages</p>
-				<p class="sort">Autres</p>
-			</div>
-			<select id="Sort_Select_Mobile">
-				<option value="valeur1">Tout</option>
-				<option value="valeur2">Réalisation</option>
-				<option value="valeur3">Ecriture</option>
-				<option value="valeur4">Personnel</option>
-				<option value="valeur5">Professionnel</option>
-			</select>
-			<div class="Article_element">
-				<div v-for="article in articles" class="Une_Boite">
-					<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
-					<div class="Sous_Bandeau">
-						<h2 class="Titre_article">
-							{article.titre}
-						</h2>
-						<p class="Date">
-							<span class="Couleur_slash">// </span>Vendredi 5 Mai 2017
-						</p>
-						<p class="Description">
-							{article.texte}
-						</p>
-					</div>
-				</div>
-				<div class="Une_Boite hidden">
-				</div>
+    <div id="app" style="display: flex;flex-direction: column;">
+        <!-- CONTENU -->
+        <div id="search">
+            <input v-on:keyUp="search()" v-model="searchText" placeholder="Recherche" class="noselect"></input>
+            <i class="far fa-search"></i>
+        </div>
+        <div id="Sort_Select">
+            <p v-on:click="setSelect('All')" v-bind:class="{Sort_Select : select=='All', Sort : select != 'All' }">Tout</p>
+            <p v-on:click="setSelect('realisation')" v-bind:class="{Sort_Select : select=='realisation', Sort : select != 'realisation' }">Réalisation</p>
+            <p v-on:click="setSelect('ecriture')" v-bind:class="{Sort_Select : select=='ecriture', Sort : select != 'ecriture' }">Ecriture</p>
+            <p v-on:click="setSelect('personnel')" v-bind:class="{Sort_Select : select=='personnel', Sort : select != 'personnel' }">Personnel</p>
+            <p v-on:click="setSelect('professionnel')" v-bind:class="{Sort_Select : select=='professionnel', Sort : select != 'professionnel' }">Professionnel</p>
+        </div>
+        <select id="Sort_Select_Mobile">
+            <option value="valeur1">Tout</option>
+            <option value="valeur2">Réalisation</option>
+            <option value="valeur3">Ecriture</option>
+            <option value="valeur4">Personnel</option>
+            <option value="valeur5">Professionnel</option>
+        </select>
+        <div class="Article_element">
+            <div v-for="article in articles" class="Une_Boite">
+                <a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
+                <div class="Sous_Bandeau">
+                    <h2 class="Titre_article">
+                        {article.titre}
+                    </h2>
+                    <p class="Date">
+                        <span class="Couleur_slash">//
+                        </span>Vendredi 5 Mai 2017
+                    </p>
+                    <p class="Description">
+                        {article.texte}
+                    </p>
+                </div>
+            </div>
+            <div class="Une_Boite hidden"></div>
 
-				<div class="Une_Boite hidden">
-				</div>
-			</div>
+            <div class="Une_Boite hidden"></div>
+        </div>
 
-			<div id="Centre_chiffre">
-				<p id="Chiffre">
-					1 2 3 ... 8
-				</p>
-			</div>
-</div>
+        <div id="Centre_chiffre">
+            <p>
+                { nbrPage = Math.ceil(count / 6 )}</p>
+				{page}
+            <div v-for="pageView in nbrPage">
+                <button v-on:click="setPage(pageView)">{pageView}</button>
+            </div>
 
+            {# <p id="Chiffre">
+                1 2 3 ... 8
+            </p> #}
+        </div>
+    </div>
 
 {% endblock %}
 {% block js %}
-<script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 
-<script>
-var app = new Vue({
-  el: '#app',
-  delimiters: ['{','}'],
-  data: {
-    articles : [],
-  },
-  mounted(){
-  	this.sayHello();
-	this.getArticle();
-  },
-  methods : {
-	  sayHello(){
-		  console.log("Hello");
-	  },
-	  getArticle(){
-         axios({
-            
-            method : 'POST',
-            url : '/get-article',
+    <script>
+        var app = new Vue({
+            el: '#app',
+            delimiters: [
+                '{', '}'
+            ],
             data: {
-                //id :this.biens[0],
-                //lastBien : this.biens[0].dateCreation,
+                articles: [],
+                select: "All",
+                page: 1,
+                count: 0,
+				searchText : ""
+            },
+            mounted() {
+                this.sayHello();
+                this.getArticle();
+                this.getCount();
+            },
+            methods: {
+                sayHello() {
+                    console.log("Hello");
+                },
+                setSelect(selection) {
+					this.page = 1;
+                    this.select = selection;
+                    this.getArticleSelection();
+                },
+                setPage(page) {
+                    this.page = page;
+					if(this.select == 'All'){
+                    	this.getArticle();
+					}
+					else{
+						this.getArticleSelection();
+					}
+                },
+                getArticle() {
+                    axios({
+                        method: 'POST',
+                        url: '/get-article',
+                        data: {
+                            page: this.page
+                        }
+                    }).then(response => {
+                        var getUrl = window.location;
+                        var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+                        baseUrl = baseUrl.replace("annonce", "");
+                        var json = JSON.parse(response.data);
+                        var object = this;
+						this.articles = [];
+                        $.each(json, function (key, value) {
+                            object.articles.push({"titre": value.titre, "texte": value.texte, "date": value.date});
+                        });
+                    })
+                },
+                search() {
+					console.log(this.searchText);
+                    axios({
+                        method: 'POST',
+                        url: '/search-article',
+                        data: {
+                            searchText: this.searchText
+                        }
+                    }).then(response => {
+                        var getUrl = window.location;
+                        var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+                        baseUrl = baseUrl.replace("annonce", "");
+                        var json = JSON.parse(response.data);
+                        var object = this;
+						this.articles = [];
+                        $.each(json, function (key, value) {
+                            object.articles.push({"titre": value.titre, "texte": value.texte, "date": value.date});
+                        });
+                    })
+                },
+                getArticleSelection() {
+                    axios({
+                        method: 'POST',
+                        url: '/get-article-selection',
+                        data: {
+                            //id :this.biens[0],
+                            selection: this.select,
+                            page: this.page
+                        }
+                    }).then(response => {
+                        var getUrl = window.location;
+                        var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+                        baseUrl = baseUrl.replace("annonce", "");
+                        var json = JSON.parse(response.data);
+                        var object = this;
+                        console.log(json);
+                        this.articles = [];
+                        $.each(json, function (key, value) {
+                            object.articles.push({"titre": value.titre, "texte": value.texte, "date": value.date});
+                        });
+                        this.getCount();
+                    })
+                },
+                getCount() {
+                    axios({
+                        method: 'POST',
+                        url: '/count-article',
+                        data: {
+                            //id :this.biens[0],
+                            selection: this.select
+                        }
+                    }).then(response => {
+                        var getUrl = window.location;
+                        var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+                        baseUrl = baseUrl.replace("annonce", "");
+                        var json = JSON.parse(response.data);
+                        var object = this;
+                        console.log(json);
+                        this.count = json;
+                        //this.articles = [];
+                        //$.each(json,function(key,value){
+                        //object.articles.push({"titre" : value.titre,"texte" : value.texte,"date" : value.date });
+                        //});
+                    })
+                }
             }
         })
-            .then( response => {
-              var getUrl = window.location;
-              var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-              baseUrl = baseUrl.replace("annonce","");
-               var json = JSON.parse(response.data);
-               var object = this;
-               console.log(json);
-               $.each(json,function(key,value){
-                object.articles.push({"titre" : value.titre,"texte" : value.texte,"date" : value.date });
-               });
-//               this.formatPrix('prix');
-
-                
-               
-               /*this.nbrRefresh += 1;
-                 var object = this;
-                 
-               $.each(json, function(key,value) {
-                 if(value.type == "PDF")
-                  {
-                   object.previousConversation.unshift({"message" : value.message ,'pseudo':value.expediteur,"dateEnvoi":value.dateEnvoi,"type":value.type,"name" : name[name.length-1]});
-                  }
-                  else{
-                    object.previousConversation.unshift({"message" : value.message ,'pseudo':value.expediteur,"dateEnvoi":value.dateEnvoi,"type":value.type});
-                  }
-                });
-                this.loadingPreviousChat = false;
-                this.isPreviousChatLoading= false;*/
-              
-             
-        })
-      },
-  }
-})
-</script>
+    </script>
 {% endblock %}

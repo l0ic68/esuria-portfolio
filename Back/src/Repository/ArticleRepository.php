@@ -35,13 +35,59 @@ class ArticleRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function myGetAnnonce()
+    public function myGetArticle($page)
     {
         return $this->createQueryBuilder('b')
+        ->setFirstResult(($page-1)*6)
         ->setMaxResults(6)
         ->orderBy('b.date','ASC')
         ->getQuery()
         ->getResult()
+        ;
+    }
+    public function myArticleSearch($search)
+    {
+        return $this->createQueryBuilder('b')
+        // ->setFirstResult(($page-1)*6)
+        ->where('b.titre LIKE :search')
+        ->setParameter('search', '%'.$search.'%')
+        ->setMaxResults(6)
+        ->orderBy('b.date','ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+    public function myGetArticleByType($type,$page)
+    {
+        $query =  $this->createQueryBuilder('b')
+        ->where('b.type = :type')
+        ->setParameter('type', $type)
+        ->setFirstResult(($page-1)*6)
+        ->setMaxResults(6)
+        ->orderBy('b.date','ASC')
+      
+        ->getQuery()
+        ->getResult()
+        ;
+        return $query;
+    }
+
+    public function myCount()
+    {
+        return $this->createQueryBuilder('b')
+            ->select('count(b)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+    public function myCountByTri($tri)
+    {
+        return $this->createQueryBuilder('b')
+            ->select('count(b)')
+            ->where("b.type like :type")
+            ->setParameter("type" , $tri)
+            ->getQuery()
+            ->getSingleScalarResult()
         ;
     }
 
