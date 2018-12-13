@@ -36,6 +36,11 @@ class Article
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $path;
+
     public function __construct()
     {
         $date = \DateTime::createFromFormat('d-m-Y','now');
@@ -69,6 +74,18 @@ class Article
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
+
+    public function setPath(string $path): self
+    {
+        $this->path = $path;
 
         return $this;
     }

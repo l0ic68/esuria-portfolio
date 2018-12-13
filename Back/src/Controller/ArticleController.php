@@ -30,6 +30,18 @@ class ArticleController extends Controller
         ]);
     }
 
+
+
+    public function lecture_article($titre, RegistryInterface $doctrine)
+    {
+
+        $article = $doctrine->getRepository(Article::class)->findOneByPath($titre);
+        return $this->render('base/lecture_article.html.twig',array(
+            "article" => $article,
+        ));
+
+    }
+
     /**
      * @Route("/get-article",name="getArticle")
      */

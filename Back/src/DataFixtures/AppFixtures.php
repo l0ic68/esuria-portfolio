@@ -15,6 +15,7 @@ class AppFixtures extends Fixture
             $article->setTitre('Article titre '. $i);
             $article->setTexte('Lorem Ipsum text '. $i);
             $article->setType(self::getRandomSelection());
+            $article->setPath('article-titre-'.$i);
             $manager->persist($article);
         }
 
