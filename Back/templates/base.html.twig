@@ -9,7 +9,7 @@
 	<!-- DESCRIPTION -->
 	<title>
 		{% block title %}
-			Esuria // 
+			Esuria //
 		{% endblock %}
 	</title>
 	<meta name="description" content="Vidéaste & Web Designer, ">
@@ -63,12 +63,12 @@
 			<nav id="Navigation_principale">
 				<ul>
 				{% if app.request.attributes.get('_route') == "accueil" %}
-					<li><a href="{{path('accueil')}}"><span id="Selection">- PRESENTATION -</span></a></li>	
+					<li><a href="{{path('accueil')}}"><span id="Selection">- PRESENTATION -</span></a></li>
 				{% else %}
 					<li class="Espace"><a href="{{path('accueil')}}">PRESENTATION</a></li>
 				{% endif %}
 				{% if app.request.attributes.get('_route') == "projets" %}
-					<li><a href="{{path('projets')}}"><span id="Selection">- PROJETS -</span></a></li>	
+					<li><a href="{{path('projets')}}"><span id="Selection">- PROJETS -</span></a></li>
 				{% else %}
 					<li class="Espace"><a href="{{path('projets')}}">PROJETS</a></li>
 				{% endif %}
@@ -79,22 +79,22 @@
 					<li class="Espace"><a href="/hobbies">HOBBIES</a></li>
 				{% endif %}
 				{% if app.request.attributes.get('_route') == "live" %}
-					<li><a href="{{path('live')}}"><span id="Selection">- LIVE -</span></a></li>	
+					<li><a href="{{path('live')}}"><span id="Selection">- LIVE -</span></a></li>
 				{% else %}
 					<li class="Espace"><a href="{{path('live')}}">LIVE</a></li>
 				{% endif %}
 				{% if app.request.attributes.get('_route') == "blog" %}
-					<li><a href="{{path('blog')}}"><span id="Selection">- BLOG -</span></a></li>	
+					<li><a href="{{path('blog')}}"><span id="Selection">- BLOG -</span></a></li>
 				{% else %}
 					<li class="Espace"><a href="{{path('blog')}}">BLOG</a></li>
 				{% endif %}
 				{% if app.request.attributes.get('_route') == "agenda" %}
-					<li><a href="{{path('agenda')}}"><span id="Selection">- AGENDA -</span></a></li>	
+					<li><a href="{{path('agenda')}}"><span id="Selection">- AGENDA -</span></a></li>
 				{% else %}
 					<li class="Espace"><a href="{{path('agenda')}}">AGENDA</a></li>
 				{% endif %}
 				{% if app.request.attributes.get('_route') == "contact" %}
-					<li><a href="{{path('contact')}}"><span id="Selection">- CONTACT -</span></a></li>	
+					<li><a href="{{path('contact')}}"><span id="Selection">- CONTACT -</span></a></li>
 				{% else %}
 					<li class="Espace"><a href="{{path('contact')}}">CONTACT</a></li>
 				{% endif %}
@@ -134,24 +134,46 @@
 		</header>
 
 		<!-- MENU MOBILE -->
-		<header id="Header_Mobile">
-			<div id="Menu_Debut">
-				<a href="Index.html" id="Logo_Mobile"><h1>ESURIA</h1></a>
-			</div>
-			<div id="Hamburger">
-				<i id="Hamburger_mobile" class="fal fa-bars" aria-hidden></i>
-			</div>
-		</header>
-
-	<!-- MENU MOBILE -->
-	<header id="Header_Mobile">
-		<div id="Menu_Debut">
-			<a href="Index.html" id="Logo_Mobile"><h1>ESURIA</h1></a>
+		<div id='cssmenu'>
+		<ul>
+			{% if app.request.attributes.get('_route') == "accueil" %}
+				 <li><a href="{{path('accueil')}}"><span id="Selection">- PRESENTATION -</span></a></li>
+			 {% else %}
+				 <li class="Espace"><a href="{{path('accueil')}}">PRESENTATION</a></li>
+			 {% endif %}
+			 {% if app.request.attributes.get('_route') == "projets" %}
+				 <li><a href="{{path('projets')}}"><span id="Selection">- PROJETS -</span></a></li>
+			 {% else %}
+				 <li class="Espace"><a href="{{path('projets')}}">PROJETS</a></li>
+			 {% endif %}
+			 {% if app.request.attributes.get('_route') == "accueil" %}
+				 {# <li><a href="{{path('accueil')}}"><span id="Selection">- PRESENTATION -</span></a></li>	 #}
+				 <li class="Espace"><a href="/hobbies">HOBBIES</a></li>
+			 {% else %}
+				 <li class="Espace"><a href="/hobbies">HOBBIES</a></li>
+			 {% endif %}
+			 {% if app.request.attributes.get('_route') == "live" %}
+				 <li><a href="{{path('live')}}"><span id="Selection">- LIVE -</span></a></li>
+			 {% else %}
+				 <li class="Espace"><a href="{{path('live')}}">LIVE</a></li>
+			 {% endif %}
+			 {% if app.request.attributes.get('_route') == "blog" %}
+				 <li><a href="{{path('blog')}}"><span id="Selection">- BLOG -</span></a></li>
+			 {% else %}
+				 <li class="Espace"><a href="{{path('blog')}}">BLOG</a></li>
+			 {% endif %}
+			 {% if app.request.attributes.get('_route') == "agenda" %}
+				 <li><a href="{{path('agenda')}}"><span id="Selection">- AGENDA -</span></a></li>
+			 {% else %}
+				 <li class="Espace"><a href="{{path('agenda')}}">AGENDA</a></li>
+			 {% endif %}
+			 {% if app.request.attributes.get('_route') == "contact" %}
+				 <li><a href="{{path('contact')}}"><span id="Selection">- CONTACT -</span></a></li>
+			 {% else %}
+				 <li class="Espace"><a href="{{path('contact')}}">CONTACT</a></li>
+			 {% endif %}
+		</ul>
 		</div>
-		<div id="Hamburger">
-			<i id="Hamburger_mobile" class="fal fa-bars" aria-hidden></i>
-		</div>
-	</header>
 
 	<!-- CONTENU PRINCIPAL -->
 	<main id="Site_content">
@@ -162,6 +184,94 @@
 
 	</main>
 	<!-- SCRIPT JAVASCRIPT -->
+	<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+	<script>
+	(function($) {
+
+	  $.fn.menumaker = function(options) {
+
+	      var cssmenu = $(this), settings = $.extend({
+	        title: "ESURIA",
+	        format: "dropdown",
+	        sticky: false
+	      }, options);
+	      return this.each(function() {
+	        cssmenu.prepend('<div id="menu-button">' + settings.title + '</div>');
+	        $(this).find("#menu-button").on('click', function(){
+	          $(this).toggleClass('menu-opened');
+	          var mainmenu = $(this).next('ul');
+	          if (mainmenu.hasClass('open')) {
+	            mainmenu.hide().removeClass('open');
+	          }
+	          else {
+	            mainmenu.show().addClass('open');
+	            if (settings.format === "dropdown") {
+	              mainmenu.find('ul').show();
+	            }
+	          }
+	        });
+
+	        cssmenu.find('li ul').parent().addClass('has-sub');
+
+	        multiTg = function() {
+	          cssmenu.find(".has-sub").prepend('<span class="submenu-button"></span>');
+	          cssmenu.find('.submenu-button').on('click', function() {
+	            $(this).toggleClass('submenu-opened');
+	            if ($(this).siblings('ul').hasClass('open')) {
+	              $(this).siblings('ul').removeClass('open').hide();
+	            }
+	            else {
+	              $(this).siblings('ul').addClass('open').show();
+	            }
+	          });
+	        };
+
+	        if (settings.format === 'multitoggle') multiTg();
+	        else cssmenu.addClass('dropdown');
+
+	        if (settings.sticky === true) cssmenu.css('position', 'fixed');
+
+	        resizeFix = function() {
+	          if ($( window ).width() > 1280) {
+	            cssmenu.find('ul').show();
+	            if (mainmenu.hasClass('open')) {
+	          $("#menu-button").toggleClass('menu-closed');
+	        }
+	        else {
+	            $("#menu-button").toggleClass('menu-opened');
+	        }
+	          }
+
+	          if ($(window).width() <= 1280) {
+	            cssmenu.find('ul').hide().removeClass('open');
+	            if (mainmenu.hasClass('open')) {
+	          $("#menu-button").toggleClass('menu-closed');
+	        }
+	        else {
+	            $("#menu-button").toggleClass('menu-opened');
+	        }
+	          }
+
+	        };
+	        resizeFix();
+	        return $(window).on('resize', resizeFix);
+
+	      });
+	  };
+	})(jQuery);
+
+	(function($){
+	$(document).ready(function(){
+
+	$("#cssmenu").menumaker({
+	   title: "ESURIA",
+	   format: "multitoggle"
+	});
+
+	});
+	})(jQuery);
+
+	</script>
 	{% block js %}
 	{% endblock %}
 </body>
