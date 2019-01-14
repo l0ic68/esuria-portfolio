@@ -34,6 +34,7 @@
 /* projet */
 
 #Projets_cms {
+    display: flex;
   flex-direction: column;
   align-items: center;
   font-family: "Roboto Slab", serif;
@@ -137,6 +138,7 @@
 /* hobbies */
 
 #Hobbies_cms {
+  display: flex;
   flex-direction: column;
   align-items: center;
   font-family: "Roboto Slab", serif;
@@ -234,6 +236,7 @@
 /* Blog */
 
 #Blog_cms {
+    display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -244,6 +247,7 @@
 /* Agenda */
 
 #Agenda_cms {
+    display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
