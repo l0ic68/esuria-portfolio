@@ -55,6 +55,10 @@ lecture-article:
     path: /lecture-article/{titre}
     controller: App\Controller\ArticleController::lecture_article
 
+new-article:
+    path: /new-article
+    controller: App\Controller\ArticleController::new_article
+
 
 
 CMS:
