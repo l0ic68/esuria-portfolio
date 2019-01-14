@@ -1,0 +1,22 @@
+{% extends 'cms_base.html.twig' %}
+{% block title %}
+Esuria // CMS
+{% endblock %}
+{% block css %}
+<link type="text/css" rel="stylesheet" href={{asset("css/CMS.css")}} />
+{% endblock %}
+{% block content %}
+		<!-- CONTENU -->
+		<div id="Zone">
+			<div id="Zone_haut">
+				<div class="CMS_wrap active" id="Presentation_cms">
+					<p><i class="fal fa-upload"></i> Tenue 1</p>
+					<p><i class="fal fa-upload"></i> Tenue 2</p>
+					<p><i class="fal fa-upload"></i> Tenue 3</p>
+				</div>
+			</div>
+		</div>
+
+    {% endblock %}
+    {% block js %}
+    {% endblock %}

@@ -1,0 +1,28 @@
+
+cms:
+    path: /cms
+    controller: App\Controller\CMSController::cms
+
+cms-projets:
+    path: /cms-projets
+    controller: App\Controller\CMSController::cms_projets
+
+cms-hobbies:
+    path: /cms-hobbies
+    controller: App\Controller\CMSController::cms_hobbies
+
+cms-live:
+    path: /cms-live
+    controller: App\Controller\CMSController::cms_live
+
+cms-blog:
+    path: /cms-blog
+    controller: App\Controller\CMSController::cms_blog
+
+cms-agenda:
+    path: /cms-agenda
+    controller: App\Controller\CMSController::cms_agenda
+
+cms-contact:
+    path: /cms-contact
+    controller: App\Controller\CMSController::cms_contact
