@@ -47,15 +47,13 @@ Esuria // CMS
 								{% endfor %}
 							<p class="CMS_Titre">Album favoris</p>
 							{% for Hobbie in Hobbies if Hobbie.type == "Album_fav" | slice(0,10)%}
-								{{ form_start(form) }}
-									{{ form_widget(form)}}
-								{{ form_end(form) }}
-							{% endfor %}
 							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> upload une image</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i><input placeholder="lien"></div>
-								<button>Confirm</button>
+								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
+								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
+								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
+							{% endfor %}
+							<a href="{{ path ('hobbies-new') }}">Ajouter un hobbies</a>
 
 							<p class="CMS_Titre">Groupe favori</p>
 							{% for Hobbie in Hobbies if Hobbie.type == "Groupe_fav" | slice(0,10)%}

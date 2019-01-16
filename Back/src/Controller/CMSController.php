@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 class CMSController extends Controller
 {
@@ -35,16 +36,53 @@ class CMSController extends Controller
     public function cms_hobbies(RegistryInterface $doctrine)
     {
     /*   $Hobbies_01 = new Hobbies();
-      $Hobbies_01->setType('Musique')
+      $Hobbies_01->setType('Album_fav')
         ->setLink('https://youtu.be/63oAtzYeQpE');
       $em = $this->getDoctrine()->getManager();
       $em->persist($Hobbies_01);
       $em->flush(); */
       $Hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
-      dump($Hobbies);
+      // dump($Hobbies);
       $em = $this->getDoctrine()->getManager();
       $form = $this->createForm(HobbiesType::class, $Hobbies);
       return $this->render('cms_base/cms_hobbies.html.twig', ['Hobbies' => $Hobbies, 'form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/hobbies-new", name="hobbies-new")
+    */
+    public function new_hobbies(RegistryInterface $doctrine, Request $request)
+    {
+        $Hobbies = new Hobbies();
+        $form = $this->createForm(HobbiesType::class, $Hobbies);
+        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        if ($form->isSubmitted() && $form->isValid())
+        {
+          $em->persist($Hobbies);
+          $em->flush();
+          return $this->redirectToRoute('cms-hobbies');
+        }
+
+        return $this->render('cms_base/new_hobbies.html.twig', ['Hobbies' => $Hobbies, 'form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/cms-hobbies/{slug}-{id}", name="hobbies-show", requirements={"slug": "[a-z0-9\-]*"})
+    */
+    public function show($slug, $id, RegistryInterface $doctrine, Request $request)
+    {
+        $Hobbies = $doctrine->getRepository(Hobbies::class)->find($id);
+        $form = $this->createForm(HobbiesType::class, $Hobbies);
+        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        if ($form->isSubmitted() && $form->isValid())
+        {
+          $em->flush();
+          return $this->redirectToRoute('cms-hobbies');
+        }
+
+        return $this->render('cms_base/show.html.twig', ['Hobbies' => $Hobbies, 'form' => $form->createView()]);
     }
 
     /**
