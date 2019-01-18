@@ -3,9 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Cocur\Slugify\Slugify;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\HobbiesRepository")
+ * @Vich\Uploadable()
  */
 class Hobbies
 {
@@ -17,9 +20,22 @@ class Hobbies
      */
     private $id;
 
+
     /**
      * @ORM\Column(type="string", length=255)
      */
+    private $filename;
+
+    /**
+    * @var File
+    * @Vich\UploadableField(mapping="hobbies_image", filenameHobbies="filename")
+    */
+    private $imageFile;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+
     private $link;
 
     /**
@@ -30,6 +46,11 @@ class Hobbies
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getSlug()
+    {
+     return (new Slugify())->slugify($this->type);
     }
 
     public function getLink(): ?string
@@ -44,6 +65,8 @@ class Hobbies
         return $this;
     }
 
+
+
     public function getType(): ?string
     {
         return $this->type;
@@ -55,4 +78,28 @@ class Hobbies
 
         return $this;
     }
+
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    public function setFilename(string $filename): Hobbies
+    {
+        $this->filename = $filename;
+        return $this;
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(?File $imageFile): Hobbies
+    {
+        $this->imageFile = $imageFile;
+
+        return $this;
+    }
+
 }
