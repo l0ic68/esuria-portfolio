@@ -28,7 +28,7 @@ class Hobbies
 
     /**
     * @var File
-    * @Vich\UploadableField(mapping="hobbies_image", filenameHobbies="filename")
+    * @Vich\UploadableField(mapping="hobbies_image", fileNameProperty="filename")
     */
     private $imageFile;
 
