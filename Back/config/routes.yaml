@@ -1,6 +1,6 @@
 default:
-    path: /
-    controller: App\Controller\DefaultController::default
+    path: /accueil
+    controller: App\Controller\DefaultController::index
 
 
 index:
@@ -8,13 +8,12 @@ index:
     controller: App\Controller\DefaultController::index
 
 index_nouveaute:
-    path: /acceuil
+    path: /nouveaute
     controller: App\Controller\DefaultController::index_nouveaute
 
 index_biographie:
     path: /biographie
     controller: App\Controller\DefaultController::index_biographie
-
 
 projets:
     path: /projets
@@ -28,6 +27,22 @@ blog:
     path: /blog
     controller: App\Controller\DefaultController::blog
 
+getArticle:
+    path: /get-article
+    controller: App\Controller\ArticleController::getArticle
+
+getArticleByType:
+    path: /get-article-selection
+    controller: App\Controller\ArticleController::getArticleBYType
+
+countArticle:
+    path: /count-article
+    controller: App\Controller\ArticleController::countArticle
+
+searchArticle:
+    path: /search-article
+    controller: App\Controller\ArticleController::searchArticle
+
 agenda:
     path: /agenda
     controller: App\Controller\DefaultController::agenda
@@ -36,9 +51,13 @@ contact:
     path: /contact
     controller: App\Controller\DefaultController::contact
 
-lecture_article:
-    path: /lecture_article
-    controller: App\Controller\DefaultController::lecture_article
+lecture-article:
+    path: /lecture-article/{titre}
+    controller: App\Controller\ArticleController::lecture_article
+
+new-article:
+    path: /new-article
+    controller: App\Controller\ArticleController::new_article
 
 
 

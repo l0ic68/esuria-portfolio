@@ -16,7 +16,7 @@ class DefaultController extends Controller
       return $this->render('base/index_nouveaute.html.twig');
   }
     /**
-     * @Route("/acceuil", name="acceuil")
+     * @Route("/accueil", name="accueil")
      */
     public function index()
     {
@@ -78,15 +78,6 @@ class DefaultController extends Controller
     {
         return $this->render('base/contact.html.twig');
     }
-
-    /**
-     * @Route("/lecture_article", name="lecture_article")
-     */
-    public function lecture_article()
-    {
-        return $this->render('base/lecture_article.html.twig');
-    }
-
     /**
      * @Route("/CMS", name="CMS")
      */
