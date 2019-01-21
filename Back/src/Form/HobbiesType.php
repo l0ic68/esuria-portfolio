@@ -15,16 +15,9 @@ class HobbiesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('link')
-            ->add('type')
-            ->add('imageFile', VichImageType::class, [
-            'required' => false,
-            'allow_delete' => true,
-            'download_label' => true,
-            'download_uri' => true,
-            'image_uri' => true,
-            'imagine_pattern' => null,
-        ]);
+            // ->add('link')
+            // ->add('type')
+            ->add('imageFile', VichImageType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

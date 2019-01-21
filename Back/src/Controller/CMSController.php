@@ -43,15 +43,15 @@ class CMSController extends Controller
       $em->flush(); */
       $Hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
       // dump($Hobbies);
-      $em = $this->getDoctrine()->getManager();
-      $form = $this->createForm(HobbiesType::class, $Hobbies);
-      return $this->render('cms_base/cms_hobbies.html.twig', ['Hobbies' => $Hobbies, 'form' => $form->createView()]);
+    //   $em = $this->getDoctrine()->getManager();
+    //   $form = $this->createForm(HobbiesType::class, $Hobbies);
+      return $this->render('cms_base/cms_hobbies.html.twig', ['Hobbies' => $Hobbies]);
     }
 
     /**
-     * @Route("/hobbies-new", name="hobbies-new")
+     * @Route("/hobbies-new/{type}", name="hobbies-new")
     */
-    public function new_hobbies(RegistryInterface $doctrine, Request $request)
+    public function new_hobbies(RegistryInterface $doctrine, Request $request,$type)
     {
         $Hobbies = new Hobbies();
         $form = $this->createForm(HobbiesType::class, $Hobbies);
@@ -59,9 +59,11 @@ class CMSController extends Controller
         $em = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid())
         {
-          $em->persist($Hobbies);
-          $em->flush();
-          return $this->redirectToRoute('cms-hobbies');
+            $Hobbies->setLink("test");
+            $Hobbies->setType($type);
+            $em->persist($Hobbies);
+            $em->flush();
+            return $this->redirectToRoute('cms-hobbies');
         }
 
         return $this->render('cms_base/new_hobbies.html.twig', ['Hobbies' => $Hobbies, 'form' => $form->createView()]);

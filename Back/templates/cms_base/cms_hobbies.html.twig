@@ -53,7 +53,7 @@ Esuria // CMS
 								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
 							{% endfor %}
-							<a href="{{ path ('hobbies-new') }}">Ajouter un hobbies</a>
+							<a href="{{ path ('hobbies-new',{type: "Album"}) }}">Ajouter un hobbies</a>
 
 							<p class="CMS_Titre">Groupe favori</p>
 							{% for Hobbie in Hobbies if Hobbie.type == "Groupe_fav" | slice(0,10)%}
@@ -68,7 +68,9 @@ Esuria // CMS
 								<button>Confirm</button>
 							</div>
 						</div>
-
+						{% for hobbie in Hobbies %}
+							<img src="{{ vich_uploader_asset(hobbie, 'imageFile') }}"  />
+						{% endfor %}
 						<div id="CMS_Hobbies_Jeux"  class="CMS_Hobbies">
 							<p class="CMS_Titre">Jeux vidéo du moment</p>
 							<div class="Hobbies_Line">
