@@ -59,7 +59,6 @@ class CMSController extends Controller
         $em = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid())
         {
-            $Hobbies->setLink("test");
             $Hobbies->setType($type);
             $em->persist($Hobbies);
             $em->flush();
@@ -80,8 +79,10 @@ class CMSController extends Controller
         $em = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid())
         {
+          Var_dump($request);
+          $em->persist($Hobbies);
           $em->flush();
-          return $this->redirectToRoute('cms-hobbies');
+        //  return $this->redirectToRoute('cms-hobbies');
         }
 
         return $this->render('cms_base/show.html.twig', ['Hobbies' => $Hobbies, 'form' => $form->createView()]);

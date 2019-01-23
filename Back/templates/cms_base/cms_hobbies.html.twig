@@ -19,219 +19,187 @@ Esuria // CMS
 						<hr class="cms_hr" />
 						<div id="CMS_Hobbies_Musique"  class="CMS_Hobbies active">
 							<p class="CMS_Titre">Album du moment</p>
-
-							{% for Hobbie in Hobbies if Hobbie.type == "Album_Moment" | slice(0,10)%}
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							{% else %}
+							{% set foo = 0 %}
+							{% for Hobbie in Hobbies | slice(0,10)%}
+								{% if Hobbie.type == "Album_Moment" %}
+									{% set foo = 1 %}
+								{% endif %}
+							{% endfor %}
+							{% for Hobbie in Hobbies | slice(0,10)%}
+								{% if Hobbie.type == "Album_Moment" %}
 								<div class="Hobbies_Line">
-									<div class="Hobbies_image"><i class="fal fa-upload"></i> upload une image</div>
-									<div class="Hobbies_Link"><i class="fal fa-link"></i><input placeholder="lien"></div>
-									<button>Confirm</button>
+									<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div>
+									<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
+									<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 								</div>
-								{% endfor %}
+									{% endif %}
+							{% endfor %}
+							{% if foo == 0  %}
+								<a href="{{ path ('hobbies-new',{type: "Album_Moment"}) }}">Ajouter un hobbies</a>
+							{% endif %}
 							<p class="CMS_Titre">Musique du moment</p>
-							{% for Hobbie in Hobbies if Hobbie.type == "Musique_Moment" | slice(0,10)%}
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							{% else %}
+							{% set foo = 0 %}
+							{% for Hobbie in Hobbies | slice(0,10)%}
+								{% if Hobbie.type == "Musique_Moment" %}
+								{% set foo = 1 %}
 								<div class="Hobbies_Line">
-									<div class="Hobbies_image"><i class="fal fa-upload"></i> upload une image</div>
-									<div class="Hobbies_Link"><i class="fal fa-link"></i><input placeholder="lien"></div>
-									<button>Confirm</button>
+									<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div>
+									<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
+									<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 								</div>
-								{% endfor %}
+								{% else %}
+									{% if foo == 0 %}
+									{% set foo = 1 %}
+									<a href="{{ path ('hobbies-new',{type: "Musique_Moment"}) }}">Ajouter un hobbies</a>
+									{% endif %}
+								{% endif %}
+							{% endfor %}
 							<p class="CMS_Titre">Album favoris</p>
 							{% for Hobbie in Hobbies if Hobbie.type == "Album_fav" | slice(0,10)%}
 							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
+								<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div>
 								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
 								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
 							{% endfor %}
-							<a href="{{ path ('hobbies-new',{type: "Album"}) }}">Ajouter un hobbies</a>
+							<a href="{{ path ('hobbies-new',{type: "Album_fav"}) }}">Ajouter un hobbies</a>
 
 							<p class="CMS_Titre">Groupe favori</p>
 							{% for Hobbie in Hobbies if Hobbie.type == "Groupe_fav" | slice(0,10)%}
 							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
+								<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div>
 								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
+								<img src="{{ vich_uploader_asset(Hobbie, 'imageFile') }}"  />
+								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
 							{% endfor %}
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> upload une image</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i><input placeholder="lien"></div>
-								<button>Confirm</button>
-							</div>
+							<a href="{{ path ('hobbies-new',{type: "Groupe_fav"}) }}">Ajouter un hobbies</a>
 						</div>
-						{% for hobbie in Hobbies %}
-							<img src="{{ vich_uploader_asset(hobbie, 'imageFile') }}"  />
-						{% endfor %}
+
 						<div id="CMS_Hobbies_Jeux"  class="CMS_Hobbies">
 							<p class="CMS_Titre">Jeux vidéo du moment</p>
+							{% for Hobbie in Hobbies if Hobbie.type == "Jeux_Moment" | slice(0,10)%}
 							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
+								<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div>
+								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
+								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
+							{% else %}
+							<a href="{{ path ('hobbies-new',{type: "Jeux_Moment"}) }}">Ajouter un hobbies</a>
+								{% endfor %}
 
 							<p class="CMS_Titre">Jeux vidéo favoris</p>
+							{% for Hobbie in Hobbies if Hobbie.type == "Jeux_fav" | slice(0,10)%}
 							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
+								<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div>
+								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
+								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
+							{% endfor %}
+							<a href="{{ path ('hobbies-new',{type: "Jeux_fav"}) }}">Ajouter un hobbies</a>
 						</div>
 
 						<div id="CMS_Hobbies_Film" class="CMS_Hobbies">
 							<p class="CMS_Titre">Film du moment</p>
+							{% for Hobbie in Hobbies if Hobbie.type == "Film_Moment" | slice(0,10)%}
 							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
+								<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div>
+								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
+								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
+							{% else %}
+							<a href="{{ path ('hobbies-new',{type: "Film_Moment"}) }}">Ajouter un hobbies</a>
+								{% endfor %}
 							<p class="CMS_Titre">Série du moment</p>
+							{% for Hobbie in Hobbies if Hobbie.type == "Serie_Moment" | slice(0,10)%}
 							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
+								<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div>
+								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
+								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
+							{% else %}
+							<a href="{{ path ('hobbies-new',{type: "Serie_Moment"}) }}">Ajouter un hobbies</a>
+								{% endfor %}
 							<p class="CMS_Titre">Anime du moment</p>
+							{% for Hobbie in Hobbies if Hobbie.type == "Anime_Moment" | slice(0,10)%}
 							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
+								<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div>
+								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
+								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
+							{% else %}
+							<a href="{{ path ('hobbies-new',{type: "Anime_Moment"}) }}">Ajouter un hobbies</a>
+								{% endfor %}
 							<p class="CMS_Titre">Films Favoris</p>
+							{% for Hobbie in Hobbies if Hobbie.type == "Film_fav" | slice(0,10)%}
 							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
+								<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div>
+								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
+								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
+							{% endfor %}
+							<a href="{{ path ('hobbies-new',{type: "Film_fav"}) }}">Ajouter un hobbies</a>
 							<p class="CMS_Titre">Séries favorites</p>
+							{% for Hobbie in Hobbies if Hobbie.type == "Serie_fav" | slice(0,10)%}
 							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
+								<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div>
+								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
+								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
+							{% endfor %}
+							<a href="{{ path ('hobbies-new',{type: "Serie_fav"}) }}">Ajouter un hobbies</a>
 
 							<p class="CMS_Titre">Animes favoris</p>
+							{% for Hobbie in Hobbies if Hobbie.type == "Anime_fav" | slice(0,10)%}
 							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
+								<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div>
+								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
+								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
+							{% endfor %}
+							<a href="{{ path ('hobbies-new',{type: "Anime_fav"}) }}">Ajouter un hobbies</a>
 						</div>
 
 						<div id="CMS_Hobbies_Livre"  class="CMS_Hobbies">
 							<p class="CMS_Titre">Livres du moment</p>
+							{% for Hobbie in Hobbies if Hobbie.type == "Livre_Moment" | slice(0,10)%}
 							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
+								<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div>
+								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
+								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
+							{% else %}
+							<a href="{{ path ('hobbies-new',{type: "Livre_Moment"}) }}">Ajouter un hobbies</a>
+								{% endfor %}
 							<p class="CMS_Titre">BD du moment</p>
+							{% for Hobbie in Hobbies if Hobbie.type == "BD_Moment" | slice(0,10)%}
 							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
+								<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div>
+								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
+								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
+							{% else %}
+							<a href="{{ path ('hobbies-new',{type: "BD_Moment"}) }}">Ajouter un hobbies</a>
+								{% endfor %}
 							<p class="CMS_Titre">Manga du moment</p>
+							{% for Hobbie in Hobbies if Hobbie.type == "Manga_Moment" | slice(0,10)%}
 							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
+								<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div>
+								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
+								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
+							{% else %}
+							<a href="{{ path ('hobbies-new',{type: "Manga_Moment"}) }}">Ajouter un hobbies</a>
+								{% endfor %}
 							<p class="CMS_Titre">Livres favoris</p>
+							{% for Hobbie in Hobbies if Hobbie.type == "Livre_fav" | slice(0,10)%}
 							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
+								<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div>
+								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
+								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
-							<div class="Hobbies_Line">
-								<div class="Hobbies_image"><i class="fal fa-upload"></i> Image.jpg</div>
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> https://lienverslehobbies.fr/</div>
-							</div>
+							{% endfor %}
+							<a href="{{ path ('hobbies-new',{type: "Livre_fav"}) }}">Ajouter un hobbies</a>
 						</div>
 				</div>
 		</div>
