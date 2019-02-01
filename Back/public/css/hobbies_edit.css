@@ -1,0 +1,14 @@
+#Zone {
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: white;
+}
+
+img {
+  max-height: 10em;
+  width: auto;
+}
