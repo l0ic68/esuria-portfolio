@@ -62,41 +62,40 @@
 
 			<nav id="Navigation_principale">
 				<ul>
-				{% if app.request.attributes.get('_route') == "accueil" %}
-					<li><a href="{{path('accueil')}}"><span id="Selection">- PRESENTATION -</span></a></li>
+				{% if app.request.attributes.get('_route') == "cms" %}
+					<li><a href="{{path('cms')}}"><span id="Selection">- PRESENTATION -</span></a></li>
 				{% else %}
-					<li class="Espace"><a href="{{path('accueil')}}">PRESENTATION</a></li>
+					<li class="Espace"><a href="{{path('cms')}}">PRESENTATION</a></li>
 				{% endif %}
-				{% if app.request.attributes.get('_route') == "projets" %}
-					<li><a href="{{path('projets')}}"><span id="Selection">- PROJETS -</span></a></li>
+				{% if app.request.attributes.get('_route') == "cms-projets" %}
+					<li><a href="{{path('cms-projets')}}"><span id="Selection">- PROJETS -</span></a></li>
 				{% else %}
-					<li class="Espace"><a href="{{path('projets')}}">PROJETS</a></li>
+					<li class="Espace"><a href="{{path('cms-projets')}}">PROJETS</a></li>
 				{% endif %}
-				{% if app.request.attributes.get('_route') == "accueil" %}
-					{# <li><a href="{{path('accueil')}}"><span id="Selection">- PRESENTATION -</span></a></li>	 #}
-					<li class="Espace"><a href="/hobbies">HOBBIES</a></li>
+				{% if app.request.attributes.get('_route') == "cms-hobbies" %}
+					<li><a href="{{path('cms-hobbies')}}"><span id="Selection">- HOBBIES -</span></a></li>
 				{% else %}
-					<li class="Espace"><a href="/hobbies">HOBBIES</a></li>
+						<li class="Espace"><a href="{{path('cms-hobbies')}}">HOBBIES</a></li>
 				{% endif %}
-				{% if app.request.attributes.get('_route') == "live" %}
-					<li><a href="{{path('live')}}"><span id="Selection">- LIVE -</span></a></li>
+				{% if app.request.attributes.get('_route') == "cms-live" %}
+					<li><a href="{{path('cms-live')}}"><span id="Selection">- LIVE -</span></a></li>
 				{% else %}
-					<li class="Espace"><a href="{{path('live')}}">LIVE</a></li>
+					<li class="Espace"><a href="{{path('cms-live')}}">LIVE</a></li>
 				{% endif %}
-				{% if app.request.attributes.get('_route') == "blog" %}
-					<li><a href="{{path('blog')}}"><span id="Selection">- BLOG -</span></a></li>
+				{% if app.request.attributes.get('_route') == "cms-blog" %}
+					<li><a href="{{path('cms-blog')}}"><span id="Selection">- BLOG -</span></a></li>
 				{% else %}
-					<li class="Espace"><a href="{{path('blog')}}">BLOG</a></li>
+					<li class="Espace"><a href="{{path('cms-blog')}}">BLOG</a></li>
 				{% endif %}
-				{% if app.request.attributes.get('_route') == "agenda" %}
-					<li><a href="{{path('agenda')}}"><span id="Selection">- AGENDA -</span></a></li>
+				{% if app.request.attributes.get('_route') == "cms-agenda" %}
+					<li><a href="{{path('cms-agenda')}}"><span id="Selection">- AGENDA -</span></a></li>
 				{% else %}
-					<li class="Espace"><a href="{{path('agenda')}}">AGENDA</a></li>
+					<li class="Espace"><a href="{{path('cms-agenda')}}">AGENDA</a></li>
 				{% endif %}
-				{% if app.request.attributes.get('_route') == "contact" %}
-					<li><a href="{{path('contact')}}"><span id="Selection">- CONTACT -</span></a></li>
+				{% if app.request.attributes.get('_route') == "cms-contact" %}
+					<li><a href="{{path('cms-contact')}}"><span id="Selection">- CONTACT -</span></a></li>
 				{% else %}
-					<li class="Espace"><a href="{{path('contact')}}">CONTACT</a></li>
+					<li class="Espace"><a href="{{path('cms-contact')}}">CONTACT</a></li>
 				{% endif %}
 				</ul>
 			</nav>
@@ -135,44 +134,43 @@
 
 		<!-- MENU MOBILE -->
 		<div id='cssmenu'>
-		<ul>
-			{% if app.request.attributes.get('_route') == "accueil" %}
-				 <li><a href="{{path('accueil')}}"><span id="Selection">- PRESENTATION -</span></a></li>
-			 {% else %}
-				 <li class="Espace"><a href="{{path('accueil')}}">PRESENTATION</a></li>
-			 {% endif %}
-			 {% if app.request.attributes.get('_route') == "projets" %}
-				 <li><a href="{{path('projets')}}"><span id="Selection">- PROJETS -</span></a></li>
-			 {% else %}
-				 <li class="Espace"><a href="{{path('projets')}}">PROJETS</a></li>
-			 {% endif %}
-			 {% if app.request.attributes.get('_route') == "accueil" %}
-				 {# <li><a href="{{path('accueil')}}"><span id="Selection">- PRESENTATION -</span></a></li>	 #}
-				 <li class="Espace"><a href="/hobbies">HOBBIES</a></li>
-			 {% else %}
-				 <li class="Espace"><a href="/hobbies">HOBBIES</a></li>
-			 {% endif %}
-			 {% if app.request.attributes.get('_route') == "live" %}
-				 <li><a href="{{path('live')}}"><span id="Selection">- LIVE -</span></a></li>
-			 {% else %}
-				 <li class="Espace"><a href="{{path('live')}}">LIVE</a></li>
-			 {% endif %}
-			 {% if app.request.attributes.get('_route') == "blog" %}
-				 <li><a href="{{path('blog')}}"><span id="Selection">- BLOG -</span></a></li>
-			 {% else %}
-				 <li class="Espace"><a href="{{path('blog')}}">BLOG</a></li>
-			 {% endif %}
-			 {% if app.request.attributes.get('_route') == "agenda" %}
-				 <li><a href="{{path('agenda')}}"><span id="Selection">- AGENDA -</span></a></li>
-			 {% else %}
-				 <li class="Espace"><a href="{{path('agenda')}}">AGENDA</a></li>
-			 {% endif %}
-			 {% if app.request.attributes.get('_route') == "contact" %}
-				 <li><a href="{{path('contact')}}"><span id="Selection">- CONTACT -</span></a></li>
-			 {% else %}
-				 <li class="Espace"><a href="{{path('contact')}}">CONTACT</a></li>
-			 {% endif %}
-		</ul>
+			<ul>
+			{% if app.request.attributes.get('_route') == "cms" %}
+				<li><a href="{{path('cms')}}"><span id="Selection">- PRESENTATION -</span></a></li>
+			{% else %}
+				<li class="Espace"><a href="{{path('cms')}}">PRESENTATION</a></li>
+			{% endif %}
+			{% if app.request.attributes.get('_route') == "cms-projets" %}
+				<li><a href="{{path('cms-projets')}}"><span id="Selection">- PROJETS -</span></a></li>
+			{% else %}
+				<li class="Espace"><a href="{{path('cms-projets')}}">PROJETS</a></li>
+			{% endif %}
+			{% if app.request.attributes.get('_route') == "cms-hobbies" %}
+				<li><a href="{{path('cms-hobbies')}}"><span id="Selection">- HOBBIES -</span></a></li>
+			{% else %}
+					<li class="Espace"><a href="{{path('cms-hobbies')}}">HOBBIES</a></li>
+			{% endif %}
+			{% if app.request.attributes.get('_route') == "cms-live" %}
+				<li><a href="{{path('cms-live')}}"><span id="Selection">- LIVE -</span></a></li>
+			{% else %}
+				<li class="Espace"><a href="{{path('cms-live')}}">LIVE</a></li>
+			{% endif %}
+			{% if app.request.attributes.get('_route') == "cms-blog" %}
+				<li><a href="{{path('cms-blog')}}"><span id="Selection">- BLOG -</span></a></li>
+			{% else %}
+				<li class="Espace"><a href="{{path('cms-blog')}}">BLOG</a></li>
+			{% endif %}
+			{% if app.request.attributes.get('_route') == "cms-agenda" %}
+				<li><a href="{{path('cms-agenda')}}"><span id="Selection">- AGENDA -</span></a></li>
+			{% else %}
+				<li class="Espace"><a href="{{path('cms-agenda')}}">AGENDA</a></li>
+			{% endif %}
+			{% if app.request.attributes.get('_route') == "cms-contact" %}
+				<li><a href="{{path('cms-contact')}}"><span id="Selection">- CONTACT -</span></a></li>
+			{% else %}
+				<li class="Espace"><a href="{{path('cms-contact')}}">CONTACT</a></li>
+			{% endif %}
+			</ul>
 		</div>
 
 	<!-- CONTENU PRINCIPAL -->
