@@ -18,12 +18,12 @@ class HobbiesType extends AbstractType
            ->add('link')
             // ->add('type')
             ->add('imageFile', VichImageType::class);
-    }
+}
 
     public function configureOptions(OptionsResolver $resolver)
         {
             $resolver->setDefaults([
-                // 'data_class' => Hobbies::class,
+                'data_class' => Hobbies::class,
             ]);
         }
 

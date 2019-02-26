@@ -10,47 +10,18 @@ Esuria // CMS
 		<div id="Zone">
 			<div id="Zone_haut">
 				<div class="CMS_wrap" id="Blog_cms">
+				<a href="{{path('new-article')}}" ><button> Nouvelle article</button></a>
 					<div class="Article_list">
+						{% for article in articles %}
 						<div class="Article_line">
-							<p class="Article_date">14 Septembre 2017</p>
-							<p class="Article_nom">Site Web</p>
+							<p class="Article_date">{{ article.date|date() }}</p>
+							<p class="Article_nom">{{article.titre}} </p>
 							<div class="Article_Interaction">
-								<i class="fal fa-edit"></i>
-								<i class="fal fa-times"></i>
+								<a href="{{path('edit-article',{id: article.id})}}"><i class="fal fa-edit"></i></a>
+								<a href="{{path('article-delete',{id: article.id})}}"><i class="fal fa-times"></i></a>
 							</div>
-						</div>
-						<div class="Article_line">
-							<p class="Article_date">14 Septembre 2017</p>
-							<p class="Article_nom">Site Web</p>
-							<div class="Article_Interaction">
-								<i class="fal fa-edit"></i>
-								<i class="fal fa-times"></i>
-							</div>
-						</div>
-						<div class="Article_line">
-							<p class="Article_date">14 Septembre 2017</p>
-							<p class="Article_nom">Site Web</p>
-							<div class="Article_Interaction">
-								<i class="fal fa-edit"></i>
-								<i class="fal fa-times"></i>
-							</div>
-						</div>
-						<div class="Article_line">
-							<p class="Article_date">14 Septembre 2017</p>
-							<p class="Article_nom">Site Web</p>
-							<div class="Article_Interaction">
-								<i class="fal fa-edit"></i>
-								<i class="fal fa-times"></i>
-							</div>
-						</div>
-						<div class="Article_line">
-							<p class="Article_date">14 Septembre 2017</p>
-							<p class="Article_nom">Site Web</p>
-							<div class="Article_Interaction">
-								<i class="fal fa-edit"></i>
-								<i class="fal fa-times"></i>
-							</div>
-						</div>
+						</div>	
+						{% endfor %}
 					</div>
 			</div>
 		</div>

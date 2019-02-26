@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block title %}
-<title>Esuria // Biographie</title>
+    {{parent()}}
+    Biographie
 {% endblock %}
 {% block css %}
 <link type="text/css" rel="stylesheet" href={{asset("css/Index_biographie.css")}} />
@@ -10,7 +11,7 @@
 		<!-- CONTENU -->
 		<div id="Zone">
 			<div id="Hobbies_Switch">
-				<a href="/acceuil">Nouveauté</a>
+				<a href="{{path('accueil')}}">Nouveauté</a>
 				<a href="/presentation">Présentation</a>
 				<a href="#"><i class="far fa-chevron-left"></i><span class="Current">Biographie</span><i class="far fa-chevron-right"></i></a>
 			</div>

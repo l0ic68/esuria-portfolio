@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block title %}
-{{parent()}} {{article.path}}</title>
+{{parent()}} {{article.path}}
 {% endblock %}
 {% block css %}
 <link type="text/css" rel="stylesheet" href={{asset("css/Lecture_Article.css")}} />
@@ -10,7 +10,7 @@
 		<div id="Zone">
 			<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/1280x200" class="Photo"></a>
 				<h1 id="Titre">
-						{{article.titre}}
+						{{article.titre|raw}}
 					</h1>
 				<div id="Cat">
 					<h2 id="Categorie">
@@ -25,7 +25,7 @@
 				</div>
 
 				<p id="Interieur">
-				{{article.texte}}
+				{{article.texte|raw}}
 				</p>
 
 				<div id="After_Article">

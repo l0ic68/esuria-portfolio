@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Article;
+use App\Form\BlogType;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,19 +36,47 @@ class ArticleController extends Controller
     public function lecture_article($titre, RegistryInterface $doctrine)
     {
 
-        $article = $doctrine->getRepository(Article::class)->findOneByPath($titre);
+        $article = $doctrine->getRepository(Article::class)->findOneByTitre($titre);
         return $this->render('base/lecture_article.html.twig',array(
             "article" => $article,
         ));
 
     }
 
-    public function new_article(RegistryInterface $doctrine)
+    public function new_article(RegistryInterface $doctrine,Request $request)
     {
 
-        // $article = $doctrine->getRepository(Article::class)->findOneByPath($titre);
+        $article = new Article();
+        $form = $this->createForm(BlogType::class, $article);
+        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            #$article->setType($type);
+            $em->persist($article);
+            $em->flush();
+            return $this->redirectToRoute('cms-blog');
+        }
         return $this->render('CMS/new_article.html.twig',array(
-            // "article" => $article,
+            "form" => $form->createView(),
+        ));
+
+    }
+    public function edit_article(RegistryInterface $doctrine,Request $request,$id)
+    {
+        $article = $doctrine->getRepository(Article::class)->find($id);
+        $form = $this->createForm(BlogType::class, $article);
+        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            #$article->setType($type);
+            $em->persist($article);
+            $em->flush();
+            return $this->redirectToRoute('cms-blog');
+        }
+        return $this->render('CMS/new_article.html.twig',array(
+            "form" => $form->createView(),
         ));
 
     }
@@ -62,38 +91,9 @@ class ArticleController extends Controller
         $request_stack = $this->container->get('request_stack');
         $request = $request_stack->getCurrentRequest();
         $content = $request->getContent();
-        // print($content);
         $contentDecode = json_decode($content);
-        // $id = $contentDecode->id;
         $page = $contentDecode->page;
-       // dump($contentDecode);
-        // $dateCreation = $contentDecode->dateCreation;
-        // $dateCreation = new \Datetime($dateCreation);
-      //  dump($dateCreation->format("Y/m/d h:m:s"));
-        // $result = date('Y-m-d H:i:s',$dateCreation->timestamp);
         $biens = $doctrine->getRepository(Article::class)->myGetArticle($page);
-        // for($i = 0; $i<sizeof($biens) ;$i++)
-        // {
-        //     $biens[$i]['dateCreation'] = $biens[$i]['dateCreation']->format("Y/m/d H:i:s");
-        //     $biens[$i]["prixDeVente"] =   $biens[$i][1];
-        //     unset( $biens[$i][1]);
-        //     $biens[$i]["titre"] =   $biens[$i][2];
-        //     unset( $biens[$i][2]);
-        //     $biens[$i]["surfaceHabitable"] =   $biens[$i][3];
-        //     unset( $biens[$i][3]);
-        //     $biens[$i]["ville"] =   $biens[$i][4];
-        //     unset( $biens[$i][4]);
-        //     $biens[$i]["adresse"] =   $biens[$i][5];
-        //     unset( $biens[$i][5]);
-        //     $biens[$i]["nbreChambre"] =   $biens[$i][6];
-        //     unset( $biens[$i][6]);
-        //     $biens[$i]["nbreSalleDeBain"] =   $biens[$i][7];
-        //     unset( $biens[$i][7]);
-        //     // dump($bien);
-        //     // $bien["dateCreation"] = $bien["dateCreation"]->format("Y/m/d h:m:s");
-        // }
-        // var_dump($biens);
-       // $message = $doctrine->getRepository(Message::class)->findByConversation($convo,array('dateEnvoi' => 'desc'),10,10);
         $encoders = array(new XmlEncoder(), new JsonEncoder());
         $normalizer = new ObjectNormalizer();
         $normalizer->setCircularReferenceLimit(2);

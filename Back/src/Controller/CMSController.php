@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Hobbies;
+use App\Entity\Article;
 use App\Repository\HobbiesRepository;
 use App\Form\HobbiesType;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -60,6 +61,7 @@ class CMSController extends Controller
         if ($form->isSubmitted() && $form->isValid())
         {
             $Hobbies->setType($type);
+            $Hobbies->setType("yolo");
             $em->persist($Hobbies);
             $em->flush();
             return $this->redirectToRoute('cms-hobbies');
@@ -69,7 +71,8 @@ class CMSController extends Controller
     }
 
     /**
-     * @Route("/cms-hobbies/{slug}-{id}", name="hobbies-show", requirements={"slug": "[a-z0-9\-]*"})
+     * @Route("/cms-hobbies/{id}", name="hobbies-show")
+    //  * @Route("/cms-hobbies/{slug}-{id}", name="hobbies-show", requirements={"slug": "[a-z0-9\-]*"})
     */
     public function show($slug, $id, RegistryInterface $doctrine, Request $request)
     {
@@ -79,8 +82,11 @@ class CMSController extends Controller
         $em = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid())
         {
-          Var_dump($request);
+          dump($Hobbies->getFilename());
+          $Hobbies->setFilename("test");
+          dump($Hobbies->getFilename());
           $em->persist($Hobbies);
+	  //var_dump($em);
           $em->flush();
         //  return $this->redirectToRoute('cms-hobbies');
         }
@@ -99,9 +105,24 @@ class CMSController extends Controller
     /**
      * @Route("/cms-blog", name="cms-blog")
      */
-    public function cms_blog()
+    public function cms_blog(RegistryInterface $doctrine)
     {
-        return $this->render('cms_base/cms_blog.html.twig');
+	$articles = $doctrine->getRepository(Article::class)->findAll(); 
+        return $this->render('cms_base/cms_blog.html.twig',[
+	"articles" => $articles,
+	]);
+    }
+
+    /**
+     * @Route("/article-delete/{id}", name="article-delete")
+     */
+    public function delete_article(RegistryInterface $doctrine,$id)
+    {
+	$em  = $this->getDoctrine()->getManager();
+	$article = $doctrine->getRepository(Article::class)->find($id);
+	$em->remove($article);
+	$em->flush(); 
+        return $this->redirectToRoute("cms-blog");
     }
 
     /**
