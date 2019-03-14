@@ -8,6 +8,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\HobbiesRepository")
@@ -24,16 +26,27 @@ class Hobbies
     private $id;
 
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $filename;
 
-    /**
-    * @var File
-    * @Vich\UploadableField(mapping="hobbies_image", fileNameProperty="filename")
-    */
-    private $imageFile;
+     /**
+     * @ORM\Column(type="string")
+     *
+     * @Assert\NotBlank(message="Please, upload the product brochure as a PDF file.")
+    
+     */
+    private $thumbnail;
+//@Assert\File(mimeTypes={ "img/*" })
+    public function getThumbnail()
+    {
+        return $this->thumbnail;
+    }
+
+    public function setThumbnail($thumbnail)
+    {
+        $this->thumbnail = $thumbnail;
+
+        return $this;
+    }
+
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -55,7 +68,8 @@ class Hobbies
     
     public function __construct()
     {
-        $this->image = new EmbeddedFile();
+        // $this->image = new EmbeddedFile();
+        $this->updatedAt = new \DateTime("now");
     }
 
     public function getId(): ?int
@@ -92,42 +106,6 @@ class Hobbies
         $this->type = $type;
 
         return $this;
-    }
-
-    public function getFilename(): ?string
-    {
-        return $this->filename;
-    }
-
-    public function setFilename(string $filename): Hobbies
-    {
-        $this->filename = $filename;
-        return $this;
-    }
-
-    public function getImageFile(): ?File
-    {
-        return $this->imageFile;
-    }
-
-        /**
-     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
-     * of 'UploadedFile' is injected into this setter to trigger the  update. If this
-     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
-     * must be able to accept an instance of 'File' as the bundle will inject one here
-     * during Doctrine hydration.
-     *
-     * @param File|UploadedFile $imageFile
-     */
-    public function setImageFile(?File $imageFile = null)
-    {
-        $this->imageFile = $imageFile;
-
-        if (null !== $imageFile) {
-            // It is required that at least one field changes if you are using doctrine
-            // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
-        }
     }
 
 }

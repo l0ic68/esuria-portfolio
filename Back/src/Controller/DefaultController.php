@@ -5,6 +5,9 @@ namespace App\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Hobbies;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+
 
 class DefaultController extends Controller
 {
@@ -61,6 +64,18 @@ class DefaultController extends Controller
     public function blog()
     {
         return $this->render('base/blog.html.twig');
+    }
+    /**
+     * @Route("/hobbies", name="hobbies")
+     */
+    public function hobbies(RegistryInterface $doctrine)
+    {
+        $hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
+        $album_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Album_Moment");
+        return $this->render('base/hobbies.html.twig',[
+            "hobbies" => $hobbies,
+            "album_moment" => $album_moment,
+        ]);
     }
 
     /**

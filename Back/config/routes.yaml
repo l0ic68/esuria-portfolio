@@ -27,6 +27,10 @@ blog:
     path: /blog
     controller: App\Controller\DefaultController::blog
 
+hobbies:
+    path: /hobbies
+    controller: App\Controller\DefaultController::hobbies
+
 getArticle:
     path: /get-article
     controller: App\Controller\ArticleController::getArticle
