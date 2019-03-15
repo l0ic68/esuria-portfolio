@@ -19,58 +19,43 @@ Esuria // CMS
 						<hr class="cms_hr" />
 						<div id="CMS_Hobbies_Musique"  class="CMS_Hobbies active">
 							<p class="CMS_Titre">Album du moment</p>
-							{% set foo = 0 %}
-							{% for Hobbie in Hobbies | slice(0,10)%}
-								{% if Hobbie.type == "Album_Moment" %}
-									{% set foo = 1 %}
-								{% endif %}
-							{% endfor %}
-							{% for Hobbie in Hobbies | slice(0,10)%}
-								{% if Hobbie.type == "Album_Moment" %}
+								{% if album_moment is not null %}
 								<div class="Hobbies_Line">
-									{# <div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div> #}
-									<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
-									<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
+									<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ album_moment.image }}</div>
+									{# <div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div> #}
+									{# <a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a> #}
 								</div>
-									{% endif %}
-							{% endfor %}
-							{% if foo == 0  %}
+							{% else %}
 								<a href="{{ path ('hobbies-new',{type: "Album_Moment"}) }}">Ajouter un hobbies</a>
 							{% endif %}
 							<p class="CMS_Titre">Musique du moment</p>
 							{% set foo = 0 %}
-							{% for Hobbie in Hobbies | slice(0,10)%}
-								{% if Hobbie.type == "Musique_Moment" %}
-								{% set foo = 1 %}
+								{% if musique_moment is not null %}
 								<div class="Hobbies_Line">
 									{# <div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div> #}
-									<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
-									<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
+									<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ musique_moment.link }}</div>
+									<a href="{{ path ('hobbies-show', {id: musique_moment.id, slug: musique_moment.slug}) }}"><i class="far fa-edit"></i></a>
 								</div>
 								{% else %}
-									{% if foo == 0 %}
-									{% set foo = 1 %}
 									<a href="{{ path ('hobbies-new',{type: "Musique_Moment"}) }}">Ajouter un hobbies</a>
-									{% endif %}
 								{% endif %}
-							{% endfor %}
 							<p class="CMS_Titre">Album favoris</p>
-							{% for Hobbie in Hobbies if Hobbie.type == "Album_fav" | slice(0,10)%}
+							{% for album in album_fav | slice(0,10)%}
 							<div class="Hobbies_Line">
 								{# <div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div> #}
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
-								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
+								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ album.link }}</div>
+								<a href="{{ path ('hobbies-show', {id: album.id, slug: album.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
 							{% endfor %}
 							<a href="{{ path ('hobbies-new',{type: "Album_fav"}) }}">Ajouter un hobbies</a>
 
 							<p class="CMS_Titre">Groupe favori</p>
-							{% for Hobbie in Hobbies if Hobbie.type == "Groupe_fav" | slice(0,10)%}
+							{% for groupe in groupe_fav| slice(0,10)%}
 							<div class="Hobbies_Line">
 								{# <div class="Hobbies_image"><i class="fal fa-upload"></i> {{ Hobbie.fileName }}</div> #}
-								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div>
-								<img src="{{ vich_uploader_asset(Hobbie, 'imageFile') }}"  />
-								<a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a>
+								<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ groupe.link }}</div>
+								{# <img src="{{ vich_uploader_asset(Hobbie, 'imageFile') }}"  /> #}
+								<a href="{{ path ('hobbies-show', {id: groupe.id, slug: groupe.slug}) }}"><i class="far fa-edit"></i></a>
 							</div>
 							{% endfor %}
 							<a href="{{ path ('hobbies-new',{type: "Groupe_fav"}) }}">Ajouter un hobbies</a>

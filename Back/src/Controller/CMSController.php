@@ -40,17 +40,19 @@ class CMSController extends Controller
      */
     public function cms_hobbies(RegistryInterface $doctrine)
     {
-    /*   $Hobbies_01 = new Hobbies();
-      $Hobbies_01->setType('Album_fav')
-        ->setLink('https://youtu.be/63oAtzYeQpE');
-      $em = $this->getDoctrine()->getManager();
-      $em->persist($Hobbies_01);
-      $em->flush(); */
       $Hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
-      // dump($Hobbies);
-    //   $em = $this->getDoctrine()->getManager();
-    //   $form = $this->createForm(HobbiesType::class, $Hobbies);
-      return $this->render('cms_base/cms_hobbies.html.twig', ['Hobbies' => $Hobbies]);
+      $album_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Album_Moment");
+      $musique_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Musique_Moment");
+      $album_fav = $doctrine->getRepository(Hobbies::class)->findByType("Album_fav");
+      $groupe_fav = $doctrine->getRepository(Hobbies::class)->findByType("Groupe_fav");
+
+      return $this->render('cms_base/cms_hobbies.html.twig', [
+            'Hobbies' => $Hobbies,
+            'album_moment' => $album_moment,
+            'musique_moment' => $musique_moment,
+            'album_fav' => $album_fav,
+            'groupe_fav' => $groupe_fav,
+            ]);
     }
 
     /**

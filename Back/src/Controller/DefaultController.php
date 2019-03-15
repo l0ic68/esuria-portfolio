@@ -72,9 +72,11 @@ class DefaultController extends Controller
     {
         $hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
         $album_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Album_Moment");
+        $musique_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Musique_Moment");
         return $this->render('base/hobbies.html.twig',[
             "hobbies" => $hobbies,
             "album_moment" => $album_moment,
+            "musique_moment" => $musique_moment,
         ]);
     }
 

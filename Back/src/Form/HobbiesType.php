@@ -19,9 +19,6 @@ class HobbiesType extends AbstractType
         $builder
            ->add('link')
            ->add('thumbnail', FileType::class, ['label' => 'Brochure (PDF file)'])
-
-            // ->add('type')
-            // ->add('imageFile', VichImageType::class);
             ;
 }
 
