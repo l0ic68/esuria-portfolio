@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+ {% extends 'base.html.twig' %}
 {% block title %}
     {{parent()}}
     Blog
@@ -23,7 +23,7 @@
 					<div class="Moment_data_mobile">
 						{# <a href="htqtps://muuse Symfony\Bridge\Doctrine\RegistryInterface;
 sic.youtube.com/watch?v=f3L9_6aJi2Q&list=OLAK5uy_m0Bdl6V0SVlvhoYFWURcyTrVXENLcww18" target="_blank"><img src="../Images/Musiques/Album_du_moment/Myles_Kennedy.jpg" alt="Myles Kennedy"></a> #}
-						<a href="{{album_moment.link}}" target="_blank"><img src="../Images/Musiques/Album_du_moment/{{album_moment.thumbnail}}" alt="Myles Kennedy"></a>
+						<a href="{{album_moment.link}}" target="_blank"><img src="{{album_moment.image.path}}" alt="Myles Kennedy"></a>
 					</div>
 
 					<div class="Mobile_Moment">
@@ -41,9 +41,8 @@ sic.youtube.com/watch?v=f3L9_6aJi2Q&list=OLAK5uy_m0Bdl6V0SVlvhoYFWURcyTrVXENLcww
 						</div>
 					</div>
 					<div id="Moment_data">
-						<p style="color:white; ">link : {{album_moment.link}}</p>
 						{# <p style="color:white; ">Path : {{album_moment.filename}}</p> #}
-						<a href="{{album_moment.link}}" target="_blank"><img src="/uploads/Thumbnail/{{album_moment.thumbnail}}" alt="Myles Kennedy"></a>
+						<a href="{{album_moment.link}}" target="_blank"><img src="{{album_moment.image.path}}" alt="Myles Kennedy"></a>
 						<iframe src="https://www.youtube.com/embed/rZUppxT38Zk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 					</div>
 			</div>

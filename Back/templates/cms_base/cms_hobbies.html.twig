@@ -1,4 +1,4 @@
-{% extends 'cms_base.html.twig' %}
+{% extends 'cms_base.html.twig' %}	
 {% block title %}
 Esuria // CMS
 {% endblock %}
@@ -21,9 +21,9 @@ Esuria // CMS
 							<p class="CMS_Titre">Album du moment</p>
 								{% if album_moment is not null %}
 								<div class="Hobbies_Line">
-									<div class="Hobbies_image"><i class="fal fa-upload"></i> {{ album_moment.image }}</div>
-									{# <div class="Hobbies_Link"><i class="fal fa-link"></i> {{ Hobbie.link }}</div> #}
-									{# <a href="{{ path ('hobbies-show', {id: Hobbie.id, slug: Hobbie.slug}) }}"><i class="far fa-edit"></i></a> #}
+									{# <div class="Hobbies_image"><i class="fal fa-upload"></i> {{ album_moment.image.path }}</div> #}
+									<div class="Hobbies_Link"><i class="fal fa-link"></i> {{ album_moment.link }}</div>
+									<a href="{{ path ('hobbies-show', {id: album_moment.id, slug: album_moment.slug}) }}"><i class="far fa-edit"></i></a>
 								</div>
 							{% else %}
 								<a href="{{ path ('hobbies-new',{type: "Album_Moment"}) }}">Ajouter un hobbies</a>

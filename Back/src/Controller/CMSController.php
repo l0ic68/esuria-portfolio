@@ -2,11 +2,17 @@
 
 namespace App\Controller;
 
+/**Entity necessary in order to make the page work */
 use App\Entity\Hobbies;
+use App\Entity\Biographie;
 use App\Entity\Article;
+use App\Entity\Image;
+use App\Entity\Skill;
 use App\Repository\HobbiesRepository;
 use App\Service\FileUploader;
 use App\Form\HobbiesType;
+use App\Form\ImageType;
+use App\Form\BiographieType;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -21,9 +27,25 @@ class CMSController extends Controller
     /**
      * @Route("/cms", name="cms")
      */
-    public function cms()
+    public function cms(RegistryInterface $doctrine, Request $request)
     {
-        return $this->render('cms_base/cms_index.html.twig');
+        $bio = $doctrine->getRepository(Biographie::class)->myFindFirst();
+        $skills = $doctrine->getRepository(Skill::class)->FindAll();
+        $form = $this->createForm(BiographieType::class, $bio);
+        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            #$article->setType($type);
+            $em->persist($bio);
+            $em->flush();
+            return $this->redirectToRoute('cms');
+        }
+        return $this->render('cms_base/cms_index.html.twig',array(
+            "form" => $form->createView(),
+            "skills" => $skills,
+
+        ));
     }
 
     /**
@@ -60,23 +82,26 @@ class CMSController extends Controller
     */
     public function new_hobbies(RegistryInterface $doctrine, Request $request,$type,FileUploader $fileUploader)
     {
-        $hobbies = new Hobbies();
-        $form = $this->createForm(HobbiesType::class, $hobbies);
+        $hobbie = new Hobbies();
+        $image = new Image();
+        $form = $this->createForm(HobbiesType::class, $hobbie);
+        // $form = $this->createForm(ImageType::class, $image);
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid())
         {
-             // $file stores the uploaded PDF file
-            $file = $hobbies->getThumbnail();
-            $fileName = $fileUploader->upload($file);
-            $hobbies->setThumbnail($fileName);
-            $hobbies->setType($type);
-            $em->persist($hobbies);
+            // $file = $hobbie->getImage()->getFilename();
+            // $fileName = $fileUploader->upload($file);
+            // echo '<pre>';
+            // var_dump($filename);
+            // echo '</pre>';
+            $hobbie->setType($type);
+            $em->persist($hobbie);
             $em->flush();
             return $this->redirectToRoute('cms-hobbies');
         }
 
-        return $this->render('cms_base/new_hobbies.html.twig', ['hobbies' => $hobbies, 'form' => $form->createView()]);
+        return $this->render('cms_base/new_hobbies.html.twig', ['hobbie' => $hobbie, 'form' => $form->createView()]);
     }
 
     /**
@@ -85,22 +110,24 @@ class CMSController extends Controller
     */
     public function show($slug, $id, RegistryInterface $doctrine, Request $request)
     {
-        $Hobbies = $doctrine->getRepository(Hobbies::class)->find($id);
-        $Hobbies->setThumbnail(
-            new File($this->getParameter('uploadDirectory').'/'.$Hobbies->getThumbnail())
-        );
-        $form = $this->createForm(HobbiesType::class, $Hobbies);
+        $hobbie = $doctrine->getRepository(Hobbies::class)->find($id);
+        // echo'<pre>';
+        // var_dump($hobbie);
+        // echo'<\pre>';
+        /* Check inside the documentation in order to do that (the code should look like : new File( path to my current file )) */
+        // $hobbie->getImage()->setFilename(new File($this->uploader->getTargetDirectory().'/'.$fileName));
+        $form = $this->createForm(HobbiesType::class, $hobbie);
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid())
         {
         //   $Hobbies->setFilename("test");
-          $em->persist($Hobbies);
+          $em->persist($hobbies);
           $em->flush();
           return $this->redirectToRoute('cms-hobbies');
         }
 
-        return $this->render('cms_base/show.html.twig', ['Hobbies' => $Hobbies, 'form' => $form->createView()]);
+        return $this->render('cms_base/show.html.twig', ['hobbies' => $hobbies, 'form' => $form->createView()]);
     }
 
     /**

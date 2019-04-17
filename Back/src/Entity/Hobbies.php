@@ -9,6 +9,7 @@ use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Image;
 
 
 /**
@@ -17,36 +18,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Hobbies
 {
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
-
-
-
-     /**
-     * @ORM\Column(type="string")
-     *
-     * @Assert\NotBlank(message="Please, upload the product brochure as a PDF file.")
-    
-     */
-    private $thumbnail;
-//@Assert\File(mimeTypes={ "img/*" })
-    public function getThumbnail()
-    {
-        return $this->thumbnail;
-    }
-
-    public function setThumbnail($thumbnail)
-    {
-        $this->thumbnail = $thumbnail;
-
-        return $this;
-    }
-
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -65,10 +42,17 @@ class Hobbies
      * @var \DateTime
      */
     private $updatedAt;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $image;
     
+
     public function __construct()
     {
-        // $this->image = new EmbeddedFile();
+        // $this->image = new Image();
         $this->updatedAt = new \DateTime("now");
     }
 
@@ -104,6 +88,18 @@ class Hobbies
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(Image $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

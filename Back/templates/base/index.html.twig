@@ -15,7 +15,7 @@
   <div id="Zone_haut">
     <div id="Presentation">
       <h1>- Présentation -</h1>
-      <p>Lorem Ipsum</p>
+      <p>{{bio.presentation}}</p>
     </div>
     <div id="Parcours">
       <h1>- Parcours -</h1>
@@ -144,30 +144,12 @@
     <div id="Competences">
       <h1>- Compétences -</h1>
       <div id="Competences_data">
+      {% for skill in bio.competence %}
         <div class="Competences_line">
-          <i class="fal fa-sitemap"></i>
-          <p>Expérience Utilisateur</p>
+          <i class="{{skill.icone}}"></i>
+          <p>{{skill.name}}</p>
         </div>
-        <div class="Competences_line">
-          <i class="fal fa-paint-brush"></i>
-          <p>Interface Utilisateur</p>
-        </div>
-        <div class="Competences_line">
-          <i class="fab fa-html5"></i>
-          <p>HTML5 / CSS3</p>
-        </div>
-        <div class="Competences_line">
-          <i class="fal fa-share-alt"></i>
-          <p>Réseaux Sociaux</p>
-        </div>
-        <div class="Competences_line">
-          <i class="fal fa-video"></i>
-          <p>Audiovisuel</p>
-        </div>
-        <div class="Competences_line">
-          <i class="fal fa-cog"></i>
-          <p>Hardware</p>
-        </div>
+      {% endfor %}
       </div>
     </div>
   </div>

@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Hobbies;
+use App\Entity\Biographie;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 
@@ -19,11 +20,15 @@ class DefaultController extends Controller
       return $this->render('base/index_nouveaute.html.twig');
   }
     /**
-     * @Route("/accueil", name="accueil")
+     * @Route("/", name="accueil")
      */
-    public function index()
+    public function index(RegistryInterface $doctrine)
     {
-        return $this->render('base/index.html.twig');
+        $bio = $doctrine->getRepository(Biographie::class)->myFindFirst();
+
+        return $this->render('base/index.html.twig',array(
+            "bio"=>$bio
+    ));
     }
 
     /**

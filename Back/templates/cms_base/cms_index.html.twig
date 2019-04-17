@@ -4,6 +4,8 @@ Esuria // CMS
 {% endblock %}
 {% block css %}
 <link type="text/css" rel="stylesheet" href={{asset("css/CMS.css")}} />
+<link type="text/css" rel="stylesheet" href={{asset("css//Index.css")}} />
+
 {% endblock %}
 {% block content %}
 		<!-- CONTENU -->
@@ -16,7 +18,36 @@ Esuria // CMS
 				</div>
 			</div>
 		</div>
-
+	{{form_start(form)}}
+	<button type="submit">Edit</button>
+	{{form_end(form)}}
+	<div id="Competences">
+      <h1>- Compétences -</h1>
+      <div id="Competences_data">
+		{% for skill in skills%}
+        <div class="Competences_line">
+          <i class="{{skill.icone}}"></i>
+          <p>{{skill.name}}</p>
+        </div>
+		{% endfor %}
+        {# <div class="Competences_line">
+          <i class="fab fa-html5"></i>
+          <p>HTML5 / CSS3</p>
+        </div>
+        <div class="Competences_line">
+          <i class="fal fa-share-alt"></i>
+          <p>Réseaux Sociaux</p>
+        </div>
+        <div class="Competences_line">
+          <i class="fal fa-share-alt"></i>
+          <p>Audiovisuel</p>
+        </div>
+        <div class="Competences_line">
+          <i class="fal fa-cog"></i>
+          <p>Hardware</p>
+        </div> #}
+      </div>
+    </div>
     {% endblock %}
     {% block js %}
     {% endblock %}

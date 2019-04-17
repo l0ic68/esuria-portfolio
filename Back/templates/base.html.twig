@@ -72,9 +72,9 @@
 				{% else %}
 					<li class="Espace"><a href="{{path('projets')}}">PROJETS</a></li>
 				{% endif %}
-				{% if app.request.attributes.get('_route') == "accueil" %}
-					{# <li><a href="{{path('accueil')}}"><span id="Selection">- PRESENTATION -</span></a></li>	 #}
-					<li class="Espace"><a href="/hobbies">HOBBIES</a></li>
+				{% if app.request.attributes.get('_route') == "hobbies" %}
+					<li><a href="{{path('hobbies')}}"><span id="Selection">- HOBBIES -</span></a></li>	
+					{# <li class="Espace"><a href="/hobbies">HOBBIES</a></li> #}
 				{% else %}
 					<li class="Espace"><a href="/hobbies">HOBBIES</a></li>
 				{% endif %}

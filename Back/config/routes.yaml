@@ -1,10 +1,10 @@
 default:
-    path: /accueil
+    path: /
     controller: App\Controller\DefaultController::index
 
 
 index:
-    path: /presentation
+    path: /
     controller: App\Controller\DefaultController::index
 
 index_nouveaute:
@@ -67,6 +67,33 @@ edit-article:
     path: /edit-article/{id}
     controller: App\Controller\ArticleController::edit_article
 
+getProjet:
+    path: /get-projet
+    controller: App\Controller\ProjetController::getProjet
+
+getProjetByType:
+    path: /get-projet-selection
+    controller: App\Controller\ProjetController::getProjetBYType
+
+countProjet:
+    path: /count-projet
+    controller: App\Controller\ProjetController::countProjet
+
+searchProjet:
+    path: /search-projet
+    controller: App\Controller\ProjetController::searchProjet
+
+lecture-projet:
+    path: /lecture-projet/{titre}
+    controller: App\Controller\ProjetController::lecture_projet
+
+new-projet:
+    path: /new-projet
+    controller: App\Controller\ProjetController::new_projet
+
+edit-projet:
+    path: /edit-projet/{id}
+    controller: App\Controller\ProjetController::edit_projet
 
 
 CMS:

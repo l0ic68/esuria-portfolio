@@ -6,8 +6,7 @@ use App\Entity\Hobbies;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Vich\UploaderBundle\Form\Type\VichFileType;
-use Vich\UploaderBundle\Form\Type\VichImageType;
+use App\Form\ImageType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 
@@ -18,7 +17,9 @@ class HobbiesType extends AbstractType
     {
         $builder
            ->add('link')
-           ->add('thumbnail', FileType::class, ['label' => 'Brochure (PDF file)'])
+           ->add('image', ImageType::class)
+        //    ->add('brochure', FileType::class, ['label' => 'Brochure (PDF file)'])
+
             ;
 }
 
