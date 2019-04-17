@@ -48,3 +48,4 @@
 **/.web-server-pid
 
 **/symfony.lock
+Back/composer.lock

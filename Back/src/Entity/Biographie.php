@@ -45,6 +45,31 @@ class Biographie
      */
     private $competence;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $age;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $lieu;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $taille;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $langues;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $politique;
+
     public function __construct()
     {
         $this->competence = new ArrayCollection();
@@ -133,6 +158,66 @@ class Biographie
                 $competence->setBiographie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    public function setAge(int $age): self
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    public function getLieu(): ?string
+    {
+        return $this->lieu;
+    }
+
+    public function setLieu(string $lieu): self
+    {
+        $this->lieu = $lieu;
+
+        return $this;
+    }
+
+    public function getTaille(): ?int
+    {
+        return $this->taille;
+    }
+
+    public function setTaille(int $taille): self
+    {
+        $this->taille = $taille;
+
+        return $this;
+    }
+
+    public function getLangues(): ?string
+    {
+        return $this->langues;
+    }
+
+    public function setLangues(string $langues): self
+    {
+        $this->langues = $langues;
+
+        return $this;
+    }
+
+    public function getPolitique(): ?string
+    {
+        return $this->politique;
+    }
+
+    public function setPolitique(string $politique): self
+    {
+        $this->politique = $politique;
 
         return $this;
     }
