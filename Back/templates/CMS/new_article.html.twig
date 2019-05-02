@@ -7,21 +7,28 @@
     <link type="text/css" rel="stylesheet" href="{{asset("css/Blog.css")}}"/>
 {% endblock %}
 {% block content %}
+<div class="app">
 <h1 style="color:white">Ajout d'un nouvelle article</h1>
-{{ form_start(form) }}
-{{form_row(form.titre)}}
-<wysiwyg v-model="myHTML" />
+{# {{ form_start(form) }} #}
+{# {{form_row(form.titre)}} #}
+<wysiwyg v-model="content" />
 {# {{form_row(form.texte)}} #}
-{{form_row(form.type)}}
-{{form_row(form.path)}}
+{# {{form_row(form.type)}} #}
+{# {{form_row(form.path)}} #}
 <button>Confirm</button>	
-{{ form_end(form) }}
-
+{# {{ form_end(form) }} #}
+</div>
 
 {% endblock %}
 {% block js %}
     <script>
-    import wysiwyg from "vue-wysiwyg";
+    import wysiwyg from "node_modules/vue-wysiwyg";
     Vue.use(wysiwyg, {}); // config is optional. more below
+
+    var app = new Vue({
+            el: '#app',
+            delimiters: [
+                '{', '}'
+            ],})
     </script>
 {% endblock %}
