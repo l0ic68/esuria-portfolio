@@ -48,7 +48,7 @@
 							<div class="Project_Date">- <span class="Project_Date_Data">14 Septembre 2017</span> -</div>
 						</div>
 					</div>
-					
+
 
 					<div class="Project_Data hidden">
 					</div>
@@ -61,7 +61,7 @@
             <p>
             <template>
                  <div v-if="page == 1">
-                 <button style="background-color:blue;" v-on:click="setPage(page)">{page}</button>
+                 <button class="pag_select" v-on:click="setPage(page)">{page}</button>
                  <button v-on:click="setPage(page + 1)">{page + 1}</button>
                  <button v-on:click="setPage(page + 2)">{page + 2}</button>
                  ...
@@ -70,7 +70,7 @@
                  </div>
                  <div v-else-if="page < 3">
                  <button  v-on:click="setPage(page -1)">{page -1}</button>
-                 <button style="background-color:blue;" v-on:click="setPage(page)">{page}</button>
+                 <button class="pag_select" v-on:click="setPage(page)">{page}</button>
                  <button v-on:click="setPage(page + 1)">{page + 1}</button>
                  ...
                  <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
@@ -80,7 +80,7 @@
                  <button v-on:click="setPage(1)">1</button>
                  ...
                  <button v-on:click="setPage(page - 1)">{page - 1}</button>
-                 <button style="background-color:blue;" v-on:click="setPage(page)">{page}</button>
+                 <button class="pag_select" v-on:click="setPage(page)">{page}</button>
                  <button v-on:click="setPage(page + 1)">{page + 1}</button>
                  ...
                  <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
@@ -90,7 +90,7 @@
                  <button v-on:click="setPage(1)">1</button>
                  ...
                  <button v-on:click="setPage(page - 1)">{page - 1}</button>
-                 <button style="background-color:blue;"  v-on:click="setPage(page)">{page}</button>
+                 <button class="pag_select"  v-on:click="setPage(page)">{page}</button>
                  <button v-on:click="setPage(page + 1)">{page + 1}</button>
                  </div>
                  <div v-else-if="page == nbrPage">
@@ -98,12 +98,12 @@
                  ...
                  <button v-on:click="setPage(page - 2)">{page - 2}</button>
                  <button v-on:click="setPage(page - 1)">{page - 1}</button>
-                 <button style="background-color:blue;" v-on:click="setPage(page)">{page}</button>
+                 <button class="pag_select" v-on:click="setPage(page)">{page}</button>
                  </div>
             </template>
-           
+
                 {# { nbrPage = Math.ceil(count / 6 )}</p> #}
-				
+
             {# <div v-for="pageView in nbrPage"> #}
                 {# <button v-on:click="setPage(pageView)">{pageView}</button> #}
             {# </div> #}
@@ -155,7 +155,7 @@
                     {
                         this.page = page;
                         console.log(this.page);
-                        
+
                         if(this.select == 'All'){
                             this.getArticle();
                         }
@@ -173,7 +173,7 @@
                     else{
                         this.onLoad = false;
                     }
-                    
+
                 },
                 getArticle() {
                     console.log("get Article");
@@ -188,16 +188,16 @@
                         var getUrl = window.location;
                         var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
                         baseUrl = baseUrl.replace("annonce", "");
-                        
+
                         var json = JSON.parse(response.data);
                         var object = this;
 						this.projets = [];
-                        
+
                         $.each(json, function (key, value) {
                             object.projets.push({"titre": value.titre, "texte": value.texte, "date": value.date,"path": value.path});
                         });
                         this.onLoad = false;
-                        
+
                     })
                 },
                 search() {
