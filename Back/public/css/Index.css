@@ -96,6 +96,8 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
+  width: 100%;
+  overflow-x: scroll;
 }
 
 .BigCircle {
@@ -157,13 +159,18 @@
 .Bar {
   background-color: white;
   height: 0.2em;
-  width: 100%;
+  width: 6%;
+  max-width: 6%;
+  min-width: 6%;
 }
 
 .Bar_active {
   background-color: #bd7a00;
   height: 0.2em;
-  width: 100%;
+    width: 6%;
+    max-width: 6%;
+    min-width: 6%;
+
 }
 #Competences {
       margin-top: 1em;
