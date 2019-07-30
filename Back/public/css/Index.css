@@ -100,68 +100,32 @@
   overflow-x: scroll;
 }
 
-.BigCircle {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  border-radius: 50%;
-  position: relative;
-  width: 2em;
-  height: 2em;
-  min-width: 2em;
-  min-height: 2em;
-}
-
-.LitleCircle {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-   border-radius: 50%;
-   position: relative;
-  width: 1em;
-  height: 1em;
-  min-width: 1em;
-  min-height: 1em;
-}
-
-.BigCircle:hover, .LitleCircle:hover {
-  cursor: pointer;
-}
-
-.InsideCircle {
-  -webkit-transition: width 0.5s, height 0.5s; /* Safari */
-  transition: width 0.5s, height 0.5s;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  background-color: #000031;
-  border-radius:50%;
-  width: 90%;
-  height: 90%;
-}
-
-
-.ColorActive>.InsideCircle {
-    background-color: #003471;
-}
-
-.CircleActive>.InsideCircle  {
-    background-color: #e29000;
-    width: 90%;
-    height: 90%;
-}
-
 .Bar {
   background-color: white;
   height: 0.2em;
   width: 6%;
   max-width: 6%;
   min-width: 6%;
+}
+
+.circle {
+  position: relative;
+  background-color: white;
+  height: 24px;
+  width: 24px;
+  max-width: 24px;
+  min-width: 24px;
+  padding: 2px;
+  border-radius: 100%;
+
+}
+
+.InsideCircle {
+  position: relative;
+  background-color: red;
+  height: 100%;
+  width: 100%;
+    border-radius: 100%;
 }
 
 .Bar_active {
