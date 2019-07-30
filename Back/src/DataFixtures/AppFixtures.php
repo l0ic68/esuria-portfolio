@@ -59,6 +59,13 @@ class AppFixtures extends Fixture
         $bio->setPrenom("thomas");
         $bio->setPresentation("Bonjour thomas");
         $bio->setParcours("Bonjour thomas");
+        $bio->setAge(21);
+        $bio->setTaille(21);
+        $bio->setLieu("Moselle");
+        $bio->setLangues("Moselle");
+        $bio->setPolitique("Moselle");
+
+
         // $bio->setCompetence("Bonjour thomas");
         $bio->setPrenom("fal fa-sitemap");
         $manager->persist($bio);
