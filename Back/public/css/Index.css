@@ -120,6 +120,7 @@
   width: 6%;
   max-width: 6%;
   min-width: 6%;
+  transition-duration: 0.5s;
 }
 
 .circle {
@@ -132,6 +133,7 @@
   max-width: 28px;
   min-width: 28px;
   border-radius: 100%;
+  transition-duration: 0.5s;
 
 }
 
@@ -146,6 +148,7 @@
   min-width: 24px;
     border-radius: 100%;
     margin: 2px;
+    transition-duration: 0.5s;
 }
 
 .LitleCircle {
@@ -158,6 +161,7 @@
   max-width: 18px;
   min-width: 18px;
   border-radius: 100%;
+  transition-duration: 0.5s;
 
 }
 
@@ -172,6 +176,7 @@
   min-width: 14px;
     border-radius: 100%;
     margin: 2px;
+    transition-duration: 0.5s;
 }
 
 .Bar_active {
@@ -180,6 +185,7 @@
     width: 6%;
     max-width: 6%;
     min-width: 6%;
+    transition-duration: 0.5s;
 
 }
 
