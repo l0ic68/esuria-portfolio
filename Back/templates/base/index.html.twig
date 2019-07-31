@@ -23,36 +23,22 @@
         <div id="Info">
           <p class="Periode active" id="Periode_2012_2015">2012 - 2015</p>
           <p class="Titre_periode active" id="Titre_lycee">Lycée Charles Jully</p>
-
-          <p class="Periode" id="Periode_2012_">2012 -</p>
-          <p class="Titre_periode" id="Titre_Faeriths">Faerith's</p>
-
-          <p class="Periode" id="Periode_2015">2015</p>
-          <p class="Titre_periode" id="Titre_Viessmann">Viessmann</p>
-
-          <p class="Periode" id="Periode_2015_2017">2015 - 2017</p>
-          <p class="Titre_periode" id="Titre_SUP">SUPINFO - The International Institute of Information Technology</p>
-
-          <p class="Periode" id="Periode_2016">2016</p>
-          <p class="Titre_periode" id="Titre_CH">Centre Hospitalier de Saint-Avold</p>
-
-          <p class="Periode" id="Periode_2017_">2017 -</p>
-          <p class="Titre_periode" id="Titre_Com4Up">Com4Up</p>
-
-          <p class="Periode" id="Periode_2018_">2018 -</p>
-          <p class="Titre_periode" id="Titre_SS">Streaming School</p>
         </div>
       </div>
 
+      <i class="far fa-chevron-double-left" id="chevron_past"></i>
       <div id="Timeline_bar">
       {% set x = 0 %}
         {% for x in 0..20 %}
           <div class="Bar"></div>
           <div class="circle"><div class="InsideCircle"></div></div>
+          <div class="Bar"></div>
+          <div class="LitleCircle"><div class="InsideLitleCircle"></div></div>
           {% set x = x + 1 %}
         {% endfor %}
         <div class="Bar"></div>
       </div>
+      <i class="far fa-chevron-double-right" id="chevron_post"></i>
 
       <div id="Description">
       </div>
@@ -73,4 +59,19 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block js %}
+<script>
+  var c = 1;
+document.getElementById('chevron_past').onclick = function() {
+  c++;
+  $('#Timeline_bar>div').css( { left: 'calc(9% * ' + c + ')' } );
+};
+
+document.getElementById('chevron_post').onclick = function() {
+  c--;
+  $('#Timeline_bar>div').css( { left: 'calc(9% * ' + c + ')' } );
+};
+</script>
 {% endblock %}
