@@ -49,3 +49,5 @@
 
 **/symfony.lock
 Back/composer.lock
+
+Back/\.env
