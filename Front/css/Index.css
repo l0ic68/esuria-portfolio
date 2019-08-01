@@ -112,7 +112,7 @@
   min-height: 2em;
 }
 
-.LitleCircle {
+.LittleCircle {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -126,7 +126,7 @@
   min-height: 1em;
 }
 
-.BigCircle:hover, .LitleCircle:hover {
+.BigCircle:hover, .LittleCircle:hover {
   cursor: pointer;
 }
 

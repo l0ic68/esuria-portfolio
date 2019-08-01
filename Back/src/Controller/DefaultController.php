@@ -5,9 +5,17 @@ namespace App\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Hobbies;
 use App\Entity\Biographie;
+use App\Entity\Timeline;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 class DefaultController extends Controller
@@ -30,6 +38,31 @@ class DefaultController extends Controller
             "bio"=>$bio
     ));
     }
+
+     /**
+     * @Route("/get-timeline",name="getTimeline")
+     */
+
+    public function getTimeline(Request $request, RegistryInterface $doctrine)
+    {
+        $timeline = $doctrine->getRepository(Timeline::class)->myFindByOrder();
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizer = new ObjectNormalizer();
+        $normalizer->setCircularReferenceLimit(2);
+        // Add Circular reference handler
+        $normalizer->setCircularReferenceHandler(function ($object) {
+            return $object->getId();
+        });
+
+        $normalizers = array($normalizer);
+        $serializer = new Serializer($normalizers, $encoders);
+        $jsonContent = $serializer->serialize($timeline, 'json');
+
+        $response = new JsonResponse();
+        $response->setData($jsonContent);
+        return $response;
+    }
+
 
     /**
      * @Route("/nouveaute", name="index_nouveaute")

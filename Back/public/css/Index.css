@@ -151,7 +151,7 @@
     transition-duration: 0.5s;
 }
 
-.LitleCircle {
+.LittleCircle {
   position: relative;
   background-color: white;
   height: 18px;
@@ -164,7 +164,7 @@
   transition-duration: 0.5s;
 }
 
-.InsideLitleCircle {
+.InsideLittleCircle {
   position: relative;
   background-color: #003471;
   height: 14px;
@@ -176,6 +176,9 @@
     border-radius: 100%;
     margin: 2px;
     transition-duration: 0.5s;
+}
+.circle:hover, .LittleCircle:hover {
+  cursor: pointer; 
 }
 
 .active {
