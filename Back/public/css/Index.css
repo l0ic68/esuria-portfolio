@@ -162,7 +162,6 @@
   min-width: 18px;
   border-radius: 100%;
   transition-duration: 0.5s;
-
 }
 
 .InsideLitleCircle {
@@ -179,15 +178,11 @@
     transition-duration: 0.5s;
 }
 
-.Bar_active {
+.active {
   background-color: #bd7a00;
-  height: 0.2em;
-    width: 6%;
-    max-width: 6%;
-    min-width: 6%;
-    transition-duration: 0.5s;
-
 }
+
+
 
 #chevron_post
 {

@@ -21,8 +21,8 @@
       <h1>- Parcours -</h1>
       <div id="Timeline">
         <div id="Info">
-          <p class="Periode active" id="Periode_2012_2015">2012 - 2015</p>
-          <p class="Titre_periode active" id="Titre_lycee">Lycée Charles Jully</p>
+          <p class="Periode" id="Periode_2012_2015">2012 - 2015</p>
+          <p class="Titre_periode" id="Titre_lycee">Lycée Charles Jully</p>
         </div>
       </div>
 
@@ -40,6 +40,15 @@
           <div class="LitleCircle"><div class="InsideLitleCircle"></div></div>
           {% set x = x + 1 %}
         {% endfor %}
+
+        {% set x = 0 %}
+          {% for x in 0..2 %}
+            <div class="Bar"></div>
+            <div class="circle"><div class="InsideCircle active"></div></div>
+            <div class="Bar active"></div>
+            <div class="LitleCircle"><div class="InsideLitleCircle active"></div></div>
+            {% set x = x + 1 %}
+          {% endfor %}
         <div class="Bar"></div>
       </div>
       <i class="far fa-chevron-double-right" id="chevron_post"></i>
@@ -77,5 +86,10 @@ document.getElementById('chevron_post').onclick = function() {
   c--;
   $('#Timeline_bar>div').css( { left: 'calc(9% * ' + c + ')' } );
 };
+
+document.getElementsByClassName('Circle').onclick = function() {
+  alert('test');
+};
+
 </script>
 {% endblock %}
