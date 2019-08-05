@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+{{parent()}} {{article.path}}
+{% endblock %}
+{% block css %}
+<link type="text/css" rel="stylesheet" href={{asset("css/Lecture_Article.css")}} />
+{% endblock %}
+{% block content %}
+		<!-- CONTENU -->
+		<div id="Zone">
+			<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/1280x200" class="Photo"></a>
+				<h1 id="Titre">
+						{{article.titre|raw}}
+					</h1>
+				<div id="Cat">
+					<h2 id="Categorie">
+							{{article.type}}
+						</h2>
+					<p id="Separation_Categorie">
+						|
+					</p>
+					<p id="Date">
+						Posté le {{article.date|date("d/m/y")}}
+					</p>
+				</div>
+
+				<p id="Interieur">
+				{{article.texte|raw}}
+				</p>
+
+				<div id="After_Article">
+					<p id="Hashtag">
+						#Technologie #UX #Web
+					</p>
+					<div id="Social_share">
+						<i class="fab fa-facebook espace_icone" aria-hidden></i>
+						<i class="fab fa-twitter espace_icone" aria-hidden></i>
+						<i class="fab fa-tumblr-square espace_icone" aria-hidden></i>
+					</div>
+				</div>
+
+				<div id="Total_com">
+					<p id="Espace_Commentaire">
+						Commentaire
+					</p>
+					<textarea id="Zone_com"></textarea>
+					<div id="Bouton_envoie">
+						ENVOYER
+					</div>
+				</div>
+		</div>
+{% endblock %}

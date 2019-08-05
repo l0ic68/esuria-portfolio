@@ -105,8 +105,8 @@ class CMSController extends Controller
     }
 
     /**
-     * @Route("/cms-hobbies/{id}", name="hobbies-show")
-    //  * @Route("/cms-hobbies/{slug}-{id}", name="hobbies-show", requirements={"slug": "[a-z0-9\-]*"})
+     //* @Route("/cms-hobbies/{id}", name="hobbies-show")
+     * @Route("/cms-hobbies/{slug}-{id}", name="hobbies-show", requirements={"slug": "[a-z0-9\-]*"})
     */
     public function show($slug, $id, RegistryInterface $doctrine, Request $request)
     {
@@ -116,18 +116,23 @@ class CMSController extends Controller
         // echo'<\pre>';
         /* Check inside the documentation in order to do that (the code should look like : new File( path to my current file )) */
         // $hobbie->getImage()->setFilename(new File($this->uploader->getTargetDirectory().'/'.$fileName));
+        $hobbie->getImage()->setFilename(new File($this->getParameter('uploadDirectory') . '/' . $hobbie->getImage()->getFilename()));
         $form = $this->createForm(HobbiesType::class, $hobbie);
+        $saveHobbie = $hobbie->getImage()->getFilename();
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid())
         {
+            $data = $form->getData();
+            if ($data->getImage()->getFilename() == null)
+            $data->getImage()->setFilename($saveHobbie);
         //   $Hobbies->setFilename("test");
-          $em->persist($hobbies);
+          $em->persist($hobbie);
           $em->flush();
           return $this->redirectToRoute('cms-hobbies');
         }
 
-        return $this->render('cms_base/show.html.twig', ['hobbies' => $hobbies, 'form' => $form->createView()]);
+        return $this->render('cms_base/show.html.twig', ['hobbie' => $hobbie, 'form' => $form->createView()]);
     }
 
     /**

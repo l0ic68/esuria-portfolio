@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    {{parent()}}
+    Blog
+{% endblock %}
+{% block css %}
+    <link type="text/css" rel="stylesheet" href="{{asset("css/Hobbies_Musique.css")}}"/>
+{% endblock %}
+{% block content %}
+    <!-- CONTENU -->
+    <div id="Zone">
+        <div id="Hobbies_Switch">
+            <a href="{{path('hobbies')}}">
+                <i class="fal fa-music"></i>
+            </a>
+            <a href="{{path('hobbiesJeux')}}">
+                <i class="far fa-chevron-left"></i>
+                <i class="fal fa-gamepad"></i>
+                <i class="far fa-chevron-right"></i>
+            </a>
+            <a href="{{path('hobbiesFilm')}}">
+                <i class="fal fa-film-alt"></i>
+            </a>
+            <a href="{{path('hobbiesLivre')}}">
+                <i class="fal fa-book"></i>
+            </a>
+        </div>
+        <div id="Zone_bas">
+            <div class="Wrap">
+                <div class="Mobile_Moment" id="Margin_Musique">
+                    <p>Album du moment</p>
+                </div>
+                <div
+                    class="Moment_data_mobile">
+                    {# <a href="htqtps://muuse Symfony\Bridge\Doctrine\RegistryInterface;
+                                                                                                                                                                                                                                                                    sic.youtube.com/watch?v=f3L9_6aJi2Q&list=OLAK5uy_m0Bdl6V0SVlvhoYFWURcyTrVXENLcww18" target="_blank"><img src="../Images/Musiques/Album_du_moment/Myles_Kennedy.jpg" alt="Myles Kennedy"></a> #}
+                    <a href="{{album_moment.link}}" target="_blank"><img src="{{album_moment.image.path}}" alt="{{album_moment.image.alt}}"></a>
+                </div>
+
+                <div class="Mobile_Moment">
+                    <p>Musique du moment</p>
+                </div>
+                <div class="Moment_data_mobile">
+                    <iframe allow="autoplay; encrypted-media" allowfullscreen frameborder="0" src="https://www.youtube.com/embed/rZUppxT38Zk"></iframe>
+                </div>
+                <div id="Moment">
+                    <div class="Moment_2">
+                        <p>Album&nbsp;du&nbsp;moment</p>
+                    </div>
+                    <div class="Moment_2">
+                        <p>Musique&nbsp;du&nbsp;moment</p>
+                    </div>
+                </div>
+                <div
+                    id="Moment_data">
+                    {# <p style="color:white; ">Path : {{album_moment.filename}}</p> #}
+                    <a href="{{album_moment.link}}" target="_blank"><img src="{{album_moment.image.path}}" alt="{{album_moment.image.alt}}"></a>
+                    <iframe allow="autoplay; encrypted-media" allowfullscreen frameborder="0" src="https://www.youtube.com/embed/rZUppxT38Zk"></iframe>
+                </div>
+            </div>
+
+            <div class="Wrap">
+                <div class="Favori">
+                    <p>Albums Favoris</p>
+                </div>
+                <div class="Article_element">
+                    {%  set countAlbumFav = 0 %}
+                    {% for hobbie in hobbies if hobbie.type == "Album_fav" %}
+                        {% if countAlbumFav == 5 %}
+                            {%  set countAlbumFav = 0 %}
+                        {% endif %}
+                        <div class="Une_Boite">
+                            <a href="{{hobbie.link}}" target="_blank"><img alt="{{hobbie.image.alt}}" src="{{hobbie.image.path}}"></a>
+                        </div>
+                        {% set countAlbumFav = countAlbumFav + 1 %}
+                    {% endfor %}
+                    {% for i in  countAlbumFav..4 if countAlbumFav != 5 %}
+                        <div class="Une_Boite hidden"></div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="Wrap">
+                <div class="Favori">
+                    <p>Groupes Favoris</p>
+                </div>
+                <div class="Article_element_groupe">
+                    {%  set countGroupeFav = 0 %}
+
+                    {% for hobbie in hobbies if hobbie.type == "Groupe_fav" %}
+                        {% if countGroupeFav == 5 %}
+                            {%  set countGroupeFav = 0 %}
+                        {% endif %}
+                        <div class="Une_Boite_groupe">
+                            <a href="{{hobbie.link}}" target="_blank"><img src="{{hobbie.image.path}}" alt="{{hobbie.image.alt}}"></a>
+                        </div>
+                        {% set countGroupeFav = countGroupeFav + 1 %}
+                    {% endfor %}
+                    {% for i in  countGroupeFav..4 if countGroupeFav != 5 %}
+                        <div class="Une_Boite_groupe hidden"></div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script crossorigin="anonymous" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script</script>
+{% endblock %}

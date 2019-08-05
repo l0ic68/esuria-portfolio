@@ -51,3 +51,5 @@
 Back/composer.lock
 
 Back/\.env
+
+Back/public/uploads/Thumbnail/

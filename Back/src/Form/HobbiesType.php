@@ -17,7 +17,9 @@ class HobbiesType extends AbstractType
     {
         $builder
            ->add('link')
-           ->add('image', ImageType::class)
+           ->add('image', ImageType::class, [
+               'required' => false,
+           ])
         //    ->add('brochure', FileType::class, ['label' => 'Brochure (PDF file)'])
 
             ;

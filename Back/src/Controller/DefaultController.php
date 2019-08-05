@@ -20,13 +20,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DefaultController extends Controller
 {
-  /**
-   * @Route("/default", name="default")
-   */
-  public function default()
-  {
-      return $this->render('base/index_nouveaute.html.twig');
-  }
+    /**
+     * @Route("/default", name="default")
+     */
+    public function default()
+    {
+        return $this->render('base/index_nouveaute.html.twig');
+    }
     /**
      * @Route("/", name="accueil")
      */
@@ -34,12 +34,12 @@ class DefaultController extends Controller
     {
         $bio = $doctrine->getRepository(Biographie::class)->myFindFirst();
 
-        return $this->render('base/index.html.twig',array(
-            "bio"=>$bio
-    ));
+        return $this->render('base/index.html.twig', array(
+            "bio" => $bio
+        ));
     }
 
-     /**
+    /**
      * @Route("/get-timeline",name="getTimeline")
      */
 
@@ -111,7 +111,60 @@ class DefaultController extends Controller
         $hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
         $album_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Album_Moment");
         $musique_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Musique_Moment");
-        return $this->render('base/hobbies.html.twig',[
+        $album_fav = $doctrine->getRepository(Hobbies::class)->findByType("Album_fav");
+        $groupe_fav = $doctrine->getRepository(Hobbies::class)->findByType("Groupe_fav");
+        return $this->render('base/hobbies_musique.html.twig', [
+            "hobbies" => $hobbies,
+            "album_moment" => $album_moment,
+            "musique_moment" => $musique_moment,
+        ]);
+    }
+
+    /**
+     * @Route("/hobbies-jeux", name="hobbiesJeux")
+     */
+    public function hobbiesJeux(RegistryInterface $doctrine)
+    {
+        $hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
+        $album_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Album_Moment");
+        $musique_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Musique_Moment");
+        $album_fav = $doctrine->getRepository(Hobbies::class)->findByType("Album_fav");
+        $groupe_fav = $doctrine->getRepository(Hobbies::class)->findByType("Groupe_fav");
+        return $this->render('base/hobbies_jeux.html.twig', [
+            "hobbies" => $hobbies,
+            "album_moment" => $album_moment,
+            "musique_moment" => $musique_moment,
+        ]);
+    }
+
+    /**
+     * @Route("/hobbies-film", name="hobbiesFilm")
+     */
+    public function hobbiesFilm(RegistryInterface $doctrine)
+    {
+        $hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
+        $album_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Album_Moment");
+        $musique_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Musique_Moment");
+        $album_fav = $doctrine->getRepository(Hobbies::class)->findByType("Album_fav");
+        $groupe_fav = $doctrine->getRepository(Hobbies::class)->findByType("Groupe_fav");
+        return $this->render('base/hobbies_musique.html.twig', [
+            "hobbies" => $hobbies,
+            "album_moment" => $album_moment,
+            "musique_moment" => $musique_moment,
+        ]);
+    }
+
+    /**
+     * @Route("/hobbies-livre", name="hobbiesLivre")
+     */
+    public function hobbiesLivre(RegistryInterface $doctrine)
+    {
+        $hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
+        $album_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Album_Moment");
+        $musique_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Musique_Moment");
+        $album_fav = $doctrine->getRepository(Hobbies::class)->findByType("Album_fav");
+        $groupe_fav = $doctrine->getRepository(Hobbies::class)->findByType("Groupe_fav");
+        return $this->render('base/hobbies_musique.html.twig', [
             "hobbies" => $hobbies,
             "album_moment" => $album_moment,
             "musique_moment" => $musique_moment,

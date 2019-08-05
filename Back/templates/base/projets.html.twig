@@ -42,7 +42,7 @@
 
 				<div  v-if="onLoad == false" id="Project_Content">
 					<div v-for="projet in projets"  class="Project_Data">
-                		<a v-bind:href="'/lecture-projet/' + projet.titre" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
+                		<a v-bind:href="'/lecture-projet/' + projet.path" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
 						<div class="Project_Info Web">
 							<div class="Project_Type">{projet.titre}</div>
 							<div class="Project_Date">- <span class="Project_Date_Data">14 Septembre 2017</span> -</div>

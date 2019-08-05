@@ -62,7 +62,7 @@
 
 			<nav id="Navigation_principale">
 				<ul>
-				{% if app.request.attributes.get('_route') == "accueil" %}
+				{% if app.request.attributes.get('_route') == "accueil" or app.request.attributes.get('_route') == "index_nouveaute" or app.request.attributes.get('_route') == "index_biographie" %}
 					<li><a href="{{path('accueil')}}"><span id="Selection">- PRESENTATION -</span></a></li>
 				{% else %}
 					<li class="Espace"><a href="{{path('accueil')}}">PRESENTATION</a></li>
