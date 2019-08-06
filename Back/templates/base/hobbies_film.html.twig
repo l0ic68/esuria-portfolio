@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    {{parent()}}
+    Blog
+{% endblock %}
+{% block css %}
+    <link type="text/css" rel="stylesheet" href="{{asset("css/Hobbies_Musique.css")}}"/>
+{% endblock %}
+{% block content %}
+    <!-- CONTENU -->
+    <div id="Zone">
+        <div id="Hobbies_Switch">
+            <a href="{{path('hobbies')}}">
+                <i class="fal fa-music"></i>
+            </a>
+            <a href="{{path('hobbiesJeux')}}">
+                <i class="fal fa-gamepad"></i>
+            </a>
+            <a href="{{path('hobbiesFilm')}}">
+                <i class="far fa-chevron-left"></i>
+                <i class="fal fa-film-alt active"></i>
+                <i class="far fa-chevron-right"></i>
+            </a>
+            <a href="{{path('hobbiesLivre')}}">
+                <i class="fal fa-book"></i>
+            </a>
+        </div>
+        <div id="Zone_bas">
+            <div class="Wrap">
+                <div class="Mobile_Moment" id="Margin_Musique">
+                    <p>Film&nbsp;du&nbsp;moment</p>
+                    <p>Serie&nbsp;du&nbsp;moment</p>
+                    <p>Anime&nbsp;du&nbsp;moment</p>
+                </div>
+                <div
+                    class="Moment_data_mobile">
+                    {# <a href="htqtps://muuse Symfony\Bridge\Doctrine\RegistryInterface;
+                                                                                                                                                                                                                                                                    sic.youtube.com/watch?v=f3L9_6aJi2Q&list=OLAK5uy_m0Bdl6V0SVlvhoYFWURcyTrVXENLcww18" target="_blank"><img src="../Images/Musiques/Album_du_moment/Myles_Kennedy.jpg" alt="Myles Kennedy"></a> #}
+                    <a href="{{film_moment.link}}" target="_blank"><img src="{{film_moment.image.path}}" alt="{{film_moment.image.alt}}"></a>
+                    <a href="{{serie_moment.link}}" target="_blank"><img src="{{serie_moment.image.path}}" alt="{{serie_moment.image.alt}}"></a>
+                    <a href="{{anime_moment.link}}" target="_blank"><img src="{{anime_moment.image.path}}" alt="{{anime_moment.image.alt}}"></a>
+                </div>
+                <div id="Moment">
+                    <div class="Moment_2">
+                        <p>Film&nbsp;du&nbsp;moment</p>
+                        <p>Serie&nbsp;du&nbsp;moment</p>
+                        <p>Anime&nbsp;du&nbsp;moment</p>
+                    </div>
+                </div>
+                <div
+                    id="Moment_data">
+                    {# <p style="color:white; ">Path : {{album_moment.filename}}</p> #}
+                    <a href="{{film_moment.link}}" target="_blank"><img src="{{film_moment.image.path}}" alt="{{film_moment.image.alt}}"></a>
+                    <a href="{{serie_moment.link}}" target="_blank"><img src="{{serie_moment.image.path}}" alt="{{serie_moment.image.alt}}"></a>
+                    <a href="{{anime_moment.link}}" target="_blank"><img src="{{anime_moment.image.path}}" alt="{{anime_moment.image.alt}}"></a>
+                </div>
+            </div>
+
+            <div class="Wrap">
+                <div class="Favori">
+                    <p>Films Favoris</p>
+                </div>
+                <div class="Article_element">
+                    {%  set countAlbumFav = 0 %}
+                    {% for hobbie in hobbies if hobbie.type == "Film_fav" %}
+                        {% if countAlbumFav == 5 %}
+                            {%  set countAlbumFav = 0 %}
+                        {% endif %}
+                        <div class="Une_Boite">
+                            <a href="{{hobbie.link}}" target="_blank"><img alt="{{hobbie.image.alt}}" src="{{hobbie.image.path}}"></a>
+                        </div>
+                        {% set countAlbumFav = countAlbumFav + 1 %}
+                    {% endfor %}
+                    {% for i in  countAlbumFav..4 if countAlbumFav != 5 %}
+                        <div class="Une_Boite hidden"></div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="Wrap">
+                <div class="Favori">
+                    <p>Séries Favoris</p>
+                </div>
+                <div class="Article_element">
+                    {%  set countAlbumFav = 0 %}
+                    {% for hobbie in hobbies if hobbie.type == "Serie_fav" %}
+                        {% if countAlbumFav == 5 %}
+                            {%  set countAlbumFav = 0 %}
+                        {% endif %}
+                        <div class="Une_Boite">
+                            <a href="{{hobbie.link}}" target="_blank"><img alt="{{hobbie.image.alt}}" src="{{hobbie.image.path}}"></a>
+                        </div>
+                        {% set countAlbumFav = countAlbumFav + 1 %}
+                    {% endfor %}
+                    {% for i in  countAlbumFav..4 if countAlbumFav != 5 %}
+                        <div class="Une_Boite hidden"></div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="Wrap">
+                <div class="Favori">
+                    <p>Animées Favoris</p>
+                </div>
+                <div class="Article_element">
+                    {%  set countAlbumFav = 0 %}
+                    {% for hobbie in hobbies if hobbie.type == "Anime_fav" %}
+                        {% if countAlbumFav == 5 %}
+                            {%  set countAlbumFav = 0 %}
+                        {% endif %}
+                        <div class="Une_Boite">
+                            <a href="{{hobbie.link}}" target="_blank"><img alt="{{hobbie.image.alt}}" src="{{hobbie.image.path}}"></a>
+                        </div>
+                        {% set countAlbumFav = countAlbumFav + 1 %}
+                    {% endfor %}
+                    {% for i in  countAlbumFav..4 if countAlbumFav != 5 %}
+                        <div class="Une_Boite hidden"></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script crossorigin="anonymous" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script</script>
+{% endblock %}

@@ -29,7 +29,7 @@
         </select>
         <div v-if="onLoad == false" class="Article_element">
             <div v-for="article in articles" class="Une_Boite">
-                <a v-bind:href="'/lecture-article/' + article.titre" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
+                <a v-bind:href="'/lecture-article/' + article.titre" class="Lien_Photo"><img :src="article.image" class="Photo"></a>
                 <div class="Sous_Bandeau">
                     <h2 class="Titre_article">
                         {article.titre}
@@ -188,13 +188,15 @@
                         var getUrl = window.location;
                         var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
                         baseUrl = baseUrl.replace("annonce", "");
-                        
+                        var base_url = window.location.origin;
                         var json = JSON.parse(response.data);
                         var object = this;
 						this.articles = [];
+                        console.log(baseUrl);
                         
                         $.each(json, function (key, value) {
-                            object.articles.push({"titre": value.titre, "texte": value.texte, "date": value.date,"path": value.path});
+                            console.log(value);
+                            object.articles.push({"titre": value.titre, "texte": value.texte, "date": value.date,"path": value.path, "image" : base_url +"/"+ value.image.path});
                         });
                         this.onLoad = false;
                         

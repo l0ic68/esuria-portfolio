@@ -126,14 +126,10 @@ class DefaultController extends Controller
     public function hobbiesJeux(RegistryInterface $doctrine)
     {
         $hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
-        $album_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Album_Moment");
-        $musique_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Musique_Moment");
-        $album_fav = $doctrine->getRepository(Hobbies::class)->findByType("Album_fav");
-        $groupe_fav = $doctrine->getRepository(Hobbies::class)->findByType("Groupe_fav");
+        $jeu_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Jeux_Moment");
         return $this->render('base/hobbies_jeux.html.twig', [
             "hobbies" => $hobbies,
-            "album_moment" => $album_moment,
-            "musique_moment" => $musique_moment,
+            "jeu_moment" => $jeu_moment,
         ]);
     }
 
@@ -143,14 +139,14 @@ class DefaultController extends Controller
     public function hobbiesFilm(RegistryInterface $doctrine)
     {
         $hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
-        $album_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Album_Moment");
-        $musique_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Musique_Moment");
-        $album_fav = $doctrine->getRepository(Hobbies::class)->findByType("Album_fav");
-        $groupe_fav = $doctrine->getRepository(Hobbies::class)->findByType("Groupe_fav");
-        return $this->render('base/hobbies_musique.html.twig', [
+        $film_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Film_Moment");
+        $serie_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Serie_Moment");
+        $anime_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Anime_Moment");
+        return $this->render('base/hobbies_film.html.twig', [
             "hobbies" => $hobbies,
-            "album_moment" => $album_moment,
-            "musique_moment" => $musique_moment,
+            "film_moment" => $film_moment,
+            "serie_moment" => $serie_moment,
+            "anime_moment" => $anime_moment,
         ]);
     }
 
@@ -160,14 +156,14 @@ class DefaultController extends Controller
     public function hobbiesLivre(RegistryInterface $doctrine)
     {
         $hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
-        $album_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Album_Moment");
-        $musique_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Musique_Moment");
-        $album_fav = $doctrine->getRepository(Hobbies::class)->findByType("Album_fav");
-        $groupe_fav = $doctrine->getRepository(Hobbies::class)->findByType("Groupe_fav");
-        return $this->render('base/hobbies_musique.html.twig', [
+        $livre_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Livre_Moment");
+        $bd_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("BD_Moment");
+        $manga_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Manga_Moment");
+        return $this->render('base/hobbies_livre.html.twig', [
             "hobbies" => $hobbies,
-            "album_moment" => $album_moment,
-            "musique_moment" => $musique_moment,
+            "livre_moment" => $livre_moment,
+            "bd_moment" => $bd_moment,
+            "manga_moment" => $manga_moment,
         ]);
     }
 

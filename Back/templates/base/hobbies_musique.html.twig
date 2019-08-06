@@ -12,7 +12,7 @@
         <div id="Hobbies_Switch">
             <a href="{{path('hobbies')}}">
                 <i class="far fa-chevron-left"></i>
-                <i class="fal fa-music"></i>
+                <i class="fal fa-music active"></i>
                 <i class="far fa-chevron-right"></i>
             </a>
             <a href="{{path('hobbiesJeux')}}">
@@ -33,15 +33,19 @@
                 <div
                     class="Moment_data_mobile">
                     {# <a href="htqtps://muuse Symfony\Bridge\Doctrine\RegistryInterface;
-                                                                                                                                                                                                                                                sic.youtube.com/watch?v=f3L9_6aJi2Q&list=OLAK5uy_m0Bdl6V0SVlvhoYFWURcyTrVXENLcww18" target="_blank"><img src="../Images/Musiques/Album_du_moment/Myles_Kennedy.jpg" alt="Myles Kennedy"></a> #}
+                                                                                                                                                                                                                                                                                        sic.youtube.com/watch?v=f3L9_6aJi2Q&list=OLAK5uy_m0Bdl6V0SVlvhoYFWURcyTrVXENLcww18" target="_blank"><img src="../Images/Musiques/Album_du_moment/Myles_Kennedy.jpg" alt="Myles Kennedy"></a> #}
                     <a href="{{album_moment.link}}" target="_blank"><img src="{{album_moment.image.path}}" alt="{{album_moment.image.alt}}"></a>
+                    <a href="{{musique_moment.link}}" target="_blank"><img src="{{musique_moment.image.path}}" alt="{{musique_moment.image.alt}}"></a>
+
                 </div>
 
                 <div class="Mobile_Moment">
                     <p>Musique du moment</p>
                 </div>
                 <div class="Moment_data_mobile">
-                    <iframe allow="autoplay; encrypted-media" allowfullscreen frameborder="0" src="https://www.youtube.com/embed/rZUppxT38Zk"></iframe>
+                    <a href="{{musique_moment.link}}" target="_blank"><img src="{{musique_moment.image.path}}" alt="{{musique_moment.image.alt}}"></a>
+
+                    {# <iframe allow="autoplay; encrypted-media" allowfullscreen frameborder="0" src="https://www.youtube.com/embed/rZUppxT38Zk"></iframe> #}
                 </div>
                 <div id="Moment">
                     <div class="Moment_2">
@@ -55,7 +59,8 @@
                     id="Moment_data">
                     {# <p style="color:white; ">Path : {{album_moment.filename}}</p> #}
                     <a href="{{album_moment.link}}" target="_blank"><img src="{{album_moment.image.path}}" alt="{{album_moment.image.alt}}"></a>
-                    <iframe allow="autoplay; encrypted-media" allowfullscreen frameborder="0" src="https://www.youtube.com/embed/rZUppxT38Zk"></iframe>
+                    <a href="{{musique_moment.link}}" target="_blank"><img src="{{musique_moment.image.path}}" alt="{{musique_moment.image.alt}}"></a>
+                    {# <iframe allow="autoplay; encrypted-media" allowfullscreen frameborder="0" src="https://www.youtube.com/embed/rZUppxT38Zk"></iframe> #}
                 </div>
             </div>
 
@@ -96,14 +101,17 @@
                         </div>
                         {% set countGroupeFav = countGroupeFav + 1 %}
                     {% endfor %}
-                {% for i in  countGroupeFav..4 if countGroupeFav != 5 %}
-                    <div class="Une_Boite_groupe hidden"></div>
-                {% endfor %}
+                    {% for i in  countGroupeFav..4 if countGroupeFav != 5 %}
+                        <div class="Une_Boite_groupe hidden"></div>
+                    {% endfor %}
+                </div>
             </div>
-        </div>
 
+        </div>
     </div>
-</div>{% endblock %}{% block js %}
-<script crossorigin="anonymous" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script</script>{% endblock %}
+{% endblock %}
+{% block js %}
+    <script crossorigin="anonymous" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script</script>
+{% endblock %}

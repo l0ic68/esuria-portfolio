@@ -4,66 +4,120 @@
     Accueil
 {% endblock %}
 {% block css %}
-<link type="text/css" rel="stylesheet" href={{asset("css/Index_nouveauté.css")}} />
+    <link type="text/css" rel="stylesheet" href={{asset("css/Index_nouveauté.css")}}/>
 {% endblock %}
 {% block content %}
-		<!-- CONTENU -->
-		<div id="Zone">
-			<div id="Hobbies_Switch">
-				<a href="#"><i class="far fa-chevron-left"></i><span class="Current">Nouveauté</span><i class="far fa-chevron-right"></i></a>
-				<a href="{{path('accueil')}}">Présentation</a>
-				<a href="{{path('index_biographie')}}">Biographie</a>
-			</div>
-			<div id="Zone_haut">
-				<h1 class="Titre">- Derniere Vidéo -</h1>
-					<iframe src="https://www.youtube.com/embed/rZUppxT38Zk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-				<h1 class="Titre">- Derniers Articles -</h1>
-				<div class="Article_element">
-					<div class="Une_Boite">
-						<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
-						<div class="Sous_Bandeau">
-							<h2 class="Titre_article">
-								Titre de l'article
-							</h2>
-							<p class="Date">
-								<span class="Couleur_slash">// </span>Vendredi 5 Mai 2017
-							</p>
-							<p class="Description">
-								Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
-							</p>
-						</div>
-					</div>
-					<div class="Une_Boite">
-						<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
-						<div class="Sous_Bandeau">
-							<h2 class="Titre_article">
-								Titre de l'article
-							</h2>
-							<p class="Date">
-								<span class="Couleur_slash">// </span>Vendredi 5 Mai 2017
-							</p>
-							<p class="Description">
-								Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
-							</p>
-						</div>
-					</div>
-					<div class="Une_Boite">
-						<a href="https://placeholder.com" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
-						<div class="Sous_Bandeau">
-							<h2 class="Titre_article">
-								Titre de l'article
-							</h2>
-							<p class="Date">
-								<span class="Couleur_slash">// </span>Vendredi 5 Mai 2017
-							</p>
-							<p class="Description">
-								Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
-							</p>
-						</div>
-					</div>
+    <!-- CONTENU -->
+    <div id="Zone">
+        <div id="Hobbies_Switch">
+            <a href="#">
+                <i class="far fa-chevron-left"></i>
+                <span class="Current">Nouveauté</span>
+                <i class="far fa-chevron-right"></i>
+            </a>
+            <a href="{{path('accueil')}}">Présentation</a>
+            <a href="{{path('index_biographie')}}">Biographie</a>
+        </div>
+        <div id="app">
+            <div id="Zone_haut">
+                <h1 class="Titre">- Derniere Vidéo -</h1>
+                <iframe :src="video"  width="320" height="180" allow="autoplay; encrypted-media" allowfullscreen frameborder="0"></iframe>
+                <h1 class="Titre">- Derniers Articles -</h1>
+                <div class="Article_element">
+                    <div class="Une_Boite">
+                        <a class="Lien_Photo" href="https://placeholder.com"><img class="Photo" src="http://via.placeholder.com/320x180"></a>
+                        <div class="Sous_Bandeau">
+                            <h2 class="Titre_article">
+                                Titre de l'article
+                            </h2>
+                            <p class="Date">
+                                <span class="Couleur_slash">//
+                                </span>Vendredi 5 Mai 2017
+                            </p>
+                            <p class="Description">
+                                Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
+                            </p>
+                        </div>
+                    </div>
+                    <div class="Une_Boite">
+                        <a class="Lien_Photo" href="https://placeholder.com"><img class="Photo" src="http://via.placeholder.com/320x180"></a>
+                        <div class="Sous_Bandeau">
+                            <h2 class="Titre_article">
+                                Titre de l'article
+                            </h2>
+                            <p class="Date">
+                                <span class="Couleur_slash">//
+                                </span>Vendredi 5 Mai 2017
+                            </p>
+                            <p class="Description">
+                                Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
+                            </p>
+                        </div>
+                    </div>
+                    <div class="Une_Boite">
+                        <a class="Lien_Photo" href="https://placeholder.com"><img class="Photo" src="http://via.placeholder.com/320x180"></a>
+                        <div class="Sous_Bandeau">
+                            <h2 class="Titre_article">
+                                Titre de l'article
+                            </h2>
+                            <p class="Date">
+                                <span class="Couleur_slash">//
+                                </span>Vendredi 5 Mai 2017
+                            </p>
+                            <p class="Description">
+                                Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
+                            </p>
+                        </div>
+                    </div>
 
-				</div>
-				<h1 class="Titre">- Instagram -</h1>
-			</div>
-		</div>
+                </div>
+                <h1 class="Titre">- Instagram -</h1>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script crossorigin="anonymous" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="{{asset('js/vue.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            delimiters: [
+                '{', '}'
+            ],
+            data: {
+                videos: [],
+				video : "",
+            },
+            mounted() {
+                this.getCount();
+            },
+            methods: {
+                getCount() {
+                    axios({method: 'get', url: 'https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCiSDuWuCMrs-hafoBTUbQkg&key=AIzaSyDX6MnQaZp1TXOmbsmfEhSTnyhYUGAj2F4'}).then(response => {
+                        // console.log(response.data.items)
+                        // console.log(JSON.parse(response.data.items));
+                        // var json = JSON.parse(response.data.items);
+                        var object = this;
+                        var lastVideoId = "";
+                        $.each(response.data.items, function (key, value) {
+                            console.log(value)
+                            if (value.id.kind != "youtube#channel") {
+                                object.videos.push({"videoId": value.id.videoId, "date": value.snippet.publishedAt});
+                            }
+                        });
+                        this.videos.sort(function (a, b) {
+                            // Turn your strings into dates, and then subtract them
+                            // to get a value that is either negative, positive, or zero.
+                            return new Date(b.date).getTime() - new Date(a.date).getTime();
+                        });
+						this.video = "https://www.youtube.com/embed/" + this.videos[0].videoId
+                    })
+                }
+            }
+        })
+    </script>
 {% endblock %}

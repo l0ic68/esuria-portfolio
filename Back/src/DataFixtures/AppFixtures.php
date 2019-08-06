@@ -6,6 +6,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Article;
 use App\Entity\Projet;
+use App\Entity\Image;
 use App\Entity\Skill;
 use App\Entity\Biographie;
 
@@ -13,13 +14,20 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+
         for($i = 1;$i < 100; $i++){
+            $img = new Image();
+            $img->setAlt("article" . $i);
+            $img->setFilename("gta5.jpeg");
+            $img->setPath("uploads/Thumnail/gta5.jpeg");
             $article = new Article();
             $article->setTitre('Article titre '. $i);
             $article->setTexte('Lorem Ipsum text '. $i);
             $article->setType(self::getRandomSelection());
             $article->setPath('article-titre-'.$i);
+            $article->setImage($img);
             $manager->persist($article);
+            $manager->persist($img);
         }
         for($i = 1;$i < 100; $i++){
             $projet = new Projet();

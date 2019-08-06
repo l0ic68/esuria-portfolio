@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 /**Entity necessary in order to make the page work */
+
 use App\Entity\Hobbies;
 use App\Entity\Biographie;
 use App\Entity\Article;
@@ -34,14 +35,13 @@ class CMSController extends Controller
         $form = $this->createForm(BiographieType::class, $bio);
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             #$article->setType($type);
             $em->persist($bio);
             $em->flush();
             return $this->redirectToRoute('cms');
         }
-        return $this->render('cms_base/cms_index.html.twig',array(
+        return $this->render('cms_base/cms_index.html.twig', array(
             "form" => $form->createView(),
             "skills" => $skills,
 
@@ -62,25 +62,39 @@ class CMSController extends Controller
      */
     public function cms_hobbies(RegistryInterface $doctrine)
     {
-      $Hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
-      $album_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Album_Moment");
-      $musique_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Musique_Moment");
-      $album_fav = $doctrine->getRepository(Hobbies::class)->findByType("Album_fav");
-      $groupe_fav = $doctrine->getRepository(Hobbies::class)->findByType("Groupe_fav");
+        $Hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
+        $album_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Album_Moment");
+        $musique_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Musique_Moment");
+        $jeu_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Jeux_Moment");
+        $film_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Film_Moment");
+        $serie_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Serie_Moment");
+        $anime_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Anime_Moment");
+        $livre_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Livre_Moment");
+        $bd_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("BD_Moment");
+        $manga_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Manga_Moment");
+        $album_fav = $doctrine->getRepository(Hobbies::class)->findByType("Album_fav");
+        $groupe_fav = $doctrine->getRepository(Hobbies::class)->findByType("Groupe_fav");
 
-      return $this->render('cms_base/cms_hobbies.html.twig', [
+        return $this->render('cms_base/cms_hobbies.html.twig', [
             'Hobbies' => $Hobbies,
             'album_moment' => $album_moment,
             'musique_moment' => $musique_moment,
+            'jeu_moment' => $jeu_moment,
+            'film_moment' => $film_moment,
+            'serie_moment' => $serie_moment,
+            'anime_moment' => $anime_moment,
+            'livre_moment' => $livre_moment,
+            'bd_moment' => $bd_moment,
+            'manga_moment' => $manga_moment,
             'album_fav' => $album_fav,
             'groupe_fav' => $groupe_fav,
-            ]);
+        ]);
     }
 
     /**
      * @Route("/hobbies-new/{type}", name="hobbies-new")
-    */
-    public function new_hobbies(RegistryInterface $doctrine, Request $request,$type,FileUploader $fileUploader)
+     */
+    public function new_hobbies(RegistryInterface $doctrine, Request $request, $type, FileUploader $fileUploader)
     {
         $hobbie = new Hobbies();
         $image = new Image();
@@ -88,8 +102,7 @@ class CMSController extends Controller
         // $form = $this->createForm(ImageType::class, $image);
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             // $file = $hobbie->getImage()->getFilename();
             // $fileName = $fileUploader->upload($file);
             // echo '<pre>';
@@ -105,9 +118,35 @@ class CMSController extends Controller
     }
 
     /**
+     * @Route("/hobbies-delete/{slug}-{id}", name="hobbies-delete", requirements={"slug": "[a-z0-9\-]*"})
+     */
+    public function delete_hobbies(RegistryInterface $doctrine, Request $request, $id)
+    {
+        $Hobbies = $doctrine->getRepository(Hobbies::class)->find($id);
+        $em = $this->getDoctrine()->getManager();
+
+        $em->remove($Hobbies);
+        $em->flush();
+        return $this->redirectToRoute('cms-hobbies');
+    }
+
+    /**
+     * @Route("/upload-image", name="upload-image")
+     */
+    public function upload_image(RegistryInterface $doctrine, Request $request)
+    {
+        $Hobbies = $doctrine->getRepository(Hobbies::class)->find($id);
+        $em = $this->getDoctrine()->getManager();
+
+        $em->remove($Hobbies);
+        $em->flush();
+        return $this->redirectToRoute('cms-hobbies');
+    }
+
+    /**
      //* @Route("/cms-hobbies/{id}", name="hobbies-show")
      * @Route("/cms-hobbies/{slug}-{id}", name="hobbies-show", requirements={"slug": "[a-z0-9\-]*"})
-    */
+     */
     public function show($slug, $id, RegistryInterface $doctrine, Request $request)
     {
         $hobbie = $doctrine->getRepository(Hobbies::class)->find($id);
@@ -121,15 +160,14 @@ class CMSController extends Controller
         $saveHobbie = $hobbie->getImage()->getFilename();
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             if ($data->getImage()->getFilename() == null)
-            $data->getImage()->setFilename($saveHobbie);
-        //   $Hobbies->setFilename("test");
-          $em->persist($hobbie);
-          $em->flush();
-          return $this->redirectToRoute('cms-hobbies');
+                $data->getImage()->setFilename($saveHobbie);
+            //   $Hobbies->setFilename("test");
+            $em->persist($hobbie);
+            $em->flush();
+            return $this->redirectToRoute('cms-hobbies');
         }
 
         return $this->render('cms_base/show.html.twig', ['hobbie' => $hobbie, 'form' => $form->createView()]);
@@ -148,21 +186,21 @@ class CMSController extends Controller
      */
     public function cms_blog(RegistryInterface $doctrine)
     {
-	$articles = $doctrine->getRepository(Article::class)->findAll(); 
-        return $this->render('cms_base/cms_blog.html.twig',[
-	"articles" => $articles,
-	]);
+        $articles = $doctrine->getRepository(Article::class)->findAll();
+        return $this->render('cms_base/cms_blog.html.twig', [
+            "articles" => $articles,
+        ]);
     }
 
     /**
      * @Route("/article-delete/{id}", name="article-delete")
      */
-    public function delete_article(RegistryInterface $doctrine,$id)
+    public function delete_article(RegistryInterface $doctrine, $id)
     {
-	$em  = $this->getDoctrine()->getManager();
-	$article = $doctrine->getRepository(Article::class)->find($id);
-	$em->remove($article);
-	$em->flush(); 
+        $em  = $this->getDoctrine()->getManager();
+        $article = $doctrine->getRepository(Article::class)->find($id);
+        $em->remove($article);
+        $em->flush();
         return $this->redirectToRoute("cms-blog");
     }
 
@@ -182,7 +220,7 @@ class CMSController extends Controller
         return $this->render('cms_base/cms_contact.html.twig');
     }
 
-     /**
+    /**
      * @return string
      */
     private function generateUniqueFileName()

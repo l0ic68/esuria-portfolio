@@ -25,7 +25,11 @@ class BlogType extends AbstractType
     {
         $builder
             ->add('titre',TextType::class)
-            ->add('texte',CKEditorType::class)
+            ->add('texte',TextareaType::class, [
+                'attr' =>[
+                    "id" => "editor"
+                ]
+            ])
             ->add('type',ChoiceType::class , [
                 'choices' => [
                     'Film' => 'Film',

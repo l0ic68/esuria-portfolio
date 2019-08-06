@@ -41,9 +41,15 @@ class Article
      */
     private $path;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $image;
+
     public function __construct()
     {
-        $date = \DateTime::createFromFormat('d-m-Y','now');
+        $date = \DateTime::createFromFormat('d-m-Y', 'now');
         $timeZone = new \DateTimeZone('Europe/Paris');
         $date2 = new \DateTime($date);
         $date2->setTimeZone($timeZone);
@@ -110,6 +116,19 @@ class Article
     public function setTexte(string $texte): self
     {
         $this->texte = $texte;
+
+        return $this;
+    }
+
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(Image $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

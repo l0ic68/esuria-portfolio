@@ -9,18 +9,21 @@
 {% block content %}
 <div class="app">
 <h1 style="color:white">Ajout d'un nouvelle article</h1>
-{# {{ form_start(form) }} #}
-{# {{form_row(form.titre)}} #}
-<wysiwyg v-model="content" />
-{# {{form_row(form.texte)}} #}
-{# {{form_row(form.type)}} #}
-{# {{form_row(form.path)}} #}
+{{ form_start(form) }}
+{{form_row(form.titre)}}
+{# <textarea id="editor" name="editor"></textarea> #}
+{# <wysiwyg v-model="content" /> #}
+{{form_row(form.texte)}}
+{{form_row(form.type)}}
+{{form_row(form.path)}}
 <button>Confirm</button>	
-{# {{ form_end(form) }} #}
+{{ form_end(form) }}
 </div>
 
 {% endblock %}
 {% block js %}
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jodit/3.2.46/jodit.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/jodit/3.2.46/jodit.min.js"></script>
     <script>
     import wysiwyg from "node_modules/vue-wysiwyg";
     Vue.use(wysiwyg, {}); // config is optional. more below
@@ -30,5 +33,47 @@
             delimiters: [
                 '{', '}'
             ],})
+    </script>
+    <script>
+    $('textarea').each(function () {
+    var editor = new Jodit(this);
+     editor.uploader: {
+        url: '/upload-image',
+        format: 'json',
+        pathVariableName: 'path',
+        filesVariableName: 'images',
+        prepareData: function (data) {
+            return data;
+        },
+        isSuccess: function (resp) {
+            return !resp.error;
+        },
+        getMsg: function (resp) {
+            return resp.msg.join !== undefined ? resp.msg.join(' ') : resp.msg;
+        },
+        process: function (resp) {
+            return {
+                files: resp[this.options.uploader.filesVariableName] || [],
+                path: resp.path,
+                baseurl: resp.baseurl,
+                error: resp.error,
+                msg: resp.msg
+            };
+        },
+        error: function (e) {
+            this.events.fire('errorPopap', [e.getMessage(), 'error', 4000]);
+        },
+        defaultHandlerSuccess: function (data, resp) {
+            var i, field = this.options.uploader.filesVariableName;
+            if (data[field] && data[field].length) {
+                for (i = 0; i < data[field].length; i += 1) {
+                    this.selection.insertImage(data.baseurl + data[field][i]);
+                }
+            }
+        },
+        defaultHandlerError: function (resp) {
+            this.events.fire('errorPopap', [this.options.uploader.getMsg(resp)]);
+        }}
+});
     </script>
 {% endblock %}

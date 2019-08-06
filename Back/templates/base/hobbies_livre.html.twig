@@ -14,56 +14,64 @@
                 <i class="fal fa-music"></i>
             </a>
             <a href="{{path('hobbiesJeux')}}">
-                <i class="far fa-chevron-left"></i>
-                <i class="fal fa-gamepad active"></i>
-                <i class="far fa-chevron-right"></i>
+                <i class="fal fa-gamepad"></i>
             </a>
             <a href="{{path('hobbiesFilm')}}">
                 <i class="fal fa-film-alt"></i>
             </a>
             <a href="{{path('hobbiesLivre')}}">
-                <i class="fal fa-book"></i>
+                <i class="far fa-chevron-left"></i>
+                <i class="fal fa-book active"></i>
+                <i class="far fa-chevron-right"></i>
             </a>
         </div>
         <div id="Zone_bas">
             <div class="Wrap">
                 <div class="Mobile_Moment" id="Margin_Musique">
-                    <p>Jeu vidéo du moment</p>
+                    <p>Livre du moment</p>
+                    <p>BD du moment</p>
+                    <p>Manga du moment</p>
                 </div>
                 <div
                     class="Moment_data_mobile">
                     {# <a href="htqtps://muuse Symfony\Bridge\Doctrine\RegistryInterface;
-                                                                                                                                                                                                                                                                    sic.youtube.com/watch?v=f3L9_6aJi2Q&list=OLAK5uy_m0Bdl6V0SVlvhoYFWURcyTrVXENLcww18" target="_blank"><img src="../Images/Musiques/Album_du_moment/Myles_Kennedy.jpg" alt="Myles Kennedy"></a> #}
-                    <a href="{{jeu_moment.link}}" target="_blank"><img src="{{jeu_moment.image.path}}" alt="{{jeu_moment.image.alt}}"></a>
+                                                                                                                                                                                                                                                                                        sic.youtube.com/watch?v=f3L9_6aJi2Q&list=OLAK5uy_m0Bdl6V0SVlvhoYFWURcyTrVXENLcww18" target="_blank"><img src="../Images/Musiques/Album_du_moment/Myles_Kennedy.jpg" alt="Myles Kennedy"></a> #}
+                    <a href="{{livre_moment.link}}" target="_blank"><img src="{{livre_moment.image.path}}" alt="{{livre_moment.image.alt}}"></a>
+                    <a href="{{bd_moment.link}}" target="_blank"><img src="{{bd_moment.image.path}}" alt="{{bd_moment.image.alt}}"></a>
+                    <a href="{{manga_moment.link}}" target="_blank"><img src="{{manga_moment.image.path}}" alt="{{manga_moment.image.alt}}"></a>
                 </div>
                 <div id="Moment">
                     <div class="Moment_2">
-                        <p>Jeu&nbsp;vidéo&nbsp;moment</p>
+                        <p>Livre&nbsp;du&nbsp;moment</p>
+                        <p>BD&nbsp;du&nbsp;moment</p>
+                        <p>Manga&nbsp;du&nbsp;moment</p>
                     </div>
                 </div>
                 <div
                     id="Moment_data">
                     {# <p style="color:white; ">Path : {{album_moment.filename}}</p> #}
-                    <a href="{{jeu_moment.link}}" target="_blank"><img src="{{jeu_moment.image.path}}" alt="{{jeu_moment.image.alt}}"></a>
+                    <a href="{{livre_moment.link}}" target="_blank"><img src="{{livre_moment.image.path}}" alt="{{livre_moment.image.alt}}"></a>
+                    <a href="{{bd_moment.link}}" target="_blank"><img src="{{bd_moment.image.path}}" alt="{{bd_moment.image.alt}}"></a>
+                    <a href="{{manga_moment.link}}" target="_blank"><img src="{{manga_moment.image.path}}" alt="{{manga_moment.image.alt}}"></a>
                 </div>
             </div>
 
             <div class="Wrap">
                 <div class="Favori">
-                    <p>Jeux Video Favoris</p>
+                    <p>Livres Favoris</p>
                 </div>
                 <div class="Article_element">
-                    {%  set countJeuxFav = 0 %}
-                    {% for hobbie in hobbies if hobbie.type == "Jeux_fav" %}
-                        {% if countJeuxFav == 5 %}
-                            {%  set countJeuxFav = 0 %}
+                    {%  set countAlbumFav = 0 %}
+                    {% for hobbie in hobbies if hobbie.type == "Livre_fav" %}
+                        {% if countAlbumFav == 5 %}
+                            {%  set countAlbumFav = 0 %}
                         {% endif %}
                         <div class="Une_Boite">
                             <a href="{{hobbie.link}}" target="_blank"><img alt="{{hobbie.image.alt}}" src="{{hobbie.image.path}}"></a>
                         </div>
-                        {% set countJeuxFav = countJeuxFav + 1 %}
+                        {% set countAlbumFav = countAlbumFav + 1 %}
                     {% endfor %}
-                    {% for i in  countJeuxFav..4 if countJeuxFav != 5 %}
+                    {% for i in  countAlbumFav..4 if countAlbumFav != 5 %}
                         <div class="Une_Boite hidden"></div>
                     {% endfor %}
                 </div>
