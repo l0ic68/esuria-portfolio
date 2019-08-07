@@ -17,29 +17,24 @@ use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
-
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class BlogType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('titre',TextType::class)
-            ->add('texte',TextareaType::class, [
-                'attr' =>[
-                    "id" => "editor"
-                ]
+            ->add('titre', TextType::class)
+            ->add('texte', TextareaType::class, [
             ])
-            ->add('type',ChoiceType::class , [
+            ->add('type', ChoiceType::class, [
                 'choices' => [
                     'Film' => 'Film',
                     'Serie' => 'Serie',
                     'Livre' => 'Livre',
                 ]
             ])
-            ->add('path',TextType::class)
-        
-        ;
+            ->add('path', TextType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
