@@ -26,11 +26,6 @@ class Skill
      */
     private $icone;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Biographie", inversedBy="competence")
-     */
-    private $biographie;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -56,18 +51,6 @@ class Skill
     public function setIcone(string $icone): self
     {
         $this->icone = $icone;
-
-        return $this;
-    }
-
-    public function getBiographie(): ?Biographie
-    {
-        return $this->biographie;
-    }
-
-    public function setBiographie(?Biographie $biographie): self
-    {
-        $this->biographie = $biographie;
 
         return $this;
     }

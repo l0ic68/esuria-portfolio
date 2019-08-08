@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Biographie;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -36,16 +35,6 @@ class Biographie
     private $presentation;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $parcours;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Skill", mappedBy="biographie")
-     */
-    private $competence;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $age;
@@ -72,11 +61,7 @@ class Biographie
 
     public function __construct()
     {
-        $this->competence = new ArrayCollection();
     }
-
-    
-
 
     public function getId(): ?int
     {
@@ -115,49 +100,6 @@ class Biographie
     public function setPresentation(string $presentation): self
     {
         $this->presentation = $presentation;
-
-        return $this;
-    }
-
-    public function getParcours(): ?string
-    {
-        return $this->parcours;
-    }
-
-    public function setParcours(string $parcours): self
-    {
-        $this->parcours = $parcours;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Skill[]
-     */
-    public function getCompetence(): Collection
-    {
-        return $this->competence;
-    }
-
-    public function addCompetence(Skill $competence): self
-    {
-        if (!$this->competence->contains($competence)) {
-            $this->competence[] = $competence;
-            $competence->setBiographie($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompetence(Skill $competence): self
-    {
-        if ($this->competence->contains($competence)) {
-            $this->competence->removeElement($competence);
-            // set the owning side to null (unless already changed)
-            if ($competence->getBiographie() === $this) {
-                $competence->setBiographie(null);
-            }
-        }
 
         return $this;
     }
@@ -221,7 +163,4 @@ class Biographie
 
         return $this;
     }
-
-
-
 }

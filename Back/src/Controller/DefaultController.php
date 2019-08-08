@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Hobbies;
 use App\Entity\Biographie;
+use App\Entity\Skill;
 use App\Entity\Article;
 use App\Entity\Timeline;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -34,9 +35,11 @@ class DefaultController extends Controller
     public function index(RegistryInterface $doctrine)
     {
         $bio = $doctrine->getRepository(Biographie::class)->myFindFirst();
+        $skills = $doctrine->getRepository(Skill::class)->findAll();
 
         return $this->render('base/index.html.twig', array(
-            "bio" => $bio
+            "bio" => $bio,
+            "skills" => $skills,
         ));
     }
 

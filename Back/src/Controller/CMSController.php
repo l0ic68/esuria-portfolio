@@ -8,11 +8,16 @@ use App\Entity\Hobbies;
 use App\Entity\Biographie;
 use App\Entity\Article;
 use App\Entity\Image;
+use App\Entity\Timeline;
+use App\Entity\Event;
+use App\Entity\SmallEvent;
 use App\Entity\Skill;
 use App\Repository\HobbiesRepository;
 use App\Service\FileUploader;
 use App\Form\HobbiesType;
-use App\Form\ImageType;
+use App\Form\EventType;
+use App\Form\SmallEventType;
+use App\Form\SkillType;
 use App\Form\BiographieType;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -103,11 +108,6 @@ class CMSController extends Controller
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
-            // $file = $hobbie->getImage()->getFilename();
-            // $fileName = $fileUploader->upload($file);
-            // echo '<pre>';
-            // var_dump($filename);
-            // echo '</pre>';
             $hobbie->setType($type);
             $em->persist($hobbie);
             $em->flush();
@@ -115,6 +115,98 @@ class CMSController extends Controller
         }
 
         return $this->render('cms_base/new_hobbies.html.twig', ['hobbie' => $hobbie, 'form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/new-event", name="new-event")
+     */
+    public function new_event(RegistryInterface $doctrine, Request $request)
+    {
+        $event = new Event();
+        $timeline = new Timeline();
+        $form = $this->createForm(EventType::class, $event);
+        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $timeline->setEvent($event);
+            $em->persist($timeline);
+            $em->persist($event);
+            $em->flush();
+            return $this->redirectToRoute('cms');
+        }
+
+        return $this->render('cms_base/new_skill.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/new-smallEvent/{id}", name="new-smallEvent")
+     */
+    public function new_smallEvent(RegistryInterface $doctrine, Request $request, $id)
+    {
+        $smallEvent = new SmallEvent();
+        $timeline = $doctrine->getRepository(Timeline::class)->findOneByEvent(["id" => $id]);
+        $form = $this->createForm(SmallEventType::class, $smallEvent);
+        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $timeline->addSmallEvent($smallEvent);
+            $em->persist($timeline);
+            $em->persist($smallEvent);
+            $em->flush();
+            return $this->redirectToRoute('cms');
+        }
+
+        return $this->render('cms_base/new_skill.html.twig', ['form' => $form->createView()]);
+    }
+
+
+    /**
+     * @Route("/new-skill", name="new-skill")
+     */
+    public function new_skill(RegistryInterface $doctrine, Request $request)
+    {
+        $skill = new Skill();
+        $form = $this->createForm(SkillType::class, $skill);
+        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($skill);
+            $em->flush();
+            return $this->redirectToRoute('cms');
+        }
+
+        return $this->render('cms_base/new_skill.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/edit-skill/{id}", name="edit-skill")
+     */
+    public function edit_skill(RegistryInterface $doctrine, Request $request, $id)
+    {
+        $skill = $doctrine->getRepository(Skill::class)->find($id);
+        $form = $this->createForm(SkillType::class, $skill);
+        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($skill);
+            $em->flush();
+            return $this->redirectToRoute('cms');
+        }
+
+        return $this->render('cms_base/new_skill.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/delete-skill/{id}", name="delete-skill")
+     */
+    public function delete_skill(RegistryInterface $doctrine, Request $request, $id)
+    {
+        $skill = $doctrine->getRepository(Skill::class)->find($id);
+        $em = $this->getDoctrine()->getManager();
+
+        $em->remove($skill);
+        $em->flush();
+        return $this->redirectToRoute('cms');
     }
 
     /**
@@ -161,11 +253,6 @@ class CMSController extends Controller
     public function show($slug, $id, RegistryInterface $doctrine, Request $request)
     {
         $hobbie = $doctrine->getRepository(Hobbies::class)->find($id);
-        // echo'<pre>';
-        // var_dump($hobbie);
-        // echo'<\pre>';
-        /* Check inside the documentation in order to do that (the code should look like : new File( path to my current file )) */
-        // $hobbie->getImage()->setFilename(new File($this->uploader->getTargetDirectory().'/'.$fileName));
         $hobbie->getImage()->setFilename(new File($this->getParameter('uploadDirectory') . '/' . $hobbie->getImage()->getFilename()));
         $form = $this->createForm(HobbiesType::class, $hobbie);
         $saveHobbie = $hobbie->getImage()->getFilename();

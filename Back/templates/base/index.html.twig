@@ -70,7 +70,7 @@
     <div id="Competences">
         <h1>- Compétences -</h1>
         <div id="Competences_data">
-            {% for skill in bio.competence %}
+            {% for skill in skills %}
                 <div class="Competences_line">
                     <i class="{{skill.icone}}"></i>
                     <p>{{skill.name}}</p>
@@ -166,4 +166,5 @@ var app = new Vue({
     mounted: function () {
         this.getTimeline();
     }
-})</script>{% endblock %}
+})</script>
+{% endblock %}
