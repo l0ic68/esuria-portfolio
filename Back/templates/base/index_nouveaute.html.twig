@@ -21,55 +21,28 @@
         <div id="app">
             <div id="Zone_haut">
                 <h1 class="Titre">- Derniere Vidéo -</h1>
-                <iframe :src="video"  width="320" height="180" allow="autoplay; encrypted-media" allowfullscreen frameborder="0"></iframe>
+                <iframe :src="video" allow="autoplay; encrypted-media" allowfullscreen frameborder="0" height="180" width="320"></iframe>
                 <h1 class="Titre">- Derniers Articles -</h1>
                 <div class="Article_element">
-                    <div class="Une_Boite">
-                        <a class="Lien_Photo" href="https://placeholder.com"><img class="Photo" src="http://via.placeholder.com/320x180"></a>
-                        <div class="Sous_Bandeau">
-                            <h2 class="Titre_article">
-                                Titre de l'article
-                            </h2>
-                            <p class="Date">
-                                <span class="Couleur_slash">//
-                                </span>Vendredi 5 Mai 2017
-                            </p>
-                            <p class="Description">
-                                Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
-                            </p>
+                    {% for article in articles %}
+                        <div class="Une_Boite">
+                            <a class="Lien_Photo" href="{{path("lecture-article",{path : article.path })}}"><img class="Photo" src={{asset(article.image.path)}}></a>
+                            <div class="Sous_Bandeau">
+                                <h2 class="Titre_article">
+                                    {{article.titre}}
+                                </h2>
+                                <p class="Date">
+                                    <span class="Couleur_slash">//
+                                    </span>
+                                    {{ article.date|localizeddate('none', 'none', null, null, 'EEEE d ')|capitalize }}
+                                    {{ article.date|localizeddate('none', 'none', null, null, 'MMMM Y ')|capitalize }}
+                                </p>
+                                <p class="Description">
+                                    {{article.description}}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="Une_Boite">
-                        <a class="Lien_Photo" href="https://placeholder.com"><img class="Photo" src="http://via.placeholder.com/320x180"></a>
-                        <div class="Sous_Bandeau">
-                            <h2 class="Titre_article">
-                                Titre de l'article
-                            </h2>
-                            <p class="Date">
-                                <span class="Couleur_slash">//
-                                </span>Vendredi 5 Mai 2017
-                            </p>
-                            <p class="Description">
-                                Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
-                            </p>
-                        </div>
-                    </div>
-                    <div class="Une_Boite">
-                        <a class="Lien_Photo" href="https://placeholder.com"><img class="Photo" src="http://via.placeholder.com/320x180"></a>
-                        <div class="Sous_Bandeau">
-                            <h2 class="Titre_article">
-                                Titre de l'article
-                            </h2>
-                            <p class="Date">
-                                <span class="Couleur_slash">//
-                                </span>Vendredi 5 Mai 2017
-                            </p>
-                            <p class="Description">
-                                Lorem ipsum dolor sit amet, consectetur adipsisicing elit, sed do eiusmod tempor incididunt ut labore
-                            </p>
-                        </div>
-                    </div>
-
+                    {% endfor %}
                 </div>
                 <h1 class="Titre">- Instagram -</h1>
             </div>
@@ -90,7 +63,7 @@
             ],
             data: {
                 videos: [],
-				video : "",
+                video: ""
             },
             mounted() {
                 this.getCount();
@@ -114,7 +87,7 @@
                             // to get a value that is either negative, positive, or zero.
                             return new Date(b.date).getTime() - new Date(a.date).getTime();
                         });
-						this.video = "https://www.youtube.com/embed/" + this.videos[0].videoId
+                        this.video = "https://www.youtube.com/embed/" + this.videos[0].videoId
                     })
                 }
             }

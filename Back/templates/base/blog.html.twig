@@ -29,7 +29,7 @@
         </select>
         <div v-if="onLoad == false" class="Article_element">
             <div v-for="article in articles" class="Une_Boite">
-                <a v-bind:href="'/lecture-article/' + article.titre" class="Lien_Photo"><img :src="article.image" class="Photo"></a>
+                <a v-bind:href="'/lecture-article/' + article.path" class="Lien_Photo"><img :src="article.image" class="Photo"></a>
                 <div class="Sous_Bandeau">
                     <h2 class="Titre_article">
                         {article.titre}
@@ -37,10 +37,10 @@
                     </h2>
                     <p class="Date">
                         <span class="Couleur_slash">//
-                        </span>Vendredi 5 Mai 2017
+                        </span>{article.date | moment}
                     </p>
                     <p class="Description">
-                        {# {article.texte} #}
+                        {article.description}
                     </p>
                 </div>
             </div>
@@ -53,9 +53,6 @@
                 <polygon fill="#EFEFEF" stroke="#333333" stroke-width="1" points="16,0 32,32 0,32"></polygon>
             </svg>
         </div>
-    {page}
-        {# <button v-on:click="setLoad()">{onLoad}</button> #}
-
         <div id="Centre_chiffre">
             <p>
             <template>
@@ -100,22 +97,13 @@
                  <button style="background-color:blue;" v-on:click="setPage(page)">{page}</button>
                  </div>
             </template>
-           
-                {# { nbrPage = Math.ceil(count / 6 )}</p> #}
-				
-            {# <div v-for="pageView in nbrPage"> #}
-                {# <button v-on:click="setPage(pageView)">{pageView}</button> #}
-            {# </div> #}
-
-            {# <p id="Chiffre">
-                1 2 3 ... 8
-            </p> #}
         </div>
     </div>
 
 {% endblock %}
 {% block js %}
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="{{asset('js/moment.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 
@@ -139,7 +127,15 @@
                 this.getArticle();
                 this.getCount();
             },
+            filters: {
+                moment: function (date) {
+                    return moment(date).locale("fr").format('dddd MMMM YYYY');
+                }
+            },
             methods: {
+                moment: function(){
+                    return moment();
+                },
                 sayHello() {
                     console.log("Hello");
                 },
@@ -196,7 +192,7 @@
                         
                         $.each(json, function (key, value) {
                             console.log(value);
-                            object.articles.push({"titre": value.titre, "texte": value.texte, "date": value.date,"path": value.path, "image" : base_url +"/"+ value.image.path});
+                            object.articles.push({"titre": value.titre, "description": value.description, "date": value.date,"path": value.path, "image" : base_url +"/"+ value.image.path});
                         });
                         this.onLoad = false;
                         
@@ -218,7 +214,7 @@
                         var object = this;
 						this.articles = [];
                         $.each(json, function (key, value) {
-                            object.articles.push({"titre": value.titre, "texte": value.texte, "date": value.date});
+                            object.articles.push({"titre": value.titre, "description": value.description, "date": value.date});
                         });
                     })
                 },
@@ -241,7 +237,7 @@
                         console.log(json);
                         this.articles = [];
                         $.each(json, function (key, value) {
-                            object.articles.push({"titre": value.titre, "texte": value.texte, "date": value.date});
+                            object.articles.push({"titre": value.titre, "description": value.description, "date": value.date});
                         });
                         this.getCount();
                     })

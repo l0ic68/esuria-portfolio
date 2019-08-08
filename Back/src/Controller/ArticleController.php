@@ -32,11 +32,13 @@ class ArticleController extends Controller
     }
 
 
-
-    public function lecture_article($titre, RegistryInterface $doctrine)
+    /**
+     * @Route("/lecture-article/{path}", name="lecture-article")
+     */
+    public function lecture_article($path, RegistryInterface $doctrine)
     {
 
-        $article = $doctrine->getRepository(Article::class)->findOneByTitre($titre);
+        $article = $doctrine->getRepository(Article::class)->findOneByPath($path);
         return $this->render('base/lecture_article.html.twig', array(
             "article" => $article,
         ));

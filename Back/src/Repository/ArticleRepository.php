@@ -45,6 +45,15 @@ class ArticleRepository extends ServiceEntityRepository
         ->getResult()
         ;
     }
+    public function myLastArticle($maxResult)
+    {
+        return $this->createQueryBuilder('b')
+        ->setMaxResults($maxResult)
+        ->orderBy('b.date','ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
     public function myArticleSearch($search)
     {
         return $this->createQueryBuilder('b')

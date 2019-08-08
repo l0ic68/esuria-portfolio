@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Hobbies;
 use App\Entity\Biographie;
+use App\Entity\Article;
 use App\Entity\Timeline;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -67,9 +68,14 @@ class DefaultController extends Controller
     /**
      * @Route("/nouveaute", name="index_nouveaute")
      */
-    public function index_nouveaute()
+    public function index_nouveaute(RegistryInterface $doctrine)
     {
-        return $this->render('base/index_nouveaute.html.twig');
+
+        $articles = $doctrine->getRepository(Article::class)->myLastArticle(3);
+
+        return $this->render('base/index_nouveaute.html.twig', [
+            "articles" => $articles,
+        ]);
     }
 
     /**

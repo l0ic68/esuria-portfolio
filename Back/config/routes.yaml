@@ -55,9 +55,9 @@ contact:
     path: /contact
     controller: App\Controller\DefaultController::contact
 
-lecture-article:
-    path: /lecture-article/{titre}
-    controller: App\Controller\ArticleController::lecture_article
+# lecture-article:
+#     path: /lecture-article/{titre}
+#     controller: App\Controller\ArticleController::lecture_article
 
 new-article:
     path: /new-article

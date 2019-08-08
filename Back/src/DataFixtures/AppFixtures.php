@@ -23,6 +23,7 @@ class AppFixtures extends Fixture
             $article = new Article();
             $article->setTitre('Article titre '. $i);
             $article->setTexte('Lorem Ipsum text '. $i);
+            $article->setDescription('Lorem Ipsum text '. $i);
             $article->setType(self::getRandomSelection());
             $article->setPath('article-titre-'.$i);
             $article->setImage($img);
