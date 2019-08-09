@@ -5,7 +5,9 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Article;
+use App\Entity\Commentaire;
 use App\Form\BlogType;
+use App\Form\CommentType;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,12 +37,23 @@ class ArticleController extends Controller
     /**
      * @Route("/lecture-article/{path}", name="lecture-article")
      */
-    public function lecture_article($path, RegistryInterface $doctrine)
-    {
-
-        $article = $doctrine->getRepository(Article::class)->findOneByPath($path);
+    public function lecture_article($path, RegistryInterface $doctrine,Request $request)
+    {    
+        $article = $doctrine->getRepository(Article::class)->findOneByPath($path);    
+        $comment= new Commentaire();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $article->addCommentaire($comment);
+            $em->persist($comment);
+            $em->persist($article);
+            $em->flush();
+            return $this->redirectToRoute('lecture-article', ["path" => $path]);
+        }
         return $this->render('base/lecture_article.html.twig', array(
             "article" => $article,
+            'form' => $form->createView()
         ));
     }
 
@@ -61,6 +74,7 @@ class ArticleController extends Controller
             "form" => $form->createView(),
         ));
     }
+
     public function edit_article(RegistryInterface $doctrine, Request $request, $id)
     {
         $article = $doctrine->getRepository(Article::class)->find($id);
@@ -75,6 +89,7 @@ class ArticleController extends Controller
         }
         return $this->render('CMS/new_article.html.twig', array(
             "form" => $form->createView(),
+            "commentaires" => $article->getCommentaires()
         ));
     }
 
@@ -201,4 +216,39 @@ class ArticleController extends Controller
 
         return $response;
     }
+
+
+    /**
+     * @Route("/new-comment/{id}", name="new-comment")
+     */
+     public function new_comment(RegistryInterface $doctrine, Request $request,$id)
+     {
+         $comment = new Commentaire();
+         $article = $doctrine->getRepository(Article::class)->find($id);        
+         $form = $this->createForm(CommentType::class, $comment);
+         $form->handleRequest($request);
+         $em = $this->getDoctrine()->getManager();
+         if ($form->isSubmitted() && $form->isValid()) {
+             $article->addCommentaire($comment);
+             $em->persist($comment);
+             $em->persist($article);
+             $em->flush();
+             return $this->redirectToRoute('cms');
+         }
+ 
+         return $this->render('cms_base/new_skill.html.twig', ['form' => $form->createView()]);
+     }
+ 
+    /**
+     * @Route("/delete-comment/{id}", name="delete-comment")
+     */
+     public function delete_comment($id,RegistryInterface $doctrine, Request $request)
+     {
+        $comment = $doctrine->getRepository(Commentaire::class)->find($id);
+         $em = $this->getDoctrine()->getManager();
+        //  $em->remove($timeline);
+         $em->remove($comment);
+         $em->flush();
+         return $this->redirectToRoute('edit-article' , ["id" => $comment->getArticle()->getId()]);
+     }
 }

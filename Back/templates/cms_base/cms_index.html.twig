@@ -40,8 +40,8 @@
                         <div class="InsideCircle"></div>
                     </div>
                     <div class="timeline_action">
-                      <a href="#"><i class="fas fa-edit"></i></a>
-                      <a href="#"><i class="fas fa-trash-alt"></i></a>
+                      <a v-bind:href="'/edit-event/' + smallEvent.event.id "><i class="fas fa-edit"></i></a>
+                      <a v-bind:href="'/delete-event/' + smallEvent.event.id "><i class="fas fa-trash-alt"></i></a>
                     </div>
                 </template>
 
@@ -53,8 +53,8 @@
                         <div class="InsideLittleCircle"></div>
                     </div>
                     <div class="timeline_action">
-                      <a href="#"><i class="fas fa-edit"></i></a>
-                      <a href="#"><i class="fas fa-trash-alt"></i></a>
+                      <a v-bind:href="'/edit-small-event/' + smallEvent.smallEvent.id "><i class="fas fa-edit"></i></a>
+                      <a v-bind:href="'/delete-small-event/' + smallEvent.smallEvent.id "><i class="fas fa-trash-alt"></i></a>
                     </div>
                 </template>
 

@@ -139,6 +139,76 @@ class CMSController extends Controller
     }
 
     /**
+     * @Route("/edit-small-event/{id}", name="edit-small-event")
+     */
+    public function edit_smallEvent($id,RegistryInterface $doctrine, Request $request)
+    {
+        $smallEvent = $doctrine->getRepository(SmallEvent::class)->find($id);
+        $form = $this->createForm(SmallEventType::class, $smallEvent);
+        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($smallEvent);
+            $em->flush();
+            return $this->redirectToRoute('cms');
+        }
+
+        return $this->render('cms_base/new_skill.html.twig', ['form' => $form->createView()]);
+    }
+
+
+    /**
+     * @Route("/delete-small-event/{id}", name="delete-small-event")
+     */
+     public function delete_smallEvent(RegistryInterface $doctrine, Request $request, $id)
+     {
+         $smallEvent = $doctrine->getRepository(smallEvent::class)->find($id);
+        //  $timeline = $doctrine->getRepository(Timeline::class)->findOneBySmallEvent(["id" => $id]);
+         $em = $this->getDoctrine()->getManager();
+        //  $em->remove($timeline);
+         $em->remove($smallEvent);
+         $em->flush();
+         return $this->redirectToRoute('cms');
+     }
+
+    /**
+     * @Route("/edit-event/{id}", name="edit-event")
+     */
+    public function edit_event($id,RegistryInterface $doctrine, Request $request)
+    {
+        $event = $doctrine->getRepository(Event::class)->find($id);
+        $form = $this->createForm(EventType::class, $event);
+        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($event);
+            $em->flush();
+            return $this->redirectToRoute('cms');
+        }
+
+        return $this->render('cms_base/new_skill.html.twig', ['form' => $form->createView()]);
+    }
+
+
+    /**
+     * @Route("/delete-event/{id}", name="delete-event")
+     */
+     public function delete_event(RegistryInterface $doctrine, Request $request, $id)
+     {
+         $event = $doctrine->getRepository(Event::class)->find($id);
+         $timeline = $doctrine->getRepository(Timeline::class)->findOneByEvent(["id" => $id]);
+         $em = $this->getDoctrine()->getManager();
+         foreach ($timeline->getSmallEvent() as $value)
+         {
+            $em->remove($value);
+         }
+         $em->remove($timeline);
+         $em->remove($event);
+         $em->flush();
+         return $this->redirectToRoute('cms');
+     }
+
+    /**
      * @Route("/new-smallEvent/{id}", name="new-smallEvent")
      */
     public function new_smallEvent(RegistryInterface $doctrine, Request $request, $id)
