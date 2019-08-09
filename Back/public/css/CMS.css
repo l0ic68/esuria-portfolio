@@ -18,16 +18,129 @@
 
 /* presentation */
 
+#Presentation {
+  width: 100%;
+}
 #Presentation_cms {
-  flex-direction: column;
-  font-family: "Roboto Slab", serif;
-  font-size: 1.5em;
+  width: 100%;
+color: white;
+font-family: "Roboto Slab", serif;
+display: flex;
+justify-content: center;
+}
+
+#Presentation_cms form {
+  width: 100%;
+}
+
+.Presentation_cms_line  {
+  width: 90%;
+margin: 0.5em 0 0.5em 1em;
+display: flex;
+justify-content: space-between;
+}
+
+.Presentation_cms_line input  {
+width: 60%;
+margin: 0;
+}
+
+.Presentation_cms_line textarea {
+width: 60%;
+height: 5em;
+margin: 0;
+resize: none;
+}
+
+
+#Presentation button {
+  width: 20%;
+  margin-left: calc(40% - 2.5em);
+}
+
+.LittleCircle i {
+  color: white;
+  height: 100%;
+  width: 100%;
+  padding: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.5em;
+}
+
+.LittleCircle i:hover {
+  color: #bd7a00;
+  transition-duration: 0.3s;
+}
+
+.InsideCircle {
+  color: white;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: auto;
+}
+
+.InsideCircle:hover>i {
+  color: #bd7a00;
+  transition-duration: 0.3s;
+}
+
+.timeline_action {
+  display: none;
+}
+
+.timeline_action a {
+  margin: 0.2em;
+  text-decoration: none;
   color: white;
 }
 
-#Presentation_cms p {
-  margin-left: 2%;
-  cursor: pointer;
+.timeline_action_active {
+  display: flex;
+}
+
+#Competences_data {
+  overflow: hidden;
+  overflow-y: scroll;
+  height: 15em;
+}
+
+#Competences_data::-webkit-scrollbar {
+  width: 0.2em;
+}
+
+#Competences_data::-webkit-scrollbar-track {
+  background-color: none;
+}
+
+#Competences_data::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #bd7a00;
+}
+
+.Competences_line a {
+  text-decoration: none;
+  color: white;
+  width: auto;
+}
+
+.Competences_line p {
+  margin-right: 1em;
+}
+
+.Competences_line i {
+  font-size: 1em;
+}
+
+.Competences_line a:hover>i {
+  color: #bd7a00;
+  transition-duration: 0.3s;
 }
 
 
