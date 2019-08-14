@@ -7,266 +7,276 @@
     <link type="text/css" rel="stylesheet" href="{{asset("css/Blog.css")}}"/>
 {% endblock %}
 {% block content %}
-    <div id="app" style="display: flex;flex-direction: column;">
+    <div
+        id="app" style="display: flex;flex-direction: column;">
         <!-- CONTENU -->
         <div id="search">
-            <input v-on:keyUp="search()" v-model="searchText" placeholder="Recherche" class="noselect"></input>
-            <i class="far fa-search"></i>
-        </div>
-        <div id="Sort_Select">
-            <p v-on:click="setSelect('All')" v-bind:class="{Sort_Select : select=='All', Sort : select != 'All' }">Tout</p>
-            <p v-on:click="setSelect('realisation')" v-bind:class="{Sort_Select : select=='realisation', Sort : select != 'realisation' }">Réalisation</p>
-            <p v-on:click="setSelect('ecriture')" v-bind:class="{Sort_Select : select=='ecriture', Sort : select != 'ecriture' }">Ecriture</p>
-            <p v-on:click="setSelect('personnel')" v-bind:class="{Sort_Select : select=='personnel', Sort : select != 'personnel' }">Personnel</p>
-            <p v-on:click="setSelect('professionnel')" v-bind:class="{Sort_Select : select=='professionnel', Sort : select != 'professionnel' }">Professionnel</p>
-        </div>
-        <select id="Sort_Select_Mobile">
-            <option value="valeur1">Tout</option>
-            <option value="valeur2">Réalisation</option>
-            <option value="valeur3">Ecriture</option>
-            <option value="valeur4">Personnel</option>
-            <option value="valeur5">Professionnel</option>
-        </select>
-        <div v-if="onLoad == false" class="Article_element">
-            <div v-for="article in articles" class="Une_Boite">
-                <a v-bind:href="'/lecture-article/' + article.path" class="Lien_Photo"><img :src="article.image" class="Photo"></a>
-                <div class="Sous_Bandeau">
-                    <h2 class="Titre_article">
-                        {article.titre}
-                        {article.path}
-                    </h2>
-                    <p class="Date">
-                        <span class="Couleur_slash">//
-                        </span>{article.date | moment}
-                    </p>
-                    <p class="Description">
-                        {article.description}
-                    </p>
-                </div>
-            </div>
-            <div class="Une_Boite hidden"></div>
-
-            <div class="Une_Boite hidden"></div>
-        </div>
-        <div v-else>
-            <svg id="triangle" width="100px" height="100px" viewBox="-3 -4 39 39">
-                <polygon fill="#EFEFEF" stroke="#333333" stroke-width="1" points="16,0 32,32 0,32"></polygon>
-            </svg>
-        </div>
-        <div id="Centre_chiffre">
-            <p>
-            <template>
-                 <div v-if="page == 1">
-                 <button style="background-color:blue;" v-on:click="setPage(page)">{page}</button>
-                 <button v-on:click="setPage(page + 1)">{page + 1}</button>
-                 <button v-on:click="setPage(page + 2)">{page + 2}</button>
-                 ...
-                 <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
-
-                 </div>
-                 <div v-else-if="page < 3">
-                 <button  v-on:click="setPage(page -1)">{page -1}</button>
-                 <button style="background-color:blue;" v-on:click="setPage(page)">{page}</button>
-                 <button v-on:click="setPage(page + 1)">{page + 1}</button>
-                 ...
-                 <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
-
-                 </div>
-                 <div v-else-if="page >= 3 && page < nbrPage - 1">
-                 <button v-on:click="setPage(1)">1</button>
-                 ...
-                 <button v-on:click="setPage(page - 1)">{page - 1}</button>
-                 <button style="background-color:blue;" v-on:click="setPage(page)">{page}</button>
-                 <button v-on:click="setPage(page + 1)">{page + 1}</button>
-                 ...
-                 <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
-
-                 </div>
-                 <div v-else-if="page == (nbrPage - 1)">
-                 <button v-on:click="setPage(1)">1</button>
-                 ...
-                 <button v-on:click="setPage(page - 1)">{page - 1}</button>
-                 <button style="background-color:blue;"  v-on:click="setPage(page)">{page}</button>
-                 <button v-on:click="setPage(page + 1)">{page + 1}</button>
-                 </div>
-                 <div v-else-if="page == nbrPage">
-                 <button v-on:click="setPage(1)">1</button>
-                 ...
-                 <button v-on:click="setPage(page - 2)">{page - 2}</button>
-                 <button v-on:click="setPage(page - 1)">{page - 1}</button>
-                 <button style="background-color:blue;" v-on:click="setPage(page)">{page}</button>
-                 </div>
-            </template>
-        </div>
+            <input class="noselect" placeholder="Recherche" v-model="searchText" v-on:keyup="search()"></input>
+        <i class="far fa-search"></i>
     </div>
+    <div id="Sort_Select">
+        <p v-bind:class="{Sort_Select : select=='All', Sort : select != 'All' }" v-on:click="setSelect('All')">Tout</p>
+        <p v-bind:class="{Sort_Select : select=='realisation', Sort : select != 'realisation' }" v-on:click="setSelect('realisation')">Réalisation</p>
+        <p v-bind:class="{Sort_Select : select=='ecriture', Sort : select != 'ecriture' }" v-on:click="setSelect('ecriture')">Ecriture</p>
+        <p v-bind:class="{Sort_Select : select=='personnel', Sort : select != 'personnel' }" v-on:click="setSelect('personnel')">Personnel</p>
+        <p v-bind:class="{Sort_Select : select=='professionnel', Sort : select != 'professionnel' }" v-on:click="setSelect('professionnel')">Professionnel</p>
+    </div>
+    <select id="Sort_Select_Mobile">
+        <option value="valeur1">Tout</option>
+        <option value="valeur2">Réalisation</option>
+        <option value="valeur3">Ecriture</option>
+        <option value="valeur4">Personnel</option>
+        <option value="valeur5">Professionnel</option>
+    </select>
+    <div class="Article_element" v-if="onLoad == false">
+        <div class="Une_Boite" v-for="article in articles">
+            <a class="Lien_Photo" v-bind:href="'/lecture-article/' + article.path"><img :src="article.image" class="Photo"></a>
+            <div class="Sous_Bandeau">
+                <h2 class="Titre_article">
+                    {article.titre}
+                                            {article.path}
+                </h2>
+                <p class="Date">
+                    <span class="Couleur_slash">//
+                    </span>{article.date | moment}
+                </p>
+                <p class="Description">
+                    {article.description}
+                </p>
+            </div>
+        </div>
+        <div class="Une_Boite hidden"></div>
 
-{% endblock %}
-{% block js %}
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script src="{{asset('js/moment.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+        <div class="Une_Boite hidden"></div>
+    </div>
+    <div v-else>
+        <svg height="100px" id="triangle" viewbox="-3 -4 39 39" width="100px">
+            <polygon fill="#EFEFEF" points="16,0 32,32 0,32" stroke-width="1" stroke="#333333"></polygon>
+        </svg>
+    </div>
+    <div id="Centre_chiffre">
+        <p>
+            <template>
+                <div v-if="page == 1">
+                    <button style="background-color:blue;" v-on:click="setPage(page)">{page}</button>
+                    <button v-on:click="setPage(page + 1)">{page + 1}</button>
+                    <button v-on:click="setPage(page + 2)">{page + 2}</button>
+                    ...
+                    <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
 
-    <script>
-        var app = new Vue({
-            el: '#app',
-            delimiters: [
-                '{', '}'
-            ],
-            data: {
-                articles: [],
-                select: "All",
-                page: 1,
-                count: 0,
-				searchText : "",
-                nbrPage : 0,
-                onLoad : false
-            },
-            mounted() {
-                this.sayHello();
-                this.getArticle();
-                this.getCount();
-            },
-            filters: {
-                moment: function (date) {
-                    return moment(date).locale("fr").format('dddd MMMM YYYY');
-                }
-            },
-            methods: {
-                moment: function(){
-                    return moment();
-                },
-                sayHello() {
-                    console.log("Hello");
-                },
-                setSelect(selection) {
-                    console.log("set Selection");
-					this.page = 1;
-                    this.select = selection;
-                    this.getArticleSelection();
-                },
-                setPage(page) {
-                    console.log('Set page');
-                    if(this.page != page)
-                    {
-                        this.page = page;
-                        console.log(this.page);
-                        
-                        if(this.select == 'All'){
-                            this.getArticle();
-                        }
-                        else{
-                            this.getArticleSelection();
-                        }
-                    }
-                },
-                setLoad() {
-                    console.log('Set load');
-                    if(this.onLoad == false)
-                    {
-                         this.onLoad = true;
-                    }
-                    else{
-                        this.onLoad = false;
-                    }
-                    
-                },
-                getArticle() {
-                    console.log("get Article");
-                    this.onLoad = true;
-                    axios({
-                        method: 'POST',
-                        url: '/get-article',
-                        data: {
-                            page: this.page
-                        }
-                    }).then(response => {
-                        var getUrl = window.location;
-                        var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-                        baseUrl = baseUrl.replace("annonce", "");
-                        var base_url = window.location.origin;
-                        var json = JSON.parse(response.data);
-                        var object = this;
-						this.articles = [];
-                        console.log(baseUrl);
-                        
-                        $.each(json, function (key, value) {
-                            console.log(value);
-                            object.articles.push({"titre": value.titre, "description": value.description, "date": value.date,"path": value.path, "image" : base_url +"/"+ value.image.path});
-                        });
-                        this.onLoad = false;
-                        
-                    })
-                },
-                search() {
-					console.log("search");
-                    axios({
-                        method: 'POST',
-                        url: '/search-article',
-                        data: {
-                            searchText: this.searchText
-                        }
-                    }).then(response => {
-                        var getUrl = window.location;
-                        var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-                        baseUrl = baseUrl.replace("annonce", "");
-                        var json = JSON.parse(response.data);
-                        var object = this;
-						this.articles = [];
-                        $.each(json, function (key, value) {
-                            object.articles.push({"titre": value.titre, "description": value.description, "date": value.date});
-                        });
-                    })
-                },
-                getArticleSelection() {
-                    console.log("get Article Selection");
-                    axios({
-                        method: 'POST',
-                        url: '/get-article-selection',
-                        data: {
-                            //id :this.biens[0],
-                            selection: this.select,
-                            page: this.page
-                        }
-                    }).then(response => {
-                        var getUrl = window.location;
-                        var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-                        baseUrl = baseUrl.replace("annonce", "");
-                        var json = JSON.parse(response.data);
-                        var object = this;
-                        console.log(json);
-                        this.articles = [];
-                        $.each(json, function (key, value) {
-                            object.articles.push({"titre": value.titre, "description": value.description, "date": value.date});
-                        });
-                        this.getCount();
-                    })
-                },
-                getCount() {
-                    console.log("get Count");
-                    axios({
-                        method: 'POST',
-                        url: '/count-article',
-                        data: {
-                            //id :this.biens[0],
-                            selection: this.select
-                        }
-                    }).then(response => {
-                        var getUrl = window.location;
-                        var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-                        baseUrl = baseUrl.replace("annonce", "");
-                        var json = JSON.parse(response.data);
-                        var object = this;
-                        console.log(json);
-                        this.count = json;
-                        this.nbrPage =  Math.ceil(this.count / 6 )
-                        //this.articles = [];
-                        //$.each(json,function(key,value){
-                        //object.articles.push({"titre" : value.titre,"texte" : value.texte,"date" : value.date });
-                        //});
-                    })
-                }
+                </div>
+                <div v-else-if="page < 3">
+                    <button v-on:click="setPage(page -1)">{page -1}</button>
+                    <button style="background-color:blue;" v-on:click="setPage(page)">{page}</button>
+                    <button v-on:click="setPage(page + 1)">{page + 1}</button>
+                    ...
+                    <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
+
+                </div>
+                <div v-else-if="page >= 3 && page < nbrPage - 1">
+                    <button v-on:click="setPage(1)">1</button>
+                    ...
+                    <button v-on:click="setPage(page - 1)">{page - 1}</button>
+                    <button style="background-color:blue;" v-on:click="setPage(page)">{page}</button>
+                    <button v-on:click="setPage(page + 1)">{page + 1}</button>
+                    ...
+                    <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
+
+                </div>
+                <div v-else-if="page == (nbrPage - 1)">
+                    <button v-on:click="setPage(1)">1</button>
+                    ...
+                    <button v-on:click="setPage(page - 1)">{page - 1}</button>
+                    <button style="background-color:blue;" v-on:click="setPage(page)">{page}</button>
+                    <button v-on:click="setPage(page + 1)">{page + 1}</button>
+                </div>
+                <div v-else-if="page == nbrPage">
+                    <button v-on:click="setPage(1)">1</button>
+                    ...
+                    <button v-on:click="setPage(page - 2)">{page - 2}</button>
+                    <button v-on:click="setPage(page - 1)">{page - 1}</button>
+                    <button style="background-color:blue;" v-on:click="setPage(page)">{page}</button>
+                </div>
+            </template>
+        </p>
+    </div>
+</div>{% endblock %}{% block js %}
+<script crossorigin="anonymous" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="{{asset('js/moment.js')}}"></script>
+<script src="{{asset('js/vue.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        delimiters: [
+            '{', '}'
+        ],
+        data: {
+            articles: [],
+            select: "All",
+            page: 1,
+            count: 0,
+            searchText: "",
+            nbrPage: 0,
+            onLoad: false
+        },
+        mounted() {
+            this.sayHello();
+            this.getArticle();
+            this.getCount();
+        },
+        filters: {
+            moment: function (date) {
+            return moment(date).lang("fr").format('LL');
             }
-        })
-    </script>
-{% endblock %}
+        },
+        methods: {
+            moment: function () {
+                return moment();
+            },
+            sayHello() {
+                console.log("Hello");
+            },
+            setSelect(selection) {
+                console.log("set Selection");
+                this.page = 1;
+                this.select = selection;
+                this.getArticleSelection();
+            },
+            setPage(page) {
+                console.log('Set page');
+                if (this.page != page) {
+                    this.page = page;
+                    console.log(this.page);
+
+                    if (this.select == 'All') {
+                        this.getArticle();
+                    } else {
+                        this.getArticleSelection();
+                    }
+                }
+            },
+            setLoad() {
+                console.log('Set load');
+                if (this.onLoad == false) {
+                    this.onLoad = true;
+                } else {
+                    this.onLoad = false;
+                }
+
+            },
+            getArticle() {
+                console.log("get Article");
+                this.onLoad = true;
+                axios({
+                    method: 'POST',
+                    url: '/get-article',
+                    data: {
+                        page: this.page
+                    }
+                }).then(response => {
+                    var getUrl = window.location;
+                    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+                    baseUrl = baseUrl.replace("annonce", "");
+                    var base_url = window.location.origin;
+                    var json = JSON.parse(response.data);
+                    var object = this;
+                    this.articles = [];
+                    console.log(baseUrl);
+
+                    $.each(json, function (key, value) {
+                        console.log(value);
+                        object.articles.push({
+                            "titre": value.titre,
+                            "description": value.description,
+                            "date": value.date,
+                            "path": value.path,
+                            "image": base_url + "/" + value.image.path
+                        });
+                    });
+                    this.onLoad = false;
+
+                })
+            },
+            search() {
+                console.log("search");
+                axios({
+                    method: 'POST',
+                    url: '/search-article',
+                    data: {
+                        searchText: this.searchText
+                    }
+                }).then(response => {
+                    var getUrl = window.location;
+                    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+                    baseUrl = baseUrl.replace("annonce", "");
+                    var json = JSON.parse(response.data);
+                    var base_url = window.location.origin;
+
+                    var object = this;
+                    this.articles = [];
+                    $.each(json, function (key, value) {
+                        object.articles.push({
+                            "titre": value.titre,
+                            "description": value.description,
+                            "date": value.date,
+                            "path": value.path,
+                            "image": base_url + "/" + value.image.path
+                        });
+                    });
+                })
+            },
+            getArticleSelection() {
+                console.log("get Article Selection");
+                axios({
+                    method: 'POST',
+                    url: '/get-article-selection',
+                    data: { // id :this.biens[0],
+                        selection: this.select,
+                        page: this.page
+                    }
+                }).then(response => {
+                    var getUrl = window.location;
+                    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+                    baseUrl = baseUrl.replace("annonce", "");
+                                        var base_url = window.location.origin;
+
+                    var json = JSON.parse(response.data);
+                    var object = this;
+                    this.articles = [];
+                    $.each(json, function (key, value) {
+                        object.articles.push({
+                            "titre": value.titre,
+                            "description": value.description,
+                            "date": value.date,
+                            "path": value.path,
+                            "image": base_url + "/" + value.image.path
+                        });
+                    });
+                    this.getCount();
+                })
+            },
+            getCount() {
+                console.log("get Count");
+                axios({
+                    method: 'POST',
+                    url: '/count-article',
+                    data: { // id :this.biens[0],
+                        selection: this.select
+                    }
+                }).then(response => {
+                    var getUrl = window.location;
+                    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+                    baseUrl = baseUrl.replace("annonce", "");
+                    var json = JSON.parse(response.data);
+                    var object = this;
+                    console.log(json);
+                    this.count = json;
+                    this.nbrPage = Math.ceil(this.count / 6)
+
+                })
+            }
+        }
+    })
+</script>{% endblock %}

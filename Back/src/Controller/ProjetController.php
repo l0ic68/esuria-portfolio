@@ -36,9 +36,9 @@ class ProjetController extends Controller
     public function lecture_projet($titre, RegistryInterface $doctrine)
     {
 
-        $projet = $doctrine->getRepository(Projet::class)->findOneByTitre($titre);
+        $project = $doctrine->getRepository(Projet::class)->findOneByTitre($titre);
         return $this->render('base/lecture_projet.html.twig',array(
-            "projet" => $projet,
+            "project" => $project,
         ));
 
     }
@@ -70,7 +70,6 @@ class ProjetController extends Controller
         $em = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid())
         {
-            #$projet->setType($type);
             $em->persist($projet);
             $em->flush();
             return $this->redirectToRoute('cms-blog');
@@ -87,7 +86,6 @@ class ProjetController extends Controller
 
     public function getProjet(Request $request, RegistryInterface $doctrine)
     {
-        $user1 = $this->getUser();
         $request_stack = $this->container->get('request_stack');
         $request = $request_stack->getCurrentRequest();
         $content = $request->getContent();
@@ -126,28 +124,6 @@ class ProjetController extends Controller
         $type = $contentDecode->selection;
         $page = $contentDecode->page;
         $selection = $doctrine->getRepository(Projet::class)->myGetProjetByType($type,intval($page));
-        // for($i = 0; $i<sizeof($biens) ;$i++)
-        // {
-        //     $biens[$i]['dateCreation'] = $biens[$i]['dateCreation']->format("Y/m/d H:i:s");
-        //     $biens[$i]["prixDeVente"] =   $biens[$i][1];
-        //     unset( $biens[$i][1]);
-        //     $biens[$i]["titre"] =   $biens[$i][2];
-        //     unset( $biens[$i][2]);
-        //     $biens[$i]["surfaceHabitable"] =   $biens[$i][3];
-        //     unset( $biens[$i][3]);
-        //     $biens[$i]["ville"] =   $biens[$i][4];
-        //     unset( $biens[$i][4]);
-        //     $biens[$i]["adresse"] =   $biens[$i][5];
-        //     unset( $biens[$i][5]);
-        //     $biens[$i]["nbreChambre"] =   $biens[$i][6];
-        //     unset( $biens[$i][6]);
-        //     $biens[$i]["nbreSalleDeBain"] =   $biens[$i][7];
-        //     unset( $biens[$i][7]);
-        //     // dump($bien);
-        //     // $bien["dateCreation"] = $bien["dateCreation"]->format("Y/m/d h:m:s");
-        // }
-        // var_dump($biens);
-       // $message = $doctrine->getRepository(Message::class)->findByConversation($convo,array('dateEnvoi' => 'desc'),10,10);
         $encoders = array(new XmlEncoder(), new JsonEncoder());
         $normalizer = new ObjectNormalizer();
         $normalizer->setCircularReferenceLimit(2);

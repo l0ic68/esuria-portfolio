@@ -4,122 +4,134 @@
     Projet
 {% endblock %}
 {% block css %}
-<link type="text/css" rel="stylesheet" href={{asset("css/Projets.css")}} />
+    <link type="text/css" rel="stylesheet" href={{asset("css/Projets.css")}}/>
 {% endblock %}
 {% block content %}
-    <div id="app" style="display: flex;flex-direction: column;">
+    <div
+        id="app" style="display: flex;flex-direction: column;">
 
-			<!-- CONTENU -->
-			<div id="Zone">
+        <!-- CONTENU -->
+        <div id="Zone">
 
-				<div id="Hobbies_Switch">
-					<a href="Projet_web.html"><i class="fal fa-desktop"></i></a>
-					<a href="Projet_Photo.html"><i class="fal fa-camera-alt"></i></a>
-					<a href="Projet_video.html"><i class="fal fa-video"></i></a>
-					<a href="Projet_Wrench.html"><i class="fal fa-wrench"></i></a>
-					<a href="Projet_Map.html"><i class="fal fa-map"></i></a>
-				</div>
-				<div id="Sort_Select">
-					<p>-</p>
-					<p v-on:click="setSelect('All')" v-bind:class="{Sort_Select : select=='All', Sort : select != 'All' }" >Tout</p>
-					<p>/</p>
-					<p v-on:click="setSelect('realisation')" v-bind:class="{Sort_Select : select=='realisation', Sort : select != 'realisation' }">Réalisation</p>
-					<p>/</p>
-					<p v-on:click="setSelect('ecriture')" v-bind:class="{Sort_Select : select=='ecriture', Sort : select != 'ecriture' }">Ecriture</p>
-					<p>/</p>
-					<p v-on:click="setSelect('personnel')" v-bind:class="{Sort_Select : select=='personnel', Sort : select != 'personnel' }">Personnel</p>
-					<p>/</p>
-					<p v-on:click="setSelect('professionnel')" v-bind:class="{Sort_Select : select=='professionnel', Sort : select != 'professionnel' }">Professionnel</p>
-					<p>-</p>
-				</div>
-				<select id="Sort_Select_Mobile">
-					<option value="valeur1">Tout</option>
-					<option value="valeur2">Réalisation</option>
-					<option value="valeur3">Ecriture</option>
-					<option value="valeur4">Personnel</option>
-					<option value="valeur5">Professionnel</option>
-				</select>
+            <div id="Hobbies_Switch">
+                <a href="Projet_web.html">
+                    <i class="fal fa-desktop"></i>
+                </a>
+                <a href="Projet_Photo.html">
+                    <i class="fal fa-camera-alt"></i>
+                </a>
+                <a href="Projet_video.html">
+                    <i class="fal fa-video"></i>
+                </a>
+                <a href="Projet_Wrench.html">
+                    <i class="fal fa-wrench"></i>
+                </a>
+                <a href="Projet_Map.html">
+                    <i class="fal fa-map"></i>
+                </a>
+            </div>
+            <div id="Sort_Select">
+                <p>-</p>
+                <p v-bind:class="{Sort_Select : select=='All', Sort : select != 'All' }" v-on:click="setSelect('All')">Tout</p>
+                <p>/</p>
+                <p v-bind:class="{Sort_Select : select=='realisation', Sort : select != 'realisation' }" v-on:click="setSelect('realisation')">Réalisation</p>
+                <p>/</p>
+                <p v-bind:class="{Sort_Select : select=='ecriture', Sort : select != 'ecriture' }" v-on:click="setSelect('ecriture')">Ecriture</p>
+                <p>/</p>
+                <p v-bind:class="{Sort_Select : select=='personnel', Sort : select != 'personnel' }" v-on:click="setSelect('personnel')">Personnel</p>
+                <p>/</p>
+                <p v-bind:class="{Sort_Select : select=='professionnel', Sort : select != 'professionnel' }" v-on:click="setSelect('professionnel')">Professionnel</p>
+                <p>-</p>
+            </div>
+            <select id="Sort_Select_Mobile">
+                <option value="valeur1">Tout</option>
+                <option value="valeur2">Réalisation</option>
+                <option value="valeur3">Ecriture</option>
+                <option value="valeur4">Personnel</option>
+                <option value="valeur5">Professionnel</option>
+            </select>
 
-				<div  v-if="onLoad == false" id="Project_Content">
-					<div v-for="projet in projets"  class="Project_Data">
-                		<a v-bind:href="'/lecture-projet/' + projet.path" class="Lien_Photo"><img src="http://via.placeholder.com/320x180" class="Photo"></a>
-						<div class="Project_Info Web">
-							<div class="Project_Type">{projet.titre}</div>
-							<div class="Project_Date">- <span class="Project_Date_Data">14 Septembre 2017</span> -</div>
-						</div>
-					</div>
+            <div id="Project_Content" v-if="onLoad == false">
+                <div class="Project_Data" v-for="projet in projets">
+                    <a class="Lien_Photo" v-bind:href="'/lecture-projet/' + projet.path"><img class="Photo" src="http://via.placeholder.com/320x180"></a>
+                    <div class="Project_Info Web">
+                        <div class="Project_Type">{projet.titre}</div>
+                        <div class="Project_Date">-
+                            <span class="Project_Date_Data">14 Septembre 2017</span>
+                            -</div>
+                    </div>
+                </div>
 
 
-					<div class="Project_Data hidden">
-					</div>
+                <div class="Project_Data hidden"></div>
 
-					<div class="Project_Data hidden">
-					</div>
-				</div>
-			</div>
-			 <div id="Centre_chiffre">
-            <p>
-            <template>
-                 <div v-if="page == 1">
-                 <button class="pag_select" v-on:click="setPage(page)">{page}</button>
-                 <button v-on:click="setPage(page + 1)">{page + 1}</button>
-                 <button v-on:click="setPage(page + 2)">{page + 2}</button>
-                 ...
-                 <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
+                <div class="Project_Data hidden"></div>
+                <div id="Centre_chiffre">
+                    <template>
+                        <div v-if="page == 1">
+                            <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+                            <button v-on:click="setPage(page + 1)">{page + 1}</button>
+                            <button v-on:click="setPage(page + 2)">{page + 2}</button>
+                            ...
+                            <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
 
-                 </div>
-                 <div v-else-if="page < 3">
-                 <button  v-on:click="setPage(page -1)">{page -1}</button>
-                 <button class="pag_select" v-on:click="setPage(page)">{page}</button>
-                 <button v-on:click="setPage(page + 1)">{page + 1}</button>
-                 ...
-                 <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
+                        </div>
+                        <div v-else-if="page < 3">
+                            <button v-on:click="setPage(page -1)">{page -1}</button>
+                            <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+                            <button v-on:click="setPage(page + 1)">{page + 1}</button>
+                            ...
+                            <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
 
-                 </div>
-                 <div v-else-if="page >= 3 && page < nbrPage - 1">
-                 <button v-on:click="setPage(1)">1</button>
-                 ...
-                 <button v-on:click="setPage(page - 1)">{page - 1}</button>
-                 <button class="pag_select" v-on:click="setPage(page)">{page}</button>
-                 <button v-on:click="setPage(page + 1)">{page + 1}</button>
-                 ...
-                 <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
+                        </div>
+                        <div v-else-if="page >= 3 && page < nbrPage - 1">
+                            <button v-on:click="setPage(1)">1</button>
+                            ...
+                            <button v-on:click="setPage(page - 1)">{page - 1}</button>
+                            <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+                            <button v-on:click="setPage(page + 1)">{page + 1}</button>
+                            ...
+                            <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
 
-                 </div>
-                 <div v-else-if="page == (nbrPage - 1)">
-                 <button v-on:click="setPage(1)">1</button>
-                 ...
-                 <button v-on:click="setPage(page - 1)">{page - 1}</button>
-                 <button class="pag_select"  v-on:click="setPage(page)">{page}</button>
-                 <button v-on:click="setPage(page + 1)">{page + 1}</button>
-                 </div>
-                 <div v-else-if="page == nbrPage">
-                 <button v-on:click="setPage(1)">1</button>
-                 ...
-                 <button v-on:click="setPage(page - 2)">{page - 2}</button>
-                 <button v-on:click="setPage(page - 1)">{page - 1}</button>
-                 <button class="pag_select" v-on:click="setPage(page)">{page}</button>
-                 </div>
-            </template>
+                        </div>
+                        <div v-else-if="page == (nbrPage - 1)">
+                            <button v-on:click="setPage(1)">1</button>
+                            ...
+                            <button v-on:click="setPage(page - 1)">{page - 1}</button>
+                            <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+                            <button v-on:click="setPage(page + 1)">{page + 1}</button>
+                        </div>
+                        <div v-else-if="page == nbrPage">
+                            <button v-on:click="setPage(1)">1</button>
+                            ...
+                            <button v-on:click="setPage(page - 2)">{page - 2}</button>
+                            <button v-on:click="setPage(page - 1)">{page - 1}</button>
+                            <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+                        </div>
+                    </template>
+                </div>
 
-                {# { nbrPage = Math.ceil(count / 6 )}</p> #}
+            </div>
 
-            {# <div v-for="pageView in nbrPage"> #}
-                {# <button v-on:click="setPage(pageView)">{pageView}</button> #}
+
+            {# { nbrPage = Math.ceil(count / 6 )}</p> #}
+
+        {# <div v-for="pageView in nbrPage"> #}
+            {# <button v-on:click="setPage(pageView)">{pageView}</button> #}
             {# </div> #}
 
             {# <p id="Chiffre">
-                1 2 3 ... 8
-            </p> #}
+                            1 2 3 ... 8
+                        </p> #}
         </div>
-	</div>
+    </div>
 {% endblock %}
 {% block js %}
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script crossorigin="anonymous" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 
-	  <script>
+    <script>
         var app = new Vue({
             el: '#app',
             delimiters: [
@@ -130,9 +142,9 @@
                 select: "All",
                 page: 1,
                 count: 0,
-				searchText : "",
-                nbrPage : 0,
-                onLoad : false
+                searchText: "",
+                nbrPage: 0,
+                onLoad: false
             },
             mounted() {
                 this.sayHello();
@@ -145,32 +157,28 @@
                 },
                 setSelect(selection) {
                     console.log("set Selection");
-					this.page = 1;
+                    this.page = 1;
                     this.select = selection;
                     this.getArticleSelection();
                 },
                 setPage(page) {
                     console.log('Set page');
-                    if(this.page != page)
-                    {
+                    if (this.page != page) {
                         this.page = page;
                         console.log(this.page);
 
-                        if(this.select == 'All'){
+                        if (this.select == 'All') {
                             this.getArticle();
-                        }
-                        else{
+                        } else {
                             this.getArticleSelection();
                         }
                     }
                 },
                 setLoad() {
                     console.log('Set load');
-                    if(this.onLoad == false)
-                    {
-                         this.onLoad = true;
-                    }
-                    else{
+                    if (this.onLoad == false) {
+                        this.onLoad = true;
+                    } else {
                         this.onLoad = false;
                     }
 
@@ -191,17 +199,17 @@
 
                         var json = JSON.parse(response.data);
                         var object = this;
-						this.projets = [];
+                        this.projets = [];
 
                         $.each(json, function (key, value) {
-                            object.projets.push({"titre": value.titre, "texte": value.texte, "date": value.date,"path": value.path});
+                            object.projets.push({"titre": value.titre, "texte": value.texte, "date": value.date, "path": value.path});
                         });
                         this.onLoad = false;
 
                     })
                 },
                 search() {
-					console.log("search");
+                    console.log("search");
                     axios({
                         method: 'POST',
                         url: '/search-projet',
@@ -214,7 +222,7 @@
                         baseUrl = baseUrl.replace("annonce", "");
                         var json = JSON.parse(response.data);
                         var object = this;
-						this.projets = [];
+                        this.projets = [];
                         $.each(json, function (key, value) {
                             object.projets.push({"titre": value.titre, "texte": value.texte, "date": value.date});
                         });
@@ -225,8 +233,7 @@
                     axios({
                         method: 'POST',
                         url: '/get-projet-selection',
-                        data: {
-                            //id :this.biens[0],
+                        data: { // id :this.biens[0],
                             selection: this.select,
                             page: this.page
                         }
@@ -249,8 +256,7 @@
                     axios({
                         method: 'POST',
                         url: '/count-projet',
-                        data: {
-                            //id :this.biens[0],
+                        data: { // id :this.biens[0],
                             selection: this.select
                         }
                     }).then(response => {
@@ -261,11 +267,11 @@
                         var object = this;
                         console.log(json);
                         this.count = json;
-                        this.nbrPage =  Math.ceil(this.count / 6 )
-                        //this.projets = [];
-                        //$.each(json,function(key,value){
-                        //object.projets.push({"titre" : value.titre,"texte" : value.texte,"date" : value.date });
-                        //});
+                        this.nbrPage = Math.ceil(this.count / 6)
+                        // this.projets = [];
+                        // $.each(json,function(key,value){
+                        // object.projets.push({"titre" : value.titre,"texte" : value.texte,"date" : value.date });
+                        // });
                     })
                 }
             }
