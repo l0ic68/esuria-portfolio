@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block title %}Gestion technologies{% endblock %}
+{% block stylesheets %}
+<link type="text/css" rel="stylesheet" href={{asset("css/techno_gestion.css")}} />{% endblock %}
+{% block body%}
+<div id="app">
+<img id="Bandeau" src={{asset("images/banniere-projets.jpg")}} alt="Bandeau">
+<div id="Une_Ligne">
+  <a href="{{ path('new_technologie') }}">Ajouter une technologies<a>
+</div>
+  <div id="wrapper">
+      {% for technologie in technologies %}
+    <div class="wrapperChild">
+      <div class="gestion_data_top">
+      <p>{{ technologie.icon|raw }}</p>
+      <p>{{ technologie.name }}</p>
+      </div>
+      <a  href="{{ path('editTechnologie' , {'id' : technologie.id } ) }}"  class="gestion_button">edit</a>
+      <a  href="{{ path('deleteTechnologie' , {'id' : technologie.id } ) }}" class="gestion_button">suprimer</a>
+
+    </div>
+      {% endfor %}
+  </div>
+</div>
+
+
+{% endblock %}
+{% block js %}
+{% endblock %}

@@ -34,7 +34,6 @@
             <div class="Sous_Bandeau">
                 <h2 class="Titre_article">
                     {article.titre}
-                                            {article.path}
                 </h2>
                 <p class="Date">
                     <span class="Couleur_slash">//
@@ -128,7 +127,8 @@
         },
         filters: {
             moment: function (date) {
-            return moment(date).lang("fr").format('LL');
+                //console.log(moment(date).format('MMMM Do YYYY, h:mm:ss a'));
+            return moment(date).locale("fr").format('LL');
             }
         },
         methods: {

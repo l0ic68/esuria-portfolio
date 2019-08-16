@@ -83,9 +83,9 @@ searchProjet:
     path: /search-projet
     controller: App\Controller\ProjetController::searchProjet
 
-lecture-projet:
-    path: /lecture-projet/{titre}
-    controller: App\Controller\ProjetController::lecture_projet
+# lecture-projet:
+#     path: /lecture-projet/{titre}
+#     controller: App\Controller\ProjetController::lecture_projet
 
 new-projet:
     path: /new-projet

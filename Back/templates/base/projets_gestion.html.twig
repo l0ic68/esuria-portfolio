@@ -1,0 +1,200 @@
+{% extends 'base.html.twig' %}
+{% block title %}Projets{% endblock %}
+{% block stylesheets %}
+<link type="text/css" rel="stylesheet" href={{asset("css/projets_gestion.css")}} />{% endblock %}
+{% block body%}
+<div id="app">
+<img id="Bandeau" src={{asset("images/banniere-projets.jpg")}} alt="Bandeau">
+<div id="Une_Ligne">
+  <a href="{{ path('new_project') }}">Ajouter un projet<a>
+</div>
+  <div id="wrapper">
+    <div class="wrapperChild"  v-for="(projet,index) in projets">
+      <img class="Images_Projet" v-bind:src=projet.miniature alt="Bandeau">
+      <a  v-bind:href="'/edit-project/' + projet.id"  class="gestion_button">edit</a>
+      <a v-bind:href="'/delete-projet/' + projet.id" class="gestion_button">suprimer</a>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="{{asset('js/vue.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+
+
+	  <script>
+        var app = new Vue({
+            el: '#app',
+            delimiters: [
+                '{', '}'
+            ],
+            data: {
+                projets: [],
+                select: "All",
+                page: 1,
+                count: 0,
+                nbrPage : 0,
+                onLoad : false
+            },
+            mounted() {
+                //this.sayHello();
+                this.getArticle();
+                this.getCount();
+            },
+            methods: {
+                setSelect(selection) {
+          					this.page = 1;
+                    this.select = selection;
+                    this.getArticleSelection();
+                },
+                hover_select: function(categorie) {
+                  return {
+                  "Projet_hover_web": categorie == "web",
+                  "Projet_hover_audiovisuel": categorie == "audiovisuel",
+                  "Projet_hover_social": categorie == "social",
+                  "Projet_hover_materiel": categorie == "materiel"
+                }
+              },
+                setPage(page) {
+                    console.log('Set page');
+                    if(this.page != page)
+                    {
+                        this.page = page;
+                        console.log(this.page);
+
+                        if(this.select == 'All'){
+                            this.getArticle();
+                        }
+                        else{
+                            this.getArticleSelection();
+                        }
+                    }
+                },
+                setLoad() {
+                    console.log('Set load');
+                    if(this.onLoad == false)
+                    {
+                         this.onLoad = true;
+                    }
+                    else{
+                        this.onLoad = false;
+                    }
+
+                },
+                getArticle() {
+                    console.log("get Article");
+                    this.onLoad = true;
+                    axios({
+                        method: 'POST',
+                        url: '/get-projet',
+                        data: {
+                            page: this.page
+                        }
+                    }).then(response => {
+                        var json = JSON.parse(response.data);
+                        console.log(json);
+
+                        var object = this;
+						this.projets = [];
+
+                        $.each(json, function (key, value) {
+                            object.projets.push({"id" : value.id,"slug": value.slug, "miniature": value.miniature.path, "categorie": value.categorie});
+                        });
+                        this.onLoad = false;
+
+                    })
+                },
+                getArticleSelection() {
+                    console.log("get Article Selection");
+                    axios({
+                        method: 'POST',
+                        url: '/get-projet-selection',
+                        data: {
+                            //id :this.biens[0],
+                            selection: this.select,
+                            page: this.page
+                        }
+                    }).then(response => {
+                        var json = JSON.parse(response.data);
+                        var object = this;
+                        this.projets = [];
+                        $.each(json, function (key, value) {
+                            object.projets.push({"id" : value.id, "slug": value.slug, "categorie": value.categorie,  "miniature": value.miniature.path});
+                        });
+                        this.getCount();
+                    })
+                },
+                getCount() {
+                    console.log("get Count");
+                    axios({
+                        method: 'POST',
+                        url: '/count-projet',
+                        data: {
+                            //id :this.biens[0],
+                            selection: this.select
+                        }
+                    }).then(response => {
+                        var json = JSON.parse(response.data);
+                        this.count = json;
+                        this.nbrPage =  Math.ceil(this.count / 6 )
+                    })
+                }
+            }
+        })
+    </script>
+
+    <script>
+      let cards = Array.from(document.querySelectorAll('.card'))
+
+      cards.forEach((card) => {
+        card.addEventListener('click', function () {
+          let flip = new Flip()
+          flip.read(cards)
+          card.parentNode.removeChild(card)
+          cards = cards.filter(c => c !== card)
+          flip.play(cards)
+        })
+      })
+
+      class Flip {
+        constructor () {
+          this.duration = 300
+          this.positions = {}
+        }
+
+
+        read (elements) {
+          elements.forEach(element => {
+            const id = element.getAttribute('id')
+            this.positions[id] = element.getBoundingClientRect()
+          })
+        }
+
+        play (elements) {
+          elements.forEach(element => {
+            const id = element.getAttribute('id')
+            const newPosition = element.getBoundingClientRect()
+            const oldPosition = this.positions[id]
+            const deltaX = oldPosition.x - newPosition.x
+            const deltaY = oldPosition.y - newPosition.y
+            const deltaW = oldPosition.width / newPosition.width
+            const deltaH = oldPosition.height / newPosition.height
+            element.animate([{
+              transform: `translate(${deltaX}px, ${deltaY}px) scale(${deltaW}, ${deltaH})`
+            },{
+              transform: 'none'
+            }], {
+              duration: this.duration,
+              easing: 'ease-in-out',
+              fill: 'both'
+            })
+            element.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${deltaW}, ${deltaH})`
+          })
+        }
+      }
+
+      </script>
+{% endblock %}

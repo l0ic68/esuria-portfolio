@@ -5,7 +5,7 @@ namespace App\DataFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Article;
-use App\Entity\Projet;
+use App\Entity\Projects;
 use App\Entity\Image;
 use App\Entity\Skill;
 use App\Entity\Biographie;
@@ -31,7 +31,7 @@ class AppFixtures extends Fixture
             $manager->persist($img);
         }
         for($i = 1;$i < 100; $i++){
-            $projet = new Projet();
+            $projet = new Projects();
             $projet->setTitre('Projet titre '. $i);
             $projet->setTexte('Lorem Ipsum text '. $i);
             $projet->setType(self::getRandomSelection());

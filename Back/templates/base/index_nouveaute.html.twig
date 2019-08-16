@@ -70,14 +70,13 @@
             },
             methods: {
                 getCount() {
-                    axios({method: 'get', url: 'https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCiSDuWuCMrs-hafoBTUbQkg&key=AIzaSyDX6MnQaZp1TXOmbsmfEhSTnyhYUGAj2F4'}).then(response => {
+                    axios({method: 'get', url: 'https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UC1SfwbIJBOGtoriQ-uMNHFg&key=AIzaSyDX6MnQaZp1TXOmbsmfEhSTnyhYUGAj2F4'}).then(response => {
                         // console.log(response.data.items)
                         // console.log(JSON.parse(response.data.items));
                         // var json = JSON.parse(response.data.items);
                         var object = this;
                         var lastVideoId = "";
                         $.each(response.data.items, function (key, value) {
-                            console.log(value)
                             if (value.id.kind != "youtube#channel") {
                                 object.videos.push({"videoId": value.id.videoId, "date": value.snippet.publishedAt});
                             }

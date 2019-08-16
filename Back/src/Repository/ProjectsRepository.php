@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Projet;
+use App\Entity\Projects;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -12,11 +12,11 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Projet[]    findAll()
  * @method Projet[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProjetRepository extends ServiceEntityRepository
+class ProjectsRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Projet::class);
+        parent::__construct($registry, Projects::class);
     }
 
     // /**
@@ -88,6 +88,31 @@ class ProjetRepository extends ServiceEntityRepository
             ->setParameter("type" , $tri)
             ->getQuery()
             ->getSingleScalarResult()
+        ;
+    }
+    public function findOneByNext($date)
+    {
+        return $this->createQueryBuilder('b')
+            ->select('b.id')
+            ->addSelect('b.title')
+            ->where("b.date > :date")
+            ->setParameter("date" , $date)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+    public function findOneByPrevious($date)
+    {
+        return $this->createQueryBuilder('b')
+            ->select('b.id')
+            ->addSelect('b.title')
+            ->where("b.date < :date")
+            ->setParameter("date" , $date)
+            ->setMaxResults(1)
+            ->orderBy('b.date','DESC')
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 

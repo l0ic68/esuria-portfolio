@@ -39,6 +39,13 @@ class Image
      */
     private $alt;
 
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Projects", inversedBy="gallery", cascade={"persist" ,"remove"})
+     * @ORM\JoinColumn(nullable=true , onDelete="SET NULL")
+     */
+     private $projects;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -79,4 +86,17 @@ class Image
 
         return $this;
     }
+
+    public function getProjects(): ?Projects
+    {
+        return $this->projects;
+    }
+
+    public function setProjects(?Projects $projects): self
+    {
+        $this->projects = $projects;
+
+        return $this;
+    }
+
 }

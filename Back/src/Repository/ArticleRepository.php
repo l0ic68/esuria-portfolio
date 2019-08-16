@@ -38,6 +38,7 @@ class ArticleRepository extends ServiceEntityRepository
     public function myGetArticle($page)
     {
         return $this->createQueryBuilder('b')
+        ->where("b.date < CURRENT_DATE()")
         ->setFirstResult(($page-1)*6)
         ->setMaxResults(6)
         ->orderBy('b.date','ASC')

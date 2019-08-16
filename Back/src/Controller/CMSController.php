@@ -11,6 +11,8 @@ use App\Entity\Image;
 use App\Entity\Timeline;
 use App\Entity\Event;
 use App\Entity\SmallEvent;
+use App\Entity\Projects;
+use App\Entity\Technologies;
 use App\Entity\Skill;
 use App\Repository\HobbiesRepository;
 use App\Service\FileUploader;
@@ -58,7 +60,10 @@ class CMSController extends Controller
      */
     public function cms_projets()
     {
-        return $this->render('cms_base/cms_projets.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $projects = $em->getRepository(Projects::class)->findAll();
+        $technologies = $em->getRepository(Technologies::class)->findAll();
+        return $this->render('cms_base/cms_projets.html.twig', ["projects" => $projects,"technologies" => $technologies]);
     }
 
 

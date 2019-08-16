@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+{% block title %}Ajouter Projet{% endblock %}
+{% block stylesheets %}
+<link type="text/css" rel="stylesheet" href={{asset("css/addProject.css")}} />
+{% endblock %}
+
+{% block content %}
+<div id="app">
+  {{ form_start(form) }}
+  {{form_label(form.name)}}
+  {{form_widget(form.name)}}
+  {{form_label(form.icon)}}
+  {{form_widget(form.icon, {'attr': {'v-model': 'icon'}}) }}
+  <div v-html="icon"></div>
+    <input id="submit" type="submit" value="Submit"/>
+  {{ form_end(form) }}
+</div>
+{% endblock %}
+{% block js %}
+<script src="{{asset('js/vue.js')}}"></script>
+  <script>
+        var app = new Vue({
+            el: '#app',
+            delimiters: [
+                '{', '}'
+            ],
+            data: {
+                icon : ""
+            },
+            mounted() {
+                //this.sayHello();
+                this.getArticle();
+                this.getCount();
+            },
+            methods: {
+                setSelect(selection) {
+          					this.page = 1;
+                    this.select = selection;
+                    this.getArticleSelection();
+                },
+                setPage(page) {
+                    console.log('Set page');
+                    if(this.page != page)
+                    {
+                        this.page = page;
+                        console.log(this.page);
+
+                        if(this.select == 'All'){
+                            this.getArticle();
+                        }
+                        else{
+                            this.getArticleSelection();
+                        }
+                    }
+                },
+            },
+        });
+        </script>
+{% endblock %}
