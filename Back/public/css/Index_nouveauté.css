@@ -154,3 +154,25 @@
   margin-right: 0.5em;
   font-family: "Roboto", sans-serif;
 }
+
+@media screen and (max-width:1280px) {
+#Hobbies_Switch {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-height: 15vh;
+  height: 15vh;
+  width: 100%;
+  border-bottom: solid #003471 2px;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+#Hobbies_Switch a {
+font-size: 1.5em;
+}
+
+#Hobbies_Switch i {
+display: none;
+}
+}

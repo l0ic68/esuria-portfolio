@@ -63,38 +63,38 @@
 			<nav id="Navigation_principale">
 				<ul>
 				{% if app.request.attributes.get('_route') == "accueil" or app.request.attributes.get('_route') == "index_nouveaute" or app.request.attributes.get('_route') == "index_biographie" %}
-					<li><a href="{{path('accueil')}}"><span id="Selection">- PRESENTATION -</span></a></li>
+					<li class="Espace"><a href="{{path('accueil')}}"><span id="Selection">- PRESENTATION -</span></a></li>
 				{% else %}
 					<li class="Espace"><a href="{{path('accueil')}}">PRESENTATION</a></li>
 				{% endif %}
 				{% if app.request.attributes.get('_route') == "projets" %}
-					<li><a href="{{path('projets')}}"><span id="Selection">- PROJETS -</span></a></li>
+					<li class="Espace"><a href="{{path('projets')}}"><span id="Selection">- PROJETS -</span></a></li>
 				{% else %}
 					<li class="Espace"><a href="{{path('projets')}}">PROJETS</a></li>
 				{% endif %}
 				{% if app.request.attributes.get('_route') == "hobbies" %}
-					<li><a href="{{path('hobbies')}}"><span id="Selection">- HOBBIES -</span></a></li>	
+					<li class="Espace"><a href="{{path('hobbies')}}"><span id="Selection">- HOBBIES -</span></a></li>
 					{# <li class="Espace"><a href="/hobbies">HOBBIES</a></li> #}
 				{% else %}
 					<li class="Espace"><a href="/hobbies">HOBBIES</a></li>
 				{% endif %}
 				{% if app.request.attributes.get('_route') == "live" %}
-					<li><a href="{{path('live')}}"><span id="Selection">- LIVE -</span></a></li>
+					<li class="Espace"><a href="{{path('live')}}"><span id="Selection">- LIVE -</span></a></li>
 				{% else %}
 					<li class="Espace"><a href="{{path('live')}}">LIVE</a></li>
 				{% endif %}
 				{% if app.request.attributes.get('_route') == "blog" %}
-					<li><a href="{{path('blog')}}"><span id="Selection">- BLOG -</span></a></li>
+					<li class="Espace"><a href="{{path('blog')}}"><span id="Selection">- BLOG -</span></a></li>
 				{% else %}
 					<li class="Espace"><a href="{{path('blog')}}">BLOG</a></li>
 				{% endif %}
 				{% if app.request.attributes.get('_route') == "agenda" %}
-					<li><a href="{{path('agenda')}}"><span id="Selection">- AGENDA -</span></a></li>
+					<li class="Espace"><a href="{{path('agenda')}}"><span id="Selection">- AGENDA -</span></a></li>
 				{% else %}
 					<li class="Espace"><a href="{{path('agenda')}}">AGENDA</a></li>
 				{% endif %}
 				{% if app.request.attributes.get('_route') == "contact" %}
-					<li><a href="{{path('contact')}}"><span id="Selection">- CONTACT -</span></a></li>
+					<li class="Espace"><a href="{{path('contact')}}"><span id="Selection">- CONTACT -</span></a></li>
 				{% else %}
 					<li class="Espace"><a href="{{path('contact')}}">CONTACT</a></li>
 				{% endif %}
@@ -132,6 +132,7 @@
 				<p><a href="Mention_Legales.html">MENTION LEGALES</a></p>
 			</div>
 		</header>
+
 
 		<!-- MENU MOBILE -->
 		<div id='cssmenu'>
@@ -185,7 +186,30 @@
 	</main>
 	<!-- SCRIPT JAVASCRIPT -->
 	<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
-	<script>
+
+	<script  async="async">
+	function adpaterHauteur()
+{
+	var hauteurFenetre = window.innerHeight;
+		document.querySelector("#cssmenu ul").style.height = hauteurFenetre +'px';
+}
+
+function addEvent(element, type, listener)
+{
+    if(element.addEventListener)
+    {
+        element.addEventListener(type, listener, false);
+    }
+    else if(element.attachEvent)
+    {
+        element.attachEvent("on"+type, listener);
+    }
+}
+
+
+addEvent(window, "load", adpaterHauteur);
+addEvent(window, "resize", adpaterHauteur);
+
 	(function($) {
 
 	  $.fn.menumaker = function(options) {

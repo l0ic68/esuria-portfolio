@@ -59,6 +59,7 @@ h1, h2, h3 {
   min-width: 20em;
   border-right: 2px solid #003471;
   background-color: rgba(0, 0, 0, 0.3);
+  overflow-x: auto;
 }
 
 #Header_Mobile {
@@ -185,8 +186,8 @@ h1, h2, h3 {
 }
 
 .Espace {
-  margin-top: 2em;
-  margin-bottom: 2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
 }
 
 .Decoration {
@@ -238,7 +239,7 @@ h1, h2, h3 {
   }
   #cssmenu ul li {
     width: 100%;
-    height: 4.54em;
+    height: calc(100% / 7 );
     margin: 0;
     border-top: 1px solid rgba(120, 120, 120, 0.2);
     background-color: rgba(0, 0, 0, 0.8);

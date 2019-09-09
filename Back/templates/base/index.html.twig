@@ -53,15 +53,13 @@
                                 </template>
                             </template>
                         </template>
-                    </template>
-                </template>
 
                 {# <div class="Bar"></div> #}
             </div>
             <i class="far fa-chevron-double-right" id="chevron_post"></i>
 
             <div id="Description"></div>
-            <p>Description : {description}</p>
+            <p class="Description_Data">{description}</p>
 
         </div>
     </div>
@@ -117,11 +115,11 @@ var app = new Vue({
             this.key = key;
         },
         changeInfo(tindex, sindex) {
-            if (this.timeline[tindex][sindex].event != undefined) 
+            if (this.timeline[tindex][sindex].event != undefined)
                 this.description = this.timeline[tindex][sindex].event.description;
-             else 
+             else
                 this.description = this.timeline[tindex][sindex].smallEvent.description;
-            
+
 
             // this.description = this.timeline[tindex][sindex].description;
         },
