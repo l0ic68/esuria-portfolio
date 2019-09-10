@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use phpDocumentor\Reflection\Types\Integer;
 
 /**
@@ -31,6 +33,16 @@ class Event
      * @ORM\Column(type="text")
      */
     private $description;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SmallEvent", mappedBy="event")
+     */
+    private $smallEvent;
+
+    public function __construct()
+    {
+        $this->smallEvent = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -70,6 +82,34 @@ class Event
     {
         $this->description = $description;
 
+        return $this;
+    }
+
+   /**
+     * @return Collection|SmallEvent[]
+     */
+    public function getSmallEvent(): Collection
+    {
+        return $this->smallEvent;
+    }
+    
+    public function addSmallEvent(SmallEvent $smallEvent): self
+    {
+        if (!$this->smallEvent->contains($smallEvent)) {
+            $this->smallEvent[] = $smallEvent;
+            $smallEvent->setTimeline($this);
+        }
+        return $this;
+    }
+    public function removeSmallEvent(SmallEvent $smallEvent): self
+    {
+        if ($this->smallEvent->contains($smallEvent)) {
+            $this->smallEvent->removeElement($smallEvent);
+            // set the owning side to null (unless already changed)
+            if ($smallEvent->getTimeline() === $this) {
+                $smallEvent->setTimeline(null);
+            }
+        }
         return $this;
     }
 }

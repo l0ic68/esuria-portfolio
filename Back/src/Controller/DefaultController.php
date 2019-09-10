@@ -10,7 +10,7 @@ use App\Entity\Hobbies;
 use App\Entity\Biographie;
 use App\Entity\Skill;
 use App\Entity\Article;
-use App\Entity\Timeline;
+use App\Entity\Event;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -49,7 +49,7 @@ class DefaultController extends Controller
 
     public function getTimeline(Request $request, RegistryInterface $doctrine)
     {
-        $timeline = $doctrine->getRepository(Timeline::class)->myFindByOrder();
+        $event = $doctrine->getRepository(Event::class)->myFindByOrder();
         $encoders = array(new XmlEncoder(), new JsonEncoder());
         $normalizer = new ObjectNormalizer();
         $normalizer->setCircularReferenceLimit(2);
@@ -60,7 +60,7 @@ class DefaultController extends Controller
 
         $normalizers = array($normalizer);
         $serializer = new Serializer($normalizers, $encoders);
-        $jsonContent = $serializer->serialize($timeline, 'json');
+        $jsonContent = $serializer->serialize($event, 'json');
 
         $response = new JsonResponse();
         $response->setData($jsonContent);

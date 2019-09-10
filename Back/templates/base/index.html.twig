@@ -27,9 +27,14 @@
                     <h1>- Parcours -</h1>
                     <div id="Timeline">
                         <div id="Info">
-                            <p class="Periode" id="Periode_2012_2015">{date_start}
-                                <template v-if="date_end != ''">-</template>
-                                {date_end}</p>
+                            <template v-if="date_smallEvent == null">
+                                <p class="Periode" id="Periode_2012_2015">{date_start}
+                                    <template v-if="date_end != ''">-</template>
+                                    {date_end}</p>
+                            </template>
+                            <template v-else>
+                                <p class="Periode" id="Periode_2012_2015">{date_smallEvent|moment()}</p>
+                            </template>
                             <p class="Titre_periode" id="Titre_lycee">{titre}</p>
                         </div>
                     </div>
@@ -37,23 +42,22 @@
                     <i class="far fa-chevron-double-left" id="chevron_past"></i>
                     <div id="Timeline_bar">
                         <template v-for="(events, tindex) in timeline">
-                            <template v-for="(smallEvent, sindex) in events">
-                                <template
-                                    v-if="smallEvent.event">
-                                    {# <div v-bind:class="{active : smallEvent.event.isActive }" class="Bar"></div> #}
-                                    <div class="circle" v-on:click="changeInfo(tindex , sindex)">
-                                        <div class="InsideCircle"></div>
+                            <div class="circle" v-on:click="changeInfo(tindex , sindex, 'event')">
+                                <div class="InsideCircle" v-bind:class="{active : events.isEventActif }"></div>
+                            </div>
+                            <template v-if="events.smallEvent.length != 0">
+                                <template v-for="(smallEvent, sindex) in events.smallEvent">
+                                    <div v-bind:class="{active : events.isActive }" class="Bar"></div>
+                                    <div class="LittleCircle" v-on:click="changeInfo(tindex , sindex, 'smallEvent')">
+                                        <div class="InsideLittleCircle" v-bind:class="{active : smallEvent.isActive }"></div>
                                     </div>
-                                </template>
-                                <template v-if="smallEvent.smallEvent">
-                                    <div v-bind:class="{active : smallEvent.smallEvent.isActive }" class="Bar"></div>
-                                    <div class="LittleCircle" v-on:click="changeInfo(tindex , sindex)">
-                                        <div class="InsideLittleCircle"></div>
-                                    </div>
-                                    <template v-if="events.length - 1  == sindex ">
-                                        <div v-bind:class="{active : smallEvent.smallEvent.isActive }" class="Bar"></div>
+                                    <template v-if="events.smallEvent.length == sindex + 1  ">
+                                        <div v-bind:class="{active : events.isActive }" class="Bar"></div>
                                     </template>
                                 </template>
+                            </template>
+                            <template v-else>
+                                <div v-bind:class="{active : events.isActive }" class="Bar"></div>
                             </template>
                         </template>
 
@@ -105,6 +109,7 @@
     </script>
     <script crossorigin="anonymous" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src={{asset("js/vue.js") }}></script>
+    <script src="{{asset('js/moment.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
     <script>
         var app = new Vue({
@@ -121,87 +126,87 @@
                 id: 5,
                 date_start: "coucou",
                 date_end: "coucou",
+                date_smallEvent: null,
                 titre: "coucou"
             },
+            filters: {
+                moment: function (date) {
+                    console.log(date)
+                    var d = new Date((date["timestamp"] * 1000));
+                    return moment(d).locale("fr").format('LL');
+                }
+            },
             methods: {
+                moment: function () {
+                    return moment();
+                },
                 sayHello() {
                     alert("hello");
                 },
                 setKey(key) {
                     this.key = key;
                 },
-                changeInfo(tindex, sindex) {
-                    if (this.timeline[tindex][sindex].event != undefined) {
-                        this.description = this.timeline[tindex][sindex].event.description;
-                        this.date_start = this.timeline[tindex][sindex].event.date;
-                        this.id = this.timeline[tindex][sindex].event.id;
-                        this.titre = this.timeline[tindex][sindex].event.titre;
-                        this.timeline[tindex][sindex].event.isActive = true;
-                        console.log(this.timeline[tindex]);
-                        this.timeline[tindex].forEach((value, index) => {
-                            if (value.event == undefined) {
-                                value.smallEvent.isActive = true;
-                            }
-                        });
+                changeInfo(tindex, sindex, type) {
+                    if (type == "event") {
+                        this.timeline.forEach((value, index) => {
+                            value.isActive = false;
+                            value.isEventActif = false;
+                            value.smallEvent.forEach((value, index) => {
+                                value.isActive = false;
+                            })
+                        })
+                        this.date_smallEvent = null;
+                        this.description = this.timeline[tindex].description;
+                        this.date_start = this.timeline[tindex].date;
+                        this.id = this.timeline[tindex].id;
+                        this.titre = this.timeline[tindex].titre;
+                        this.timeline[tindex].isActive = true;
+                        this.timeline[tindex].isEventActif = true;
                         if (this.timeline.length == (tindex + 1)) {
                             this.date_end = "";
-                        } else 
-                            this.date_end = this.timeline[tindex + 1][sindex].event.date;
-                        
-
-
+                        } else {
+                            this.date_end = this.timeline[tindex + 1].date;
+                        }
                     } else {
-
-                        this.description = this.timeline[tindex][sindex].smallEvent.description;
-                        this.titre = this.timeline[tindex][sindex].smallEvent.titre;
-                        this.timeline[tindex][sindex].smallEvent.isActive = true;
-                        this.date_start = this.timeline[tindex][sindex].event.date;
+                        this.timeline.forEach((value, index) => {
+                            value.isActive = false;
+                            value.isEventActif = false;
+                            value.smallEvent.forEach((value, index) => {
+                                value.isActive = false;
+                            })
+                        })
+                        this.description = this.timeline[tindex].smallEvent[sindex].description;
+                        this.date_smallEvent = this.timeline[tindex].smallEvent[sindex].date;
+                        this.titre = this.timeline[tindex].smallEvent[sindex].titre;
+                        this.timeline[tindex].smallEvent[sindex].isActive = true;
+                        this.timeline[tindex].isActive = true;
 
 
                     }
-
-                    // this.description = this.timeline[tindex][sindex].description;
                 },
                 getTimeline() {
                     axios({method: 'POST', url: '/get-timeline'}).then(response => {
                         var getUrl = window.location;
                         var json = JSON.parse(response.data);
                         var object = this;
-                        this.timeline = [[]];
-
+                        this.timeline = [];
                         $.each(json, function (key, value) {
                             value.smallEvent.sort(function (a, b) {
                                 // Turn your strings into dates, and then subtract them
                                 // to get a value that is either negative, positive, or zero.
                                 return a.date.timestamp - b.date.timestamp;
                             });
-                            // console.log(this.timeline[key] == undefined);
-                            if (object.timeline[key] == undefined) {
-                                object.timeline[key] = [];
-                            }
-                            object.timeline[key].push({
-                                "event": {
-                                    "titre": value.event.titre,
-                                    "description": value.event.description,
-                                    "date": value.event.date,
-                                    "id": value.event.id,
-                                    "isActive": false
-                                }
+                            object.timeline.push({
+                                "titre": value.titre,
+                                "description": value.description,
+                                "date": value.date,
+                                "id": value.id,
+                                "smallEvent": value.smallEvent,
+                                "isActive": false,
+                                "isEventActif": false
                             });
-                            value.smallEvent.forEach(function (value) {
-                                object.timeline[key].push({
-                                    "smallEvent": {
-                                        "titre": value.titre,
-                                        "description": value.description,
-                                        "date": value.date,
-                                        "id": value.id,
-                                        "isActive": false
-                                    }
-                                });
-                            })
-
                         });
-                        this.changeInfo(0, 0);
+                        this.changeInfo(0, 0, "event");
                     })
 
                 }

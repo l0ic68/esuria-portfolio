@@ -47,4 +47,15 @@ class EventRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+    public function myFindByOrder()
+    {
+        return $this->createQueryBuilder('t')
+            ->add('orderBy','t.date ASC')
+            // ->orderBy('e.date ASC  s.date ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
