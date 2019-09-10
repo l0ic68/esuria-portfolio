@@ -118,7 +118,6 @@ class CMSController extends Controller
             $em->flush();
             return $this->redirectToRoute('cms-hobbies');
         }
-
         return $this->render('cms_base/new_hobbies.html.twig', ['hobbie' => $hobbie, 'form' => $form->createView()]);
     }
 
@@ -128,13 +127,10 @@ class CMSController extends Controller
     public function new_event(RegistryInterface $doctrine, Request $request)
     {
         $event = new Event();
-        $timeline = new Timeline();
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
-            $timeline->setEvent($event);
-            $em->persist($timeline);
             $em->persist($event);
             $em->flush();
             return $this->redirectToRoute('cms');
@@ -219,13 +215,13 @@ class CMSController extends Controller
     public function new_smallEvent(RegistryInterface $doctrine, Request $request, $id)
     {
         $smallEvent = new SmallEvent();
-        $timeline = $doctrine->getRepository(Timeline::class)->findOneByEvent(["id" => $id]);
+        $event = $doctrine->getRepository(Event::class)->findOneById($id);
         $form = $this->createForm(SmallEventType::class, $smallEvent);
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
-            $timeline->addSmallEvent($smallEvent);
-            $em->persist($timeline);
+            $event->addSmallEvent($smallEvent);
+            $em->persist($event);
             $em->persist($smallEvent);
             $em->flush();
             return $this->redirectToRoute('cms');

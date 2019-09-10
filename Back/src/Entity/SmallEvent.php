@@ -32,10 +32,10 @@ class SmallEvent
     private $date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Timeline", inversedBy="smallEvent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="smallEvent")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $timeline;
+    private $event;
 
     public function getId(): ?int
     {
@@ -78,14 +78,14 @@ class SmallEvent
         return $this;
     }
 
-    public function getTimeline(): ?Timeline
+    public function getEvent(): ?Event
     {
-        return $this->timeline;
+        return $this->event;
     }
 
-    public function setTimeline(?Timeline $timeline): self
+    public function setEvent(?Event $event): self
     {
-        $this->timeline = $timeline;
+        $this->event = $event;
 
         return $this;
     }
