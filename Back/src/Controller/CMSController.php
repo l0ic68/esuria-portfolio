@@ -322,7 +322,6 @@ class CMSController extends Controller
     }
 
     /**
-     //* @Route("/cms-hobbies/{id}", name="hobbies-show")
      * @Route("/cms-hobbies/{slug}-{id}", name="hobbies-show", requirements={"slug": "[a-z0-9\-]*"})
      */
     public function show($slug, $id, RegistryInterface $doctrine, Request $request)

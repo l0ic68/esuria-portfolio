@@ -72,6 +72,7 @@ class ArticleController extends Controller
         }
         return $this->render('CMS/new_article.html.twig', array(
             "form" => $form->createView(),
+            "commentaires" => false,
         ));
     }
 
