@@ -19,6 +19,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\HttpFoundation\File\File;
+
 
 class ArticleController extends Controller
 {
@@ -37,10 +39,10 @@ class ArticleController extends Controller
     /**
      * @Route("/lecture-article/{path}", name="lecture-article")
      */
-    public function lecture_article($path, RegistryInterface $doctrine,Request $request)
-    {    
-        $article = $doctrine->getRepository(Article::class)->findOneByPath($path);    
-        $comment= new Commentaire();
+    public function lecture_article($path, RegistryInterface $doctrine, Request $request)
+    {
+        $article = $doctrine->getRepository(Article::class)->findOneByPath($path);
+        $comment = new Commentaire();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
@@ -79,10 +81,16 @@ class ArticleController extends Controller
     public function edit_article(RegistryInterface $doctrine, Request $request, $id)
     {
         $article = $doctrine->getRepository(Article::class)->find($id);
+        $article->getImage()->setFilename(new File($this->getParameter('uploadDirectory') . '/' . $article->getImage()->getFilename()));
         $form = $this->createForm(BlogType::class, $article);
+        $saveImage = $article->getImage()->getFilename();
+
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            if ($data->getImage()->getFilename() == null)
+                $data->getImage()->setFilename($saveImage);
             #$article->setType($type);
             $em->persist($article);
             $em->flush();
@@ -222,34 +230,34 @@ class ArticleController extends Controller
     /**
      * @Route("/new-comment/{id}", name="new-comment")
      */
-     public function new_comment(RegistryInterface $doctrine, Request $request,$id)
-     {
-         $comment = new Commentaire();
-         $article = $doctrine->getRepository(Article::class)->find($id);        
-         $form = $this->createForm(CommentType::class, $comment);
-         $form->handleRequest($request);
-         $em = $this->getDoctrine()->getManager();
-         if ($form->isSubmitted() && $form->isValid()) {
-             $article->addCommentaire($comment);
-             $em->persist($comment);
-             $em->persist($article);
-             $em->flush();
-             return $this->redirectToRoute('cms');
-         }
- 
-         return $this->render('cms_base/new_skill.html.twig', ['form' => $form->createView()]);
-     }
- 
+    public function new_comment(RegistryInterface $doctrine, Request $request, $id)
+    {
+        $comment = new Commentaire();
+        $article = $doctrine->getRepository(Article::class)->find($id);
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $article->addCommentaire($comment);
+            $em->persist($comment);
+            $em->persist($article);
+            $em->flush();
+            return $this->redirectToRoute('cms');
+        }
+
+        return $this->render('cms_base/new_skill.html.twig', ['form' => $form->createView()]);
+    }
+
     /**
      * @Route("/delete-comment/{id}", name="delete-comment")
      */
-     public function delete_comment($id,RegistryInterface $doctrine, Request $request)
-     {
+    public function delete_comment($id, RegistryInterface $doctrine, Request $request)
+    {
         $comment = $doctrine->getRepository(Commentaire::class)->find($id);
-         $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
         //  $em->remove($timeline);
-         $em->remove($comment);
-         $em->flush();
-         return $this->redirectToRoute('edit-article' , ["id" => $comment->getArticle()->getId()]);
-     }
+        $em->remove($comment);
+        $em->flush();
+        return $this->redirectToRoute('edit-article', ["id" => $comment->getArticle()->getId()]);
+    }
 }

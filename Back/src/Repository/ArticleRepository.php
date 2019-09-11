@@ -48,12 +48,22 @@ class ArticleRepository extends ServiceEntityRepository
         ;
     }
 
-    public function myGetAgenda()
+    public function findPastAgenda()
     {
         return $this->createQueryBuilder('b')
         ->where("b.date < CURRENT_DATE()")
-        ->andWhere("b.categorie == 'agenda'")
-        ->setFirstResult(($page-1)*6)
+        ->andWhere("b.type LIKE 'agenda'")
+        ->setMaxResults(6)
+        ->orderBy('b.date','ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+    public function findFutureAgenda()
+    {
+        return $this->createQueryBuilder('b')
+        ->where("b.date > CURRENT_DATE()")
+        ->andWhere("b.type LIKE 'agenda'")
         ->setMaxResults(6)
         ->orderBy('b.date','ASC')
         ->getQuery()

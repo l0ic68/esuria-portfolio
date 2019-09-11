@@ -179,9 +179,14 @@ class DefaultController extends Controller
     /**
      * @Route("/agenda", name="agenda")
      */
-    public function agenda()
+    public function agenda(RegistryInterface $doctrine)
     {
-        return $this->render('base/agenda.html.twig');
+        $past = $doctrine->getRepository(Article::class)->findPastAgenda();
+        $future = $doctrine->getRepository(Article::class)->findFutureAgenda();
+        return $this->render('base/agenda.html.twig',[
+            "past" => $past,
+            "future" => $future,
+        ]);
     }
 
     /**
