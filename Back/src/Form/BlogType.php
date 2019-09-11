@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Article;
+use App\Form\ImageType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,11 +28,17 @@ class BlogType extends AbstractType
             ->add('titre', TextType::class)
             ->add('texte', TextareaType::class, [
             ])
+            ->add('description')
+            ->add('image', ImageType::class, [
+                'required' => false,
+            ])
             ->add('type', ChoiceType::class, [
                 'choices' => [
-                    'Film' => 'Film',
-                    'Serie' => 'Serie',
-                    'Livre' => 'Livre',
+                    'realisation' => 'realisation',
+                    'ecriture' => 'ecriture',
+                    'personnel' => 'personnel',
+                    'professionnel' => 'professionnel',
+                    'agenda' => 'agenda',
                 ]
             ])
             ->add('path', TextType::class);

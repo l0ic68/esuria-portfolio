@@ -39,6 +39,20 @@ class ArticleRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('b')
         ->where("b.date < CURRENT_DATE()")
+        ->andWhere("b.categorie != 'agenda'")
+        ->setFirstResult(($page-1)*6)
+        ->setMaxResults(6)
+        ->orderBy('b.date','ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+
+    public function myGetAgenda()
+    {
+        return $this->createQueryBuilder('b')
+        ->where("b.date < CURRENT_DATE()")
+        ->andWhere("b.categorie == 'agenda'")
         ->setFirstResult(($page-1)*6)
         ->setMaxResults(6)
         ->orderBy('b.date','ASC')

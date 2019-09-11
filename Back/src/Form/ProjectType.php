@@ -23,7 +23,17 @@ class ProjectType extends AbstractType
             ->add('description')
             ->add('client')
             ->add('date')
-            ->add('categorie')
+            ->add('categorie', ChoiceType::class, [
+                'choices'=> array(
+                    'web' => 'web',
+                    'photo' => 'photo',
+                    'video' => 'video',
+                    'montage' => 'montage',
+                ),
+                'expanded' => false,
+                'multiple' => false,
+                ])
+
             ->add('techno')
             ->add('URL_site')
             ->add('banner', ImageType::class, [

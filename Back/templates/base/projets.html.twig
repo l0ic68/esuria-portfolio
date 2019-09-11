@@ -14,23 +14,23 @@
         <div id="Zone">
 
             <div id="Hobbies_Switch">
-                <a href="Projet_web.html">
+                <a v-bind:class="{active : select=='All'}" href="#" v-on:click="setSelect('all')">
+                    All
+                </a>
+                <a v-bind:class="{active : select=='web'}" href="#" v-on:click="setSelect('web')">
                     <i class="fal fa-desktop"></i>
                 </a>
-                <a href="Projet_Photo.html">
+                <a v-bind:class="{active : select=='photo'}" href="#" v-on:click="setSelect('photo')">
                     <i class="fal fa-camera-alt"></i>
                 </a>
-                <a href="Projet_video.html">
+                <a v-bind:class="{active : select=='video'}" href="#" v-on:click="setSelect('video')">
                     <i class="fal fa-video"></i>
                 </a>
-                <a href="Projet_Wrench.html">
+                <a v-bind:class="{active : select=='montage'}" href="#" v-on:click="setSelect('montage')">
                     <i class="fal fa-wrench"></i>
                 </a>
-                <a href="Projet_Map.html">
-                    <i class="fal fa-map"></i>
-                </a>
             </div>
-            <div id="Sort_Select">
+            {# <div id="Sort_Select">
                 <p>-</p>
                 <p v-bind:class="{Sort_Select : select=='All', Sort : select != 'All' }" v-on:click="setSelect('All')">Tout</p>
                 <p>/</p>
@@ -49,12 +49,12 @@
                 <option value="valeur3">Ecriture</option>
                 <option value="valeur4">Personnel</option>
                 <option value="valeur5">Professionnel</option>
-            </select>
+            </select> #}
 
             <div id="Project_Content" v-if="onLoad == false">
                 <div class="Project_Data" v-for="projet in projets">
                 
-                    <a class="Lien_Photo" :href="'/projet/' + projet.slug + - + projet.id"><img :src="projet.image" class="Photo"></a>
+                    <a class="Lien_Photo" :href="'/projet' + '/' + projet.id + '/' + projet.slug"><img :src="projet.image" class="Photo"></a>
                     <div class="Project_Info Web">
                         <div class="Project_Type">{projet.titre}</div>
                         <div class="Project_Date">-
@@ -113,17 +113,6 @@
                 </div>
 
             </div>
-
-
-            {# { nbrPage = Math.ceil(count / 6 )}</p> #}
-
-        {# <div v-for="pageView in nbrPage"> #}
-            {# <button v-on:click="setPage(pageView)">{pageView}</button> #}
-            {# </div> #}
-
-            {# <p id="Chiffre">
-                                                                1 2 3 ... 8
-                                                            </p> #}
         </div>
     </div>
 {% endblock %}
@@ -150,7 +139,6 @@
                 onLoad: false
             },
             mounted() {
-                this.sayHello();
                 this.getArticle();
                 this.getCount();
             },
@@ -164,21 +152,14 @@
                 moment: function () {
                     return moment();
                 },
-                sayHello() {
-                    console.log("Hello");
-                },
                 setSelect(selection) {
-                    console.log("set Selection");
                     this.page = 1;
                     this.select = selection;
                     this.getArticleSelection();
                 },
                 setPage(page) {
-                    console.log('Set page');
                     if (this.page != page) {
                         this.page = page;
-                        console.log(this.page);
-
                         if (this.select == 'All') {
                             this.getArticle();
                         } else {
@@ -187,7 +168,6 @@
                     }
                 },
                 setLoad() {
-                    console.log('Set load');
                     if (this.onLoad == false) {
                         this.onLoad = true;
                     } else {
@@ -209,11 +189,8 @@
                         baseUrl = baseUrl.replace("annonce", "");
 
                         var json = JSON.parse(response.data);
-                        console.log(json);
-
                         var object = this;
                         this.projets = [];
-
                         $.each(json, function (key, value) {
                             object.projets.push({"titre": value.title, "slug": value.slug,"id": value.id,"texte": value.texte, "date": value.date, "path": value.path, "image": value.miniature.path});
                         });
@@ -222,7 +199,6 @@
                     })
                 },
                 search() {
-                    console.log("search");
                     axios({
                         method: 'POST',
                         url: '/search-projet',
@@ -242,7 +218,11 @@
                     })
                 },
                 getArticleSelection() {
-                    console.log("get Article Selection");
+                    if(this.select == 'all')
+                    {
+                        return this.getArticle();
+                        
+                    }
                     axios({
                         method: 'POST',
                         url: '/get-projet-selection',
@@ -259,7 +239,7 @@
                         console.log(json);
                         this.projets = [];
                         $.each(json, function (key, value) {
-                            object.projets.push({"titre": value.titre, "texte": value.texte, "date": value.date});
+                            object.projets.push({"titre": value.title, "slug": value.slug,"id": value.id,"texte": value.texte, "date": value.date, "path": value.path, "image": value.miniature.path});
                         });
                         this.getCount();
                     })

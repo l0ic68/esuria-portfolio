@@ -51,9 +51,9 @@ class ProjetController extends Controller
     }
 
     /**
-     * @Route("/projet/{slug}-{id}", name="lecture-projet")
+     * @Route("/projet/{id}/{slug}", name="lecture-projet")
      */
-    public function lecture_projet($slug, $id)
+    public function lecture_projet($slug,$id)
     {
         // replace this line with your own code!
         $em = $this->getDoctrine()->getManager();
@@ -67,6 +67,7 @@ class ProjetController extends Controller
         if ($previous != null) {
             $previous["title"] = $slug->slugify($previous["title"]);
         }
+        var_dump($previous);
         return $this->render('base/lecture_projet.html.twig', array(
             'project' => $project,
             'next'    => $next,
