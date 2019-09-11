@@ -307,13 +307,18 @@ class ProjetController extends Controller
     /**
      * @Route("edit-technologie/{id}",name="edit-technologie")
      */
-    public function editTechnologie($id)
+    public function editTechnologie(RegistryInterface $doctrine, Request $request, $id)
     {
+        $techno = $doctrine->getRepository(Technologies::class)->find($id);
+        $form = $this->createForm(TechnologieType::class, $techno);
+        $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
-        $technologie = $em->getRepository(Technologies::class)->findOneBy(array('id' => $id));
-        $em->remove($technologie);
-        $em->flush();
-        return $this->redirectToRoute('technologie_gestion');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($techno);
+            $em->flush();
+            return $this->redirectToRoute('cms-projets');
+        }
+        return $this->render('base/addTechnologie.html.twig', ['form' => $form->createView()]);
     }
 
     /**

@@ -10,8 +10,8 @@
   {{form_label(form.name)}}
   {{form_widget(form.name)}}
   {{form_label(form.icon)}}
-  {{form_widget(form.icon, {'attr': {'v-model': 'icon'}}) }}
-  <div v-html="icon"></div>
+  {{form_widget(form.icon) }}
+  {# <div v-html="icon"></div> #}
     <input id="submit" type="submit" value="Submit"/>
   {{ form_end(form) }}
 </div>

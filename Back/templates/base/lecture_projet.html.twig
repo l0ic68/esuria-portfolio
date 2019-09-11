@@ -18,13 +18,13 @@ lecture-project
         </div>
         <div id="Partie_Haute_Centre">
             {% if previous is not null %}
-                <a href="{{path('project_id' , {'id' : previous.id ,'slug' : previous.title }) }}">
+                <a href="{{path('lecture-projet' , {'id' : previous.id ,'slug' : previous.title }) }}">
                     <i aria-hidden class="far fa-angle-left icone-awesome"></i>
                 </a>
             {% endif %}
             <h1>{{ project.title }}</h1>
             {% if next is not null %}
-                <a href="{{path('project_id' , {'id' : next.id ,'slug' : next.title }) }}">
+                <a href="{{path('lecture-projet' , {'id' : next.id ,'slug' : next.title }) }}">
                     <i aria-hidden class="far fa-angle-right icone-awesome"></i>
                 </a>
             {% endif %}

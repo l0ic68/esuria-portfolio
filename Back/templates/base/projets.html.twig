@@ -156,7 +156,8 @@
             },
             filters: {
                 moment: function (date) {
-                    return moment(date).locale("fr").format('LL');
+                     var d = new Date((date["timestamp"] * 1000));
+                    return moment(d).locale("fr").format('LL');
                 }
             },
             methods: {

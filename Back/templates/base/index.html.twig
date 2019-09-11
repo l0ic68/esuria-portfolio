@@ -127,11 +127,12 @@
                 date_start: "coucou",
                 date_end: "coucou",
                 date_smallEvent: null,
-                titre: "coucou"
+                titre: "coucou",
+                sindex: 0,
+                tindex: 0,
             },
             filters: {
                 moment: function (date) {
-                    console.log(date)
                     var d = new Date((date["timestamp"] * 1000));
                     return moment(d).locale("fr").format('LL');
                 }
