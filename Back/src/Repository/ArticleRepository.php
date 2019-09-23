@@ -19,29 +19,23 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
-    // /**
-    //  * @return Article[] Returns an array of Article objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+   
     public function myGetArticle($page)
     {
         return $this->createQueryBuilder('b')
-        ->where("b.date < CURRENT_DATE()")
-        ->andWhere("b.categorie != 'agenda'")
+        // ->where("b.date < CURRENT_DATE()")
+        ->where("b.type != 'agenda'")
         ->setFirstResult(($page-1)*6)
         ->setMaxResults(6)
+        ->orderBy('b.date','ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+    public function myfindByNotAgenda()
+    {
+        return $this->createQueryBuilder('b')
+        ->where("b.type != 'agenda'")
         ->orderBy('b.date','ASC')
         ->getQuery()
         ->getResult()

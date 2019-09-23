@@ -354,7 +354,7 @@ class CMSController extends Controller
      */
     public function cms_blog(RegistryInterface $doctrine)
     {
-        $articles = $doctrine->getRepository(Article::class)->findAll();
+        $articles = $doctrine->getRepository(Article::class)->myfindByNotAgenda();
         return $this->render('cms_base/cms_blog.html.twig', [
             "articles" => $articles,
         ]);
@@ -375,9 +375,16 @@ class CMSController extends Controller
     /**
      * @Route("/cms-agenda", name="cms-agenda")
      */
-    public function cms_agenda()
+    public function cms_agenda(RegistryInterface $doctrine)
     {
-        return $this->render('cms_base/cms_agenda.html.twig');
+        $pastAgenda = $doctrine->getRepository(Article::class)->findPastAgenda();
+
+        $futureAgenda = $doctrine->getRepository(Article::class)->findFutureAgenda();
+
+        return $this->render('cms_base/cms_agenda.html.twig',[
+            "pastAgenda" => $pastAgenda,
+            "futureAgenda" => $futureAgenda,
+        ]);
     }
 
     /**

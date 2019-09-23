@@ -1,59 +1,54 @@
 {% extends 'cms_base.html.twig' %}
 {% block title %}
-Esuria // CMS
+    Esuria // CMS
 {% endblock %}
 {% block css %}
-<link type="text/css" rel="stylesheet" href={{asset("css/CMS.css")}} />
+    <link type="text/css" rel="stylesheet" href={{asset("css/CMS.css")}}/>
+    <link type="text/css" rel="stylesheet" href={{asset("css/Agenda.css")}}/>
 {% endblock %}
 {% block content %}
-		<!-- CONTENU -->
-		<div id="Zone">
-			<div class="CMS_wrap" id="Agenda_cms">
-				<div class="Article_list">
-					<div class="Article_line">
-						<p class="Article_date">14 Septembre 2017</p>
-						<p class="Article_nom">Site Web</p>
-						<div class="Article_Interaction">
-							<i class="fal fa-edit"></i>
-							<i class="fal fa-times"></i>
-						</div>
-					</div>
-					<div class="Article_line">
-						<p class="Article_date">14 Septembre 2017</p>
-						<p class="Article_nom">Site Web</p>
-						<div class="Article_Interaction">
-							<i class="fal fa-edit"></i>
-							<i class="fal fa-times"></i>
-						</div>
-					</div>
-					<div class="Article_line">
-						<p class="Article_date">14 Septembre 2017</p>
-						<p class="Article_nom">Site Web</p>
-						<div class="Article_Interaction">
-							<i class="fal fa-edit"></i>
-							<i class="fal fa-times"></i>
-						</div>
-					</div>
-					<div class="Article_line">
-						<p class="Article_date">14 Septembre 2017</p>
-						<p class="Article_nom">Site Web</p>
-						<div class="Article_Interaction">
-							<i class="fal fa-edit"></i>
-							<i class="fal fa-times"></i>
-						</div>
-					</div>
-					<div class="Article_line">
-						<p class="Article_date">14 Septembre 2017</p>
-						<p class="Article_nom">Site Web</p>
-						<div class="Article_Interaction">
-							<i class="fal fa-edit"></i>
-							<i class="fal fa-times"></i>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+    <div id="app" style="display: flex;flex-direction: column;">
+        <div id="Scroll">
+            <div class="Bandeau">
+                <h1 class="Gros_Titre">- Prochains événements -</h1>
+            </div>
+            <div class="Article_element">
+                <div class="Article_list">
+                    {% for agenda in futureAgenda %}
+                        <div class="Article_line">
+                            <p class="Article_date">
+                                {{ agenda.date|localizeddate('none', 'none', null, null, 'EEEE d ')|capitalize }}
+                                {{ agenda.date|localizeddate('none', 'none', null, null, 'MMMM Y ')|capitalize }}</p>
+                            <p class="Article_nom">{{agenda.titre}}</p>
+                            <div class="Article_Interaction">
+                            	<a href="{{path('edit-article',{id: agenda.id})}}"><i class="fal fa-edit"></i></a>
+								<a href="{{path('article-delete',{id: agenda.id})}}"><i class="fal fa-times"></i></a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
 
-    {% endblock %}
-    {% block js %}
-		{% endblock %}
+            <div class="Bandeau">
+                <h1 class="Gros_Titre">- Evénements passés -</h1>
+            </div>
+            <div class="Article_element">
+                <div class="Article_list">
+                    {% for agenda in pastAgenda %}
+                        <div class="Article_line">
+                            <p class="Article_date">
+                                {{ agenda.date|localizeddate('none', 'none', null, null, 'EEEE d ')|capitalize }}
+                                {{ agenda.date|localizeddate('none', 'none', null, null, 'MMMM Y ')|capitalize }}</p>
+                            <p class="Article_nom">{{agenda.titre}}</p>
+                            <div class="Article_Interaction">
+                            	<a href="{{path('edit-article',{id: agenda.id})}}"><i class="fal fa-edit"></i></a>
+								<a href="{{path('article-delete',{id: agenda.id})}}"><i class="fal fa-times"></i></a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}{% endblock %}

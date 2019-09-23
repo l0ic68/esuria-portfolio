@@ -39,7 +39,10 @@
                     <span class="Couleur_slash">//
                     </span>{article.date | moment}
                 </p>
-                <p class="Description">
+                <p class="Description" v-if="article.description != ''">
+                    {article.description}
+                </p>
+                <p class="Description" v-else>
                     {article.description}
                 </p>
             </div>
@@ -183,7 +186,7 @@
                     var json = JSON.parse(response.data);
                     var object = this;
                     this.articles = [];
-                    console.log(baseUrl);
+                    console.log(json);
 
                     $.each(json, function (key, value) {
                         console.log(value);

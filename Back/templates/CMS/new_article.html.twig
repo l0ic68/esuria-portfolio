@@ -41,8 +41,11 @@
             {% endfor %}
         </div>
     {% endif %}
+
+    <vue-cropper ref="cropper" :src="imgSrc" alt="Source Image" :cropmove="cropImage"></vue-cropper>
 {% endblock %}
 {% block js %}
+
     {# <script src="{{asset('js/vue.js')}}"/> #}
     <script>
         CKEDITOR.replace('content', {
