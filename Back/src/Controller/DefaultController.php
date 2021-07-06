@@ -11,7 +11,7 @@ use App\Entity\Biographie;
 use App\Entity\Skill;
 use App\Entity\Article;
 use App\Entity\Event;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
@@ -32,7 +32,7 @@ class DefaultController extends Controller
     /**
      * @Route("/", name="accueil")
      */
-    public function index(RegistryInterface $doctrine)
+    public function index(ManagerRegistry $doctrine)
     {
         $bio = $doctrine->getRepository(Biographie::class)->myFindFirst();
         $skills = $doctrine->getRepository(Skill::class)->findAll();
@@ -47,7 +47,7 @@ class DefaultController extends Controller
      * @Route("/get-timeline",name="getTimeline")
      */
 
-    public function getTimeline(Request $request, RegistryInterface $doctrine)
+    public function getTimeline(Request $request, ManagerRegistry $doctrine)
     {
         $event = $doctrine->getRepository(Event::class)->myFindByOrder();
         $encoders = array(new XmlEncoder(), new JsonEncoder());
@@ -71,7 +71,7 @@ class DefaultController extends Controller
     /**
      * @Route("/nouveaute", name="index_nouveaute")
      */
-    public function index_nouveaute(RegistryInterface $doctrine)
+    public function index_nouveaute(ManagerRegistry $doctrine)
     {
 
         $articles = $doctrine->getRepository(Article::class)->myLastArticle(3);
@@ -115,7 +115,7 @@ class DefaultController extends Controller
     /**
      * @Route("/hobbies", name="hobbies")
      */
-    public function hobbies(RegistryInterface $doctrine)
+    public function hobbies(ManagerRegistry $doctrine)
     {
         $hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
         $album_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Album_Moment");
@@ -132,7 +132,7 @@ class DefaultController extends Controller
     /**
      * @Route("/hobbies-jeux", name="hobbiesJeux")
      */
-    public function hobbiesJeux(RegistryInterface $doctrine)
+    public function hobbiesJeux(ManagerRegistry $doctrine)
     {
         $hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
         $jeu_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Jeux_Moment");
@@ -145,7 +145,7 @@ class DefaultController extends Controller
     /**
      * @Route("/hobbies-film", name="hobbiesFilm")
      */
-    public function hobbiesFilm(RegistryInterface $doctrine)
+    public function hobbiesFilm(ManagerRegistry $doctrine)
     {
         $hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
         $film_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Film_Moment");
@@ -162,7 +162,7 @@ class DefaultController extends Controller
     /**
      * @Route("/hobbies-livre", name="hobbiesLivre")
      */
-    public function hobbiesLivre(RegistryInterface $doctrine)
+    public function hobbiesLivre(ManagerRegistry $doctrine)
     {
         $hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
         $livre_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Livre_Moment");
@@ -179,7 +179,7 @@ class DefaultController extends Controller
     /**
      * @Route("/agenda", name="agenda")
      */
-    public function agenda(RegistryInterface $doctrine)
+    public function agenda(ManagerRegistry $doctrine)
     {
         $past = $doctrine->getRepository(Article::class)->findPastAgenda();
         $future = $doctrine->getRepository(Article::class)->findFutureAgenda();

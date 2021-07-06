@@ -9,7 +9,7 @@ use App\Entity\Technologies;
 use App\Form\TechnologieType;
 use App\Form\BlogType;
 use App\Form\ProjectType;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,7 +78,7 @@ class ProjetController extends Controller
     /**
      * @Route("/new-projet", name="projet")
      */
-    public function new_projet(RegistryInterface $doctrine, Request $request)
+    public function new_projet(ManagerRegistry $doctrine, Request $request)
     {
         $projet = new Projects();
         $form = $this->createForm(ProjectType::class, $projet);
@@ -152,7 +152,7 @@ class ProjetController extends Controller
      * @Route("/get-projet",name="getProjet")
      */
 
-    public function getProjet(Request $request, RegistryInterface $doctrine)
+    public function getProjet(Request $request, ManagerRegistry $doctrine)
     {
         $request_stack = $this->container->get('request_stack');
         $request = $request_stack->getCurrentRequest();
@@ -182,7 +182,7 @@ class ProjetController extends Controller
      * @Route("/get-projet",name="getProjet")
      */
 
-    public function getProjetBYType(Request $request, RegistryInterface $doctrine)
+    public function getProjetBYType(Request $request, ManagerRegistry $doctrine)
     {
         $user1 = $this->getUser();
         $request_stack = $this->container->get('request_stack');
@@ -210,7 +210,7 @@ class ProjetController extends Controller
 
         return $response;
     }
-    public function searchProjet(Request $request, RegistryInterface $doctrine)
+    public function searchProjet(Request $request, ManagerRegistry $doctrine)
     {
         $user1 = $this->getUser();
         $request_stack = $this->container->get('request_stack');
@@ -237,7 +237,7 @@ class ProjetController extends Controller
 
         return $response;
     }
-    public function countProjet(Request $request, RegistryInterface $doctrine)
+    public function countProjet(Request $request, ManagerRegistry $doctrine)
     {
         $user1 = $this->getUser();
         $request_stack = $this->container->get('request_stack');
@@ -308,7 +308,7 @@ class ProjetController extends Controller
     /**
      * @Route("edit-technologie/{id}",name="edit-technologie")
      */
-    public function editTechnologie(RegistryInterface $doctrine, Request $request, $id)
+    public function editTechnologie(ManagerRegistry $doctrine, Request $request, $id)
     {
         $techno = $doctrine->getRepository(Technologies::class)->find($id);
         $form = $this->createForm(TechnologieType::class, $techno);

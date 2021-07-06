@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Swiftmailer\swiftmailer;
 
 
@@ -82,7 +82,7 @@ class UserController extends Controller
         ));
     }
 
-    public function checkmail($confirmationtoken,RegistryInterface $doctrine)
+    public function checkmail($confirmationtoken,ManagerRegistry $doctrine)
     {
         $user = $doctrine->getRepository(User::class)->findOneByConfirmationToken($confirmationtoken);
         if($user != null)
@@ -98,7 +98,7 @@ class UserController extends Controller
     }
 
 
-    public function reset_password_ask(Request $request,RegistryInterface $doctrine,\Swift_Mailer $mailer)
+    public function reset_password_ask(Request $request,ManagerRegistry $doctrine,\Swift_Mailer $mailer)
     {
         $email = $request->get('email');
             if($email != null)
@@ -131,7 +131,7 @@ class UserController extends Controller
         return $this->render('user/reset_password.html.twig');
     }
 
-    public function reset_password_check($confirmationResetPasswordToken,Request $request,RegistryInterface $doctrine,UserPasswordEncoderInterface $passwordEncoder)
+    public function reset_password_check($confirmationResetPasswordToken,Request $request,ManagerRegistry $doctrine,UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = $doctrine->getRepository(User::class)->findOneByConfirmationResetPasswordToken($confirmationResetPasswordToken);
         if($confirmationResetPasswordToken != null)
@@ -157,7 +157,7 @@ class UserController extends Controller
         return $this->redirectToRoute('index');
     }
 
-    public function edit_password(Request $request,RegistryInterface $doctrine,UserPasswordEncoderInterface $passwordEncoder)
+    public function edit_password(Request $request,ManagerRegistry $doctrine,UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = $this->getUser();
         $form = $this->createForm(PasswordResetType::class, $user);
@@ -206,7 +206,7 @@ class UserController extends Controller
             ));
     }
 
-    public function change_password(Request $request,RegistryInterface $doctrine,UserPasswordEncoderInterface $passwordEncoder)
+    public function change_password(Request $request,ManagerRegistry $doctrine,UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = $this->getUser();
         $form = $this->createForm(PasswordChangeType::class, $user);

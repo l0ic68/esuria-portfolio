@@ -8,7 +8,7 @@ use App\Entity\Article;
 use App\Entity\Commentaire;
 use App\Form\BlogType;
 use App\Form\CommentType;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +39,7 @@ class ArticleController extends Controller
     /**
      * @Route("/lecture-article/{path}", name="lecture-article")
      */
-    public function lecture_article($path, RegistryInterface $doctrine, Request $request)
+    public function lecture_article($path, ManagerRegistry $doctrine, Request $request)
     {
         $article = $doctrine->getRepository(Article::class)->findOneByPath($path);
         $comment = new Commentaire();
@@ -59,7 +59,7 @@ class ArticleController extends Controller
         ));
     }
 
-    public function new_article(RegistryInterface $doctrine, Request $request)
+    public function new_article(ManagerRegistry $doctrine, Request $request)
     {
 
         $article = new Article();
@@ -78,7 +78,7 @@ class ArticleController extends Controller
         ));
     }
 
-    public function edit_article(RegistryInterface $doctrine, Request $request, $id)
+    public function edit_article(ManagerRegistry $doctrine, Request $request, $id)
     {
         $article = $doctrine->getRepository(Article::class)->find($id);
         $article->getImage()->setFilename(new File($this->getParameter('uploadDirectory') . '/' . $article->getImage()->getFilename()));
@@ -106,7 +106,7 @@ class ArticleController extends Controller
      * @Route("/get-article",name="getArticle")
      */
 
-    public function getArticle(Request $request, RegistryInterface $doctrine)
+    public function getArticle(Request $request, ManagerRegistry $doctrine)
     {
         $user1 = $this->getUser();
         $request_stack = $this->container->get('request_stack');
@@ -137,7 +137,7 @@ class ArticleController extends Controller
      * @Route("/get-article",name="getArticle")
      */
 
-    public function getArticleBYType(Request $request, RegistryInterface $doctrine)
+    public function getArticleBYType(Request $request, ManagerRegistry $doctrine)
     {
         $user1 = $this->getUser();
         $request_stack = $this->container->get('request_stack');
@@ -168,7 +168,7 @@ class ArticleController extends Controller
 
         return $response;
     }
-    public function searchArticle(Request $request, RegistryInterface $doctrine)
+    public function searchArticle(Request $request, ManagerRegistry $doctrine)
     {
         $user1 = $this->getUser();
         $request_stack = $this->container->get('request_stack');
@@ -195,7 +195,7 @@ class ArticleController extends Controller
 
         return $response;
     }
-    public function countArticle(Request $request, RegistryInterface $doctrine)
+    public function countArticle(Request $request, ManagerRegistry $doctrine)
     {
         $user1 = $this->getUser();
         $request_stack = $this->container->get('request_stack');
@@ -230,7 +230,7 @@ class ArticleController extends Controller
     /**
      * @Route("/new-comment/{id}", name="new-comment")
      */
-    public function new_comment(RegistryInterface $doctrine, Request $request, $id)
+    public function new_comment(ManagerRegistry $doctrine, Request $request, $id)
     {
         $comment = new Commentaire();
         $article = $doctrine->getRepository(Article::class)->find($id);
@@ -251,7 +251,7 @@ class ArticleController extends Controller
     /**
      * @Route("/delete-comment/{id}", name="delete-comment")
      */
-    public function delete_comment($id, RegistryInterface $doctrine, Request $request)
+    public function delete_comment($id, ManagerRegistry $doctrine, Request $request)
     {
         $comment = $doctrine->getRepository(Commentaire::class)->find($id);
         $em = $this->getDoctrine()->getManager();

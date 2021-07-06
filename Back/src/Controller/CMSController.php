@@ -22,7 +22,7 @@ use App\Form\SmallEventType;
 use App\Form\SkillType;
 use App\Form\BiographieType;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +35,7 @@ class CMSController extends Controller
     /**
      * @Route("/cms", name="cms")
      */
-    public function cms(RegistryInterface $doctrine, Request $request)
+    public function cms(ManagerRegistry $doctrine, Request $request)
     {
         $bio = $doctrine->getRepository(Biographie::class)->myFindFirst();
         $skills = $doctrine->getRepository(Skill::class)->FindAll();
@@ -70,7 +70,7 @@ class CMSController extends Controller
     /**
      * @Route("/cms-hobbies", name="cms-hobbies")
      */
-    public function cms_hobbies(RegistryInterface $doctrine)
+    public function cms_hobbies(ManagerRegistry $doctrine)
     {
         $Hobbies = $doctrine->getRepository(Hobbies::class)->findAll();
         $album_moment = $doctrine->getRepository(Hobbies::class)->findOneByType("Album_Moment");
@@ -104,7 +104,7 @@ class CMSController extends Controller
     /**
      * @Route("/hobbies-new/{type}", name="hobbies-new")
      */
-    public function new_hobbies(RegistryInterface $doctrine, Request $request, $type, FileUploader $fileUploader)
+    public function new_hobbies(ManagerRegistry $doctrine, Request $request, $type, FileUploader $fileUploader)
     {
         $hobbie = new Hobbies();
         $image = new Image();
@@ -124,7 +124,7 @@ class CMSController extends Controller
     /**
      * @Route("/new-event", name="new-event")
      */
-    public function new_event(RegistryInterface $doctrine, Request $request)
+    public function new_event(ManagerRegistry $doctrine, Request $request)
     {
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
@@ -142,7 +142,7 @@ class CMSController extends Controller
     /**
      * @Route("/edit-small-event/{id}", name="edit-small-event")
      */
-    public function edit_smallEvent($id,RegistryInterface $doctrine, Request $request)
+    public function edit_smallEvent($id,ManagerRegistry $doctrine, Request $request)
     {
         $smallEvent = $doctrine->getRepository(SmallEvent::class)->find($id);
         $form = $this->createForm(SmallEventType::class, $smallEvent);
@@ -161,7 +161,7 @@ class CMSController extends Controller
     /**
      * @Route("/delete-small-event/{id}", name="delete-small-event")
      */
-     public function delete_smallEvent(RegistryInterface $doctrine, Request $request, $id)
+     public function delete_smallEvent(ManagerRegistry $doctrine, Request $request, $id)
      {
          $smallEvent = $doctrine->getRepository(smallEvent::class)->find($id);
         //  $timeline = $doctrine->getRepository(Timeline::class)->findOneBySmallEvent(["id" => $id]);
@@ -175,7 +175,7 @@ class CMSController extends Controller
     /**
      * @Route("/edit-event/{id}", name="edit-event")
      */
-    public function edit_event($id,RegistryInterface $doctrine, Request $request)
+    public function edit_event($id,ManagerRegistry $doctrine, Request $request)
     {
         $event = $doctrine->getRepository(Event::class)->find($id);
         $form = $this->createForm(EventType::class, $event);
@@ -194,7 +194,7 @@ class CMSController extends Controller
     /**
      * @Route("/delete-event/{id}", name="delete-event")
      */
-     public function delete_event(RegistryInterface $doctrine, Request $request, $id)
+     public function delete_event(ManagerRegistry $doctrine, Request $request, $id)
      {
          $event = $doctrine->getRepository(Event::class)->find($id);
          $timeline = $doctrine->getRepository(Timeline::class)->findOneByEvent(["id" => $id]);
@@ -212,7 +212,7 @@ class CMSController extends Controller
     /**
      * @Route("/new-smallEvent/{id}", name="new-smallEvent")
      */
-    public function new_smallEvent(RegistryInterface $doctrine, Request $request, $id)
+    public function new_smallEvent(ManagerRegistry $doctrine, Request $request, $id)
     {
         $smallEvent = new SmallEvent();
         $event = $doctrine->getRepository(Event::class)->findOneById($id);
@@ -234,7 +234,7 @@ class CMSController extends Controller
     /**
      * @Route("/new-skill", name="new-skill")
      */
-    public function new_skill(RegistryInterface $doctrine, Request $request)
+    public function new_skill(ManagerRegistry $doctrine, Request $request)
     {
         $skill = new Skill();
         $form = $this->createForm(SkillType::class, $skill);
@@ -252,7 +252,7 @@ class CMSController extends Controller
     /**
      * @Route("/edit-skill/{id}", name="edit-skill")
      */
-    public function edit_skill(RegistryInterface $doctrine, Request $request, $id)
+    public function edit_skill(ManagerRegistry $doctrine, Request $request, $id)
     {
         $skill = $doctrine->getRepository(Skill::class)->find($id);
         $form = $this->createForm(SkillType::class, $skill);
@@ -270,7 +270,7 @@ class CMSController extends Controller
     /**
      * @Route("/delete-skill/{id}", name="delete-skill")
      */
-    public function delete_skill(RegistryInterface $doctrine, Request $request, $id)
+    public function delete_skill(ManagerRegistry $doctrine, Request $request, $id)
     {
         $skill = $doctrine->getRepository(Skill::class)->find($id);
         $em = $this->getDoctrine()->getManager();
@@ -283,7 +283,7 @@ class CMSController extends Controller
     /**
      * @Route("/hobbies-delete/{slug}-{id}", name="hobbies-delete", requirements={"slug": "[a-z0-9\-]*"})
      */
-    public function delete_hobbies(RegistryInterface $doctrine, Request $request, $id)
+    public function delete_hobbies(ManagerRegistry $doctrine, Request $request, $id)
     {
         $Hobbies = $doctrine->getRepository(Hobbies::class)->find($id);
         $em = $this->getDoctrine()->getManager();
@@ -296,7 +296,7 @@ class CMSController extends Controller
     /**
      * @Route("/upload-image", name="upload-image")
      */
-    public function upload_image(RegistryInterface $doctrine, Request $request)
+    public function upload_image(ManagerRegistry $doctrine, Request $request)
     {
         if (isset($_FILES['upload']['name'])) {
             $file = $_FILES['upload']['tmp_name'];
@@ -320,7 +320,7 @@ class CMSController extends Controller
     /**
      * @Route("/cms-hobbies/{slug}-{id}", name="hobbies-show", requirements={"slug": "[a-z0-9\-]*"})
      */
-    public function show($slug, $id, RegistryInterface $doctrine, Request $request)
+    public function show($slug, $id, ManagerRegistry $doctrine, Request $request)
     {
         $hobbie = $doctrine->getRepository(Hobbies::class)->find($id);
         $hobbie->getImage()->setFilename(new File($this->getParameter('uploadDirectory') . '/' . $hobbie->getImage()->getFilename()));
@@ -352,7 +352,7 @@ class CMSController extends Controller
     /**
      * @Route("/cms-blog", name="cms-blog")
      */
-    public function cms_blog(RegistryInterface $doctrine)
+    public function cms_blog(ManagerRegistry $doctrine)
     {
         $articles = $doctrine->getRepository(Article::class)->myfindByNotAgenda();
         return $this->render('cms_base/cms_blog.html.twig', [
@@ -363,7 +363,7 @@ class CMSController extends Controller
     /**
      * @Route("/article-delete/{id}", name="article-delete")
      */
-    public function delete_article(RegistryInterface $doctrine, $id)
+    public function delete_article(ManagerRegistry $doctrine, $id)
     {
         $em  = $this->getDoctrine()->getManager();
         $article = $doctrine->getRepository(Article::class)->find($id);
@@ -375,7 +375,7 @@ class CMSController extends Controller
     /**
      * @Route("/cms-agenda", name="cms-agenda")
      */
-    public function cms_agenda(RegistryInterface $doctrine)
+    public function cms_agenda(ManagerRegistry $doctrine)
     {
         $pastAgenda = $doctrine->getRepository(Article::class)->findPastAgenda();
 
