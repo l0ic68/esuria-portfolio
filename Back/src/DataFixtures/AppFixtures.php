@@ -32,10 +32,10 @@ class AppFixtures extends Fixture
         }
         for($i = 1;$i < 100; $i++){
             $projet = new Projects();
-            $projet->setTitre('Projet titre '. $i);
-            $projet->setTexte('Lorem Ipsum text '. $i);
-            $projet->setType(self::getRandomSelection());
-            $projet->setPath('projet-titre-'.$i);
+            $projet->setTitle('Projet titre '. $i);
+            $projet->setDescription('Lorem Ipsum text '. $i);
+            $projet->setCategorie(self::getRandomSelection());
+            $projet->setURLSite('projet-titre-'.$i);
             $manager->persist($projet);
         }
         $skill = new Skill();
@@ -67,12 +67,12 @@ class AppFixtures extends Fixture
         $bio->setNom("Klein");
         $bio->setPrenom("thomas");
         $bio->setPresentation("Bonjour thomas");
-        $bio->setParcours("Bonjour thomas");
-        $bio->setAge(21);
-        $bio->setTaille(21);
-        $bio->setLieu("Moselle");
-        $bio->setLangues("Moselle");
-        $bio->setPolitique("Moselle");
+        // $bio->setParcours("Bonjour thomas");
+        // $bio->setAge(21);
+        // $bio->setTaille(21);
+        // $bio->setLieu("Moselle");
+        // $bio->setLangues("Moselle");
+        // $bio->setPolitique("Moselle");
 
 
         // $bio->setCompetence("Bonjour thomas");

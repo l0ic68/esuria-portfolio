@@ -46,9 +46,7 @@
 {% endblock %}
 {% block js %}
 
-    <script src="{{asset('js/vue.js')}}"/>
-                {{ encore_entry_script_tags('app') }}
-
+    {# <script src="{{asset('js/vue.js')}}"/> #}
     <script>
         CKEDITOR.replace('content', {
             height: 300,

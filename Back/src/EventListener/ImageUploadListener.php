@@ -57,7 +57,7 @@ class ImageUploadListener
             return;
         }
         $file = $entity->getFilename();    
-
+        
         if ($file instanceof UploadedFile) {
             $fileName = $this->uploader->upload($file);
             // $entity->setPath($this->uploader->getTargetDirectory() + $fileName);
