@@ -190,13 +190,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/contact", name="contact")
-     */
-    public function contact()
-    {
-        return $this->render('base/contact.html.twig');
-    }
-    /**
      * @Route("/CMS", name="CMS")
      */
     public function CMS()

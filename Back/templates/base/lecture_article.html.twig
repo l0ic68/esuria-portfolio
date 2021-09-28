@@ -7,9 +7,11 @@
     <link type="text/css" rel="stylesheet" href={{asset("css/Lecture_Article.css")}}/>
 {% endblock %}
 {% block content %}
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v12.0" nonce="2ao1vQCk"></script>
     <!-- CONTENU -->
     <div id="Zone">
-        <a class="Lien_Photo" href="https://placeholder.com"><img class="Photo" src="http://via.placeholder.com/1280x200"></a>
+        <img class="Photo" src={{asset(article.banner.path)}}>
         <h1 id="Titre">
             {{article.titre|raw}}
         </h1>
@@ -25,43 +27,49 @@
                 {{article.date|date("d/m/y")}}
             </p>
         </div>
-
+        <div id="CkEditorContent">
         <p id="Interieur">
             {{article.texte|raw}}
         </p>
+        </div>
 
         <div id="After_Article">
             <p id="Hashtag">
-                #Technologie #UX #Web
+                {{ article.tag }}
             </p>
-            <div id="Social_share">
-                <i aria-hidden class="fab fa-facebook espace_icone"></i>
-                <i aria-hidden class="fab fa-twitter espace_icone"></i>
-                <i aria-hidden class="fab fa-tumblr-square espace_icone"></i>
-            </div>
+        <div id="Social_share">
+          <div class="fb-share-button" data-href="http://localhost:8000/lecture-article/wut" data-layout="button" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A8000%2Flecture-article%2F{{article.path}}&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore"><i aria-hidden class="fab fa-facebook espace_icone"></i></a></div>
+          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false"><i aria-hidden class="fab fa-twitter espace_icone"></i></a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         </div>
-
+        </div>
+        <hr id="separation_com">
         <div id="Total_com">
             <p id="Espace_Commentaire">
                 Commentaire
             </p>
             {% for comment in article.commentaires %}
-                <p>{{comment.username}}
-                    : le
+                <p class="titre_com">Par <span class="gras">{{comment.username}}</span>
+                     le
                     {{ comment.date|localizeddate('none', 'none', null, null, 'EEEE d ')|capitalize }}{{ comment.date|localizeddate('none', 'none', null, null, 'MMMM Y ')|capitalize }}</p>
-                <p id="Zone_com">{{comment.texte}}</p>
+                <p class="Zone_com">{{comment.texte}}</p>
             {% endfor %}
+            <p class="titre_com">
+                Poster votre commentaire :
+            </p>
             {{form_start(form)}}
             {{form_widget(form.username)}}
             {{form_widget(form.texte,  {'id': 'Zone_com'}) }}
-			<div id="Bouton_envoie">
-                <button>
+
+                <button id="Bouton_envoie">
                     ENVOYER
                 </button>
-            </div>
+
             {{form_end(form)}}
-            
+
         </div>
 
     </div>
+{% endblock %}
+{% block js %}
+<script id="tumblr-js" async src="https://assets.tumblr.com/share-button.js"></script>
 {% endblock %}

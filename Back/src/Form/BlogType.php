@@ -32,6 +32,10 @@ class BlogType extends AbstractType
             ->add('image', ImageType::class, [
                 'required' => false,
             ])
+            ->add('banner', ImageType::class, [
+                // 'data_class' => null
+                'required' => false,
+            ])
             ->add('type', ChoiceType::class, [
                 'choices' => [
                     'realisation' => 'realisation',
@@ -41,7 +45,8 @@ class BlogType extends AbstractType
                     'agenda' => 'agenda',
                 ]
             ])
-            ->add('path', TextType::class);
+            ->add('path', TextType::class)
+            ->add('tag', TextType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

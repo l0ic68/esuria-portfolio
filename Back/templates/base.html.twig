@@ -21,28 +21,28 @@
 	<!-- POLICE -->
 	<link href="https://fonts.googleapis.com/css?family=Cinzel|Roboto|Roboto+Slab" rel="stylesheet">
 	<!-- <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-POYwD7xcktv3gUeZO5s/9nUbRJG/WOmV6jfEGikMJu77LGYO8Rfs2X7URG822aum" crossorigin="anonymous"> -->
-	<link type="text/css" rel="stylesheet" href="../fonts/fontawesome-pro-5.4.2-web/css/all.css" />
+	<link type="text/css" rel="stylesheet" href="{{asset('fonts/fontawesome-pro-5.4.2-web/css/all.css')}}" />
 	<!-- FAVICON -->
-	<link rel="apple-touch-icon-precomposed" sizes="57x57" href="../Images/Favicon/apple-touch-icon-57x57.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../Images/Favicon/apple-touch-icon-114x114.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="../Images/Favicon/apple-touch-icon-72x72.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../Images/Favicon/apple-touch-icon-144x144.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="60x60" href="../Images/Favicon/apple-touch-icon-60x60.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="../Images/Favicon/apple-touch-icon-120x120.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="76x76" href="../Images/Favicon/apple-touch-icon-76x76.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="../Images/Favicon/apple-touch-icon-152x152.png" />
-	<link rel="icon" type="image/png" href="../Images/Favicon/favicon-196x196.png" sizes="196x196" />
-	<link rel="icon" type="image/png" href="../Images/Favicon/favicon-96x96.png" sizes="96x96" />
-	<link rel="icon" type="image/png" href="../Images/Favicon/favicon-32x32.png" sizes="32x32" />
-	<link rel="icon" type="image/png" href="../Images/Favicon/favicon-16x16.png" sizes="16x16" />
-	<link rel="icon" type="image/png" href="../Images/Favicon/favicon-128.png" sizes="128x128" />
+	<link rel="apple-touch-icon-precomposed" sizes="57x57" href="{{asset('Images/Favicon/apple-touch-icon-57x57.png')}}" />
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{asset('Images/Favicon/apple-touch-icon-114x114.png')}}" />
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{asset('Images/Favicon/apple-touch-icon-72x72.png')}}" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{asset('Images/Favicon/apple-touch-icon-144x144.png')}}" />
+	<link rel="apple-touch-icon-precomposed" sizes="60x60" href="{{asset('Images/Favicon/apple-touch-icon-60x60.png')}}" />
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="{{asset('Images/Favicon/apple-touch-icon-120x120.png')}}" />
+	<link rel="apple-touch-icon-precomposed" sizes="76x76" href="{{asset('Images/Favicon/apple-touch-icon-76x76.png')}}" />
+	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{asset('Images/Favicon/apple-touch-icon-152x152.png')}}" />
+	<link rel="icon" type="image/png" href="{{asset('Images/Favicon/favicon-196x196.png')}}" sizes="196x196" />
+	<link rel="icon" type="image/png" href="{{asset('Images/Favicon/favicon-96x96.png')}}" sizes="96x96" />
+	<link rel="icon" type="image/png" href="{{asset('Images/Favicon/favicon-32x32.png')}}" sizes="32x32" />
+	<link rel="icon" type="image/png" href="{{asset('Images/Favicon/favicon-16x16.png')}}" sizes="16x16" />
+	<link rel="icon" type="image/png" href="{{asset('Images/Favicon/favicon-128.png')}}" sizes="128x128" />
 	<meta name="application-name" content="&nbsp;" />
 	<meta name="msapplication-TileColor" content="#FFFFFF" />
-	<meta name="msapplication-TileImage" content="../Images/Favicon/mstile-144x144.png" />
-	<meta name="msapplication-square70x70logo" content="../Images/Favicon/mstile-70x70.png" />
-	<meta name="msapplication-square150x150logo" content="../Images/Favicon/mstile-150x150.png" />
-	<meta name="msapplication-wide310x150logo" content="../Images/Favicon/mstile-310x150.png" />
-	<meta name="msapplication-square310x310logo" content="../Images/Favicon/mstile-310x310.png" />
+	<meta name="msapplication-TileImage" content="{{asset('Images/Favicon/mstile-144x144.png')}}" />
+	<meta name="msapplication-square70x70logo" content="{{asset('Images/Favicon/mstile-70x70.png')}}" />
+	<meta name="msapplication-square150x150logo" content="{{asset('Images/Favicon/mstile-150x150.png')}}" />
+	<meta name="msapplication-wide310x150logo" content="{{asset('Images/Favicon/mstile-310x150.png')}}" />
+	<meta name="msapplication-square310x310logo" content="{{asset('Images/Favicon/mstile-310x310.png')}}" />
 </head>
 
 <body>
@@ -67,12 +67,12 @@
 				{% else %}
 					<li class="Espace"><a href="{{path('accueil')}}">PRESENTATION</a></li>
 				{% endif %}
-				{% if app.request.attributes.get('_route') == "projets" %}
+				{% if app.request.attributes.get('_route') == "projets" or app.request.attributes.get('_route') == "lecture-projet" %}
 					<li class="Espace"><a href="{{path('projets')}}"><span id="Selection">- PROJETS -</span></a></li>
 				{% else %}
 					<li class="Espace"><a href="{{path('projets')}}">PROJETS</a></li>
 				{% endif %}
-				{% if app.request.attributes.get('_route') == "hobbies" %}
+				{% if app.request.attributes.get('_route') == "hobbies" or app.request.attributes.get('_route') == "hobbiesJeux" or app.request.attributes.get('_route') == "hobbiesFilm" or app.request.attributes.get('_route') == "hobbiesLivre" %}
 					<li class="Espace"><a href="{{path('hobbies')}}"><span id="Selection">- HOBBIES -</span></a></li>
 					{# <li class="Espace"><a href="/hobbies">HOBBIES</a></li> #}
 				{% else %}
@@ -83,15 +83,10 @@
 				{% else %}
 					<li class="Espace"><a href="{{path('live')}}">LIVE</a></li>
 				{% endif %}
-				{% if app.request.attributes.get('_route') == "blog" %}
+				{% if app.request.attributes.get('_route') == "blog" or app.request.attributes.get('_route') == "lecture-article" %}
 					<li class="Espace"><a href="{{path('blog')}}"><span id="Selection">- BLOG -</span></a></li>
 				{% else %}
 					<li class="Espace"><a href="{{path('blog')}}">BLOG</a></li>
-				{% endif %}
-				{% if app.request.attributes.get('_route') == "agenda" %}
-					<li class="Espace"><a href="{{path('agenda')}}"><span id="Selection">- AGENDA -</span></a></li>
-				{% else %}
-					<li class="Espace"><a href="{{path('agenda')}}">AGENDA</a></li>
 				{% endif %}
 				{% if app.request.attributes.get('_route') == "contact" %}
 					<li class="Espace"><a href="{{path('contact')}}"><span id="Selection">- CONTACT -</span></a></li>
@@ -137,36 +132,31 @@
 		<!-- MENU MOBILE -->
 		<div id='cssmenu'>
 		<ul>
-			{% if app.request.attributes.get('_route') == "accueil" %}
+			{% if app.request.attributes.get('_route') == "accueil" or app.request.attributes.get('_route') == "index_nouveaute" or app.request.attributes.get('_route') == "index_biographie" %}
 				 <li><a href="{{path('accueil')}}"><span id="Selection">- PRESENTATION -</span></a></li>
 			 {% else %}
 				 <li class="Espace"><a href="{{path('accueil')}}">PRESENTATION</a></li>
 			 {% endif %}
-			 {% if app.request.attributes.get('_route') == "projets" %}
+			 {% if app.request.attributes.get('_route') == "projets"  or app.request.attributes.get('_route') == "lecture-projet"  %}
 				 <li><a href="{{path('projets')}}"><span id="Selection">- PROJETS -</span></a></li>
 			 {% else %}
 				 <li class="Espace"><a href="{{path('projets')}}">PROJETS</a></li>
 			 {% endif %}
-			 {% if app.request.attributes.get('_route') == "accueil" %}
-				 {# <li><a href="{{path('accueil')}}"><span id="Selection">- PRESENTATION -</span></a></li>	 #}
-				 <li class="Espace"><a href="/hobbies">HOBBIES</a></li>
-			 {% else %}
-				 <li class="Espace"><a href="/hobbies">HOBBIES</a></li>
-			 {% endif %}
+			 {% if app.request.attributes.get('_route') == "hobbies" or app.request.attributes.get('_route') == "hobbiesJeux" or app.request.attributes.get('_route') == "hobbiesFilm" or app.request.attributes.get('_route') == "hobbiesLivre" %}
+ 				<li class="Espace"><a href="{{path('hobbies')}}"><span id="Selection">- HOBBIES -</span></a></li>
+ 				{# <li class="Espace"><a href="/hobbies">HOBBIES</a></li> #}
+ 			{% else %}
+ 				<li class="Espace"><a href="/hobbies">HOBBIES</a></li>
+ 			{% endif %}
 			 {% if app.request.attributes.get('_route') == "live" %}
 				 <li><a href="{{path('live')}}"><span id="Selection">- LIVE -</span></a></li>
 			 {% else %}
 				 <li class="Espace"><a href="{{path('live')}}">LIVE</a></li>
 			 {% endif %}
-			 {% if app.request.attributes.get('_route') == "blog" %}
+			 {% if app.request.attributes.get('_route') == "blog" or app.request.attributes.get('_route') == "lecture-article" %}
 				 <li><a href="{{path('blog')}}"><span id="Selection">- BLOG -</span></a></li>
 			 {% else %}
 				 <li class="Espace"><a href="{{path('blog')}}">BLOG</a></li>
-			 {% endif %}
-			 {% if app.request.attributes.get('_route') == "agenda" %}
-				 <li><a href="{{path('agenda')}}"><span id="Selection">- AGENDA -</span></a></li>
-			 {% else %}
-				 <li class="Espace"><a href="{{path('agenda')}}">AGENDA</a></li>
 			 {% endif %}
 			 {% if app.request.attributes.get('_route') == "contact" %}
 				 <li><a href="{{path('contact')}}"><span id="Selection">- CONTACT -</span></a></li>

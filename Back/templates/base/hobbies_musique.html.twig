@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block title %}
     {{parent()}}
-    Blog
+    Musique
 {% endblock %}
 {% block css %}
     <link type="text/css" rel="stylesheet" href="{{asset("css/Hobbies_Musique.css")}}"/>
@@ -27,40 +27,15 @@
         </div>
         <div id="Zone_bas">
             <div class="Wrap">
-                <div class="Mobile_Moment" id="Margin_Musique">
-                    <p>Album du moment</p>
-                </div>
-                <div
-                    class="Moment_data_mobile">
-                    {# <a href="htqtps://muuse Doctrine\Persistence\ManagerRegistry;
-                                                                                                                                                                                                                                                                                        sic.youtube.com/watch?v=f3L9_6aJi2Q&list=OLAK5uy_m0Bdl6V0SVlvhoYFWURcyTrVXENLcww18" target="_blank"><img src="../Images/Musiques/Album_du_moment/Myles_Kennedy.jpg" alt="Myles Kennedy"></a> #}
-                    <a href="{{album_moment.link}}" target="_blank"><img src="{{album_moment.image.path}}" alt="{{album_moment.image.alt}}"></a>
-                    <a href="{{musique_moment.link}}" target="_blank"><img src="{{musique_moment.image.path}}" alt="{{musique_moment.image.alt}}"></a>
-
-                </div>
-
-                <div class="Mobile_Moment">
-                    <p>Musique du moment</p>
-                </div>
-                <div class="Moment_data_mobile">
-                    <a href="{{musique_moment.link}}" target="_blank"><img src="{{musique_moment.image.path}}" alt="{{musique_moment.image.alt}}"></a>
-
-                    {# <iframe allow="autoplay; encrypted-media" allowfullscreen frameborder="0" src="https://www.youtube.com/embed/rZUppxT38Zk"></iframe> #}
-                </div>
                 <div id="Moment">
                     <div class="Moment_2">
                         <p>Album&nbsp;du&nbsp;moment</p>
+                        {% if album_moment %}<a href="{{album_moment.link}}" target="_blank"><img src="{{album_moment.image.path}}" alt="{{album_moment.image.alt}}"></a>{% endif %}
                     </div>
                     <div class="Moment_2">
                         <p>Musique&nbsp;du&nbsp;moment</p>
+                        {% if musique_moment %}<div class="moment_iframe"><iframe src="https://www.youtube.com/embed/{{musique_moment.link}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>{% endif %}
                     </div>
-                </div>
-                <div
-                    id="Moment_data">
-                    {# <p style="color:white; ">Path : {{album_moment.filename}}</p> #}
-                    <a href="{{album_moment.link}}" target="_blank"><img src="{{album_moment.image.path}}" alt="{{album_moment.image.alt}}"></a>
-                    <a href="{{musique_moment.link}}" target="_blank"><img src="{{musique_moment.image.path}}" alt="{{musique_moment.image.alt}}"></a>
-                    {# <iframe allow="autoplay; encrypted-media" allowfullscreen frameborder="0" src="https://www.youtube.com/embed/rZUppxT38Zk"></iframe> #}
                 </div>
             </div>
 
@@ -71,7 +46,7 @@
                 <div class="Article_element">
                     {%  set countAlbumFav = 0 %}
                     {% for hobbie in hobbies if hobbie.type == "Album_fav" %}
-                        {% if countAlbumFav == 5 %}
+                        {% if countAlbumFav == 3 %}
                             {%  set countAlbumFav = 0 %}
                         {% endif %}
                         <div class="Une_Boite">
@@ -79,7 +54,7 @@
                         </div>
                         {% set countAlbumFav = countAlbumFav + 1 %}
                     {% endfor %}
-                    {% for i in  countAlbumFav..4 if countAlbumFav != 5 %}
+                    {% for i in  countAlbumFav..4 if countAlbumFav != 3 %}
                         <div class="Une_Boite hidden"></div>
                     {% endfor %}
                 </div>
@@ -89,20 +64,20 @@
                 <div class="Favori">
                     <p>Groupes Favoris</p>
                 </div>
-                <div class="Article_element_groupe">
+                <div class="Article_element">
                     {%  set countGroupeFav = 0 %}
 
                     {% for hobbie in hobbies if hobbie.type == "Groupe_fav" %}
-                        {% if countGroupeFav == 5 %}
+                        {% if countGroupeFav == 2 %}
                             {%  set countGroupeFav = 0 %}
                         {% endif %}
-                        <div class="Une_Boite_groupe">
+                        <div class="Une_Boite groupe">
                             <a href="{{hobbie.link}}" target="_blank"><img src="{{hobbie.image.path}}" alt="{{hobbie.image.alt}}"></a>
                         </div>
                         {% set countGroupeFav = countGroupeFav + 1 %}
                     {% endfor %}
-                    {% for i in  countGroupeFav..4 if countGroupeFav != 5 %}
-                        <div class="Une_Boite_groupe hidden"></div>
+                    {% for i in  countGroupeFav..4 if countGroupeFav != 2 %}
+                        <div class="Une_Boite hidden_group"></div>
                     {% endfor %}
                 </div>
             </div>

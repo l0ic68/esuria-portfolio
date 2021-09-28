@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<!-- UTILITAIRES -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- DESCRIPTION -->
+	<link type="text/css" rel="stylesheet preload" href="{{asset('CSS/fixe/Mail.css') }}" as="style" />
+	<link type="text/css" rel="stylesheet preload" href="{{asset('CSS/fonts/Fonts.css')}}" as="style"/>
+	<!-- POLICE -->
+	<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&family=Montserrat:wght@300&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-iKbFRxucmOHIcpWdX9NTZ5WETOPm0Goy0WmfyNcl52qSYtc2Buk0NCe6jU1sWWNB" crossorigin="anonymous">
+</head>
+
+<body>
+	<header id="HeaderDesktop">
+		<!-- LOGO -->
+		{# <a href="{{path('index')}}" id="Logo"><img id="Logo_Streaming_School" src="{{asset('Images/logo.svg')}}" alt="logo streaming school" /> #}
+		<a href="{{path('index')}}" id="Logo"><img id="Logo_Streaming_School" src="https://com4up.fr/uploads/Thumbnail/b110759702473b5e45c34c663e3c41bb.jpeg" alt="logo streaming school" />
+			<h1>Streaming School</h1>
+		</a>
+	</header>
+	<main id="Site_content">
+		<h1>Vous avez reçu un message de la part de {{nom}} {{prenom}}</h1>
+        <p>{{message}}</p>
+        <p>{{email}}</p>
+
+
+	</main>
+
+	<!-- FOOTER -->
+	<footer>
+		<div id="Footer_right">
+			<div id="Footer_Social">
+				<a href="https://www.instagram.com/streaming.school/" rel="noopener" target="_blank" class="Footer_Icone"><i class="fab fa-instagram"></i></a>
+				<a href="https://twitter.com/streamingschool" rel="noopener" target="_blank" class="Footer_Icone"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+				<a href="https://www.youtube.com/channel/UCZdv4wV8J7g8qdeFuWBoB0w" rel="noopener" target="_blank" class="Footer_Icone"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+				<a href="https://discord.gg/D4Eq6C7" target="_blank" rel="noopener" class="Footer_Icone"><i class="fab fa-discord" aria-hidden="true"></i></a>
+			</div>
+		</div>
+	</footer>
+</body>
+
+</html>

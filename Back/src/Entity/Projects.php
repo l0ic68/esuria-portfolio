@@ -42,7 +42,17 @@ class Projects
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $techno;
+    private $role;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $technologie;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $logiciel;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -72,10 +82,6 @@ class Projects
      */
     private $gallery;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Technologies" , inversedBy="projects")
-     */
-    private $technologies;
 
     /**
      * @ORM\Column(type="date")
@@ -154,7 +160,7 @@ class Projects
         return $this;
     }
 
- 
+
     public function getCategorie(): ?string
     {
         return $this->categorie;
@@ -167,14 +173,38 @@ class Projects
         return $this;
     }
 
-    public function getTechno(): ?string
+    public function getRole(): ?string
     {
-        return $this->techno;
+        return $this->role;
     }
 
-    public function setTechno(string $techno): self
+    public function setRole(string $role): self
     {
-        $this->techno = $techno;
+        $this->role = $role;
+
+        return $this;
+    }
+
+    public function getTechnologie(): ?string
+    {
+        return $this->technologie;
+    }
+
+    public function setTechnologie(string $technologie): self
+    {
+        $this->technologie = $technologie;
+
+        return $this;
+    }
+    
+    public function getLogiciel(): ?string
+    {
+        return $this->logiciel;
+    }
+
+    public function setLogiciel(string $logiciel): self
+    {
+        $this->logiciel = $logiciel;
 
         return $this;
     }
@@ -243,33 +273,6 @@ class Projects
         return $this;
     }
 
-    /**
-     * @return Collection|Technologies[]
-     */
-    public function getTechnologies(): Collection
-    {
-        return $this->technologies;
-    }
-
-    public function addTechnology(Technologies $technology): self
-    {
-        if (!$this->technologies->contains($technology)) {
-            $this->technologies[] = $technology;
-            $technology->addProject($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTechnology(Technologies $technology): self
-    {
-        if ($this->technologies->contains($technology)) {
-            $this->technologies->removeElement($technology);
-            $technology->removeProject($this);
-        }
-
-        return $this;
-    }
 
     public function getDate(): ?\DateTimeInterface
     {

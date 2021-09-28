@@ -1,12 +1,22 @@
+#Site_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#app {
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 #Zone {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 #Hobbies_Switch {
@@ -14,9 +24,9 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    min-height: 10vh;
-    max-height: 10vh;
-    height: 10vh;
+    min-height: 6vh;
+    max-height: 6vh;
+    height: 6vh;
     width: 100%;
     border-bottom: solid #003471 2px;
     background-color: rgba(0, 0, 0, 0.3);
@@ -36,11 +46,11 @@
 
 #Hobbies_Switch a:hover {
     cursor: pointer;
-    color: #bd7a00;
+    color: #E69500;
 }
 
 .Hobbies_Select {
-    color: #bd7a00;
+    color: #E69500;
 }
 
 #Sort_Select {
@@ -65,100 +75,126 @@
 }
 
 #Sort_Select .sort:hover {
-    color: #bd7a00;
+    color: #E69500;
     cursor: pointer;
 }
 
 .Sort_Select {
-    color: #bd7a00;
+    color: #E69500;
 }
 
-#Project_Content {
-    width: 100%;
-    overflow: hidden;
-    overflow-y: scroll;
-    padding-bottom: 1em;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
+#Zone_bas {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  overflow-y: scroll;
 }
+
+#Zone_bas::-webkit-scrollbar {
+  width: 0.2em;
+}
+
+#Zone_bas::-webkit-scrollbar-track {
+  background-color: none;
+}
+
+#Zone_bas::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #E69500;
+}
+
 
 .hidden {
-    visibility: hidden;
-    margin: 0 15px;
+    width: 295px;
     height: 0;
 }
 
-#Project_Content::-webkit-scrollbar {
-    width: 0.2em;
+
+.Article_element {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 5vh;
+  justify-content: center; /* NEW */
+  padding: 0;  /* NEW */
 }
 
-#Project_Content::-webkit-scrollbar-track {
-    background-color: none;
-}
-
-#Project_Content::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #bd7a00;
-}
-
-.Project_Data {
-    width: 300px;
-    padding: 0;
-    margin: 2%;
-    box-sizing: border-box;
-    text-align: center;
-}
-
-.Project_Data img {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: auto;
-}
-
-.Project_Info {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.3);
-}
-
-.Web {
-    border-top: solid #6f0505 1px;
-}
-
-.Video {
-    border-top: solid #004a80 1px;
+.Une_Boite {
+  width: 295px;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  margin-left: 0.8em;
+  margin-right: 0.8em;
+  margin-bottom: 1em;
 }
 
 .Photo {
-    border-top: solid #008716 1px;
+  width: 295px;
+  height: 180px;
 }
 
-.Div {
-    border-top: solid 1px #4b0049;
+.Lien_Photo {
+  margin: 0;
+  padding: 0;
+  border-bottom: 4px solid #003471;
+  width: 295px;
+  height: 180px;
 }
 
-.Project_Type {
-    font-family: Cinzel, serif;
-    font-size: 1.5em;
-    color: #FFFFFF;
-    margin: 0;
-    padding: 0;
+.Titre_article {
+  margin: 0;
+  padding: 0;
+  margin-top: 0.5em;
+  margin-left: 0.5em;
+  font-size: 1.25em;
 }
 
-.Project_Date {
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto Slab', serif;
-    font-size: 1em;
-    color: #FFFFFF;
+.Date {
+  margin-top: 0.5em;
+  margin-left: 0.5em;
+  font-size: 1em;
+}
+
+.Sous_Bandeau {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  font-family: "Roboto Slab", serif;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  width: 295px;
+}
+
+.Couleur_slash {
+  color: #bd7a00;
+  font-size: 1.25em;
+}
+
+.Description {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  height: 12vh;
+  max-height: 12vh;
+  overflow-y: scroll;
+  font-family: "Roboto", sans-serif;
+}
+
+.Description::-webkit-scrollbar {
+  width: 0.2em;
+}
+
+.Description::-webkit-scrollbar-track {
+  background-color: none;
+}
+
+.Description::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #bd7a00;
 }
 
 
@@ -183,7 +219,7 @@
 }
 
 #Centre_chiffre .pag_select {
-    border: solid 1px #bd7a00;
+    border: solid 1px #E69500;
 }
 
 
@@ -226,5 +262,5 @@
 }
 
 .active {
-    color: #bd7a00!important;
+    color: #E69500!important;
 }

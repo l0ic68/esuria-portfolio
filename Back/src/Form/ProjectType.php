@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use App\Form\ImageType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
@@ -19,9 +20,8 @@ class ProjectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
+            ->add('title', TextType::class ,array('label'=> 'Titre',))
             ->add('description')
-            ->add('client')
             ->add('date')
             ->add('categorie', ChoiceType::class, [
                 'choices'=> array(
@@ -33,12 +33,24 @@ class ProjectType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 ])
-
-            ->add('techno')
-            ->add('URL_site')
+            ->add('role')
+            ->add('client')
+            ->add('technologie')
+            ->add('logiciel')
+            ->add('URL_site', TextType::class ,array('label'=> 'URL projet',))
+            ->add('status', ChoiceType::class, [
+                'choices'=> array(
+                    'fini' => 'fini',
+                    'developpement' => 'developpement',
+                    'Hors-ligne' => 'Hors-ligne',
+                ),
+                'expanded' => true,
+                'multiple' => false,
+            ])
             ->add('banner', ImageType::class, [
                 // 'data_class' => null
                 'required' => false,
+                'label'=> 'baniere',
             ])
             ->add('miniature', ImageType::class, [
                 // 'data_class' => null
@@ -51,23 +63,11 @@ class ProjectType extends AbstractType
                 'by_reference' => false,
                 'allow_delete' => true,
                 'required' => false,
+                'label'=> 'Gallerie',
                 // 'data_class' => null
             ])
-            ->add('technologies', EntityType::class, [
-                "class" => "App\Entity\Technologies",
-                "choice_label" => "name",
-                "expanded" => true,
-                "multiple" => true,
-            ])
-            ->add('status', ChoiceType::class, [
-                'choices'=> array(
-                    'fini' => 'fini',
-                    'developpement' => 'developpement',
-                    'Hors-ligne' => 'Hors-ligne',
-                ),
-                'expanded' => true,
-                'multiple' => false,
-            ])
+
+
         ;
     }
 

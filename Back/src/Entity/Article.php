@@ -49,10 +49,21 @@ class Article
     private $path;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $tag;
+
+    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $image;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Image", orphanRemoval=true, cascade={"persist" ,"remove"})
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    private $banner;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Commentaire", mappedBy="article", orphanRemoval=true)
@@ -109,6 +120,19 @@ class Article
         return $this;
     }
 
+    public function getTag(): ?string
+    {
+        return $this->tag;
+    }
+
+    public function setTag(string $tag): self
+    {
+        $this->tag = $tag;
+
+        return $this;
+    }
+
+
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
@@ -154,6 +178,18 @@ class Article
     public function setImage(Image $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getBanner(): ?Image
+    {
+        return $this->banner;
+    }
+
+    public function setBanner(Image $banner): self
+    {
+        $this->banner = $banner;
 
         return $this;
     }

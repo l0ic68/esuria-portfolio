@@ -24,6 +24,11 @@ class Skill
     /**
      * @ORM\Column(type="string", length=255)
      */
+    private $link;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $icone;
 
     public function getId(): ?int
@@ -40,6 +45,17 @@ class Skill
     {
         $this->name = $name;
 
+        return $this;
+    }
+
+    public function getLink(): ?string
+    {
+        return $this->link;
+    }
+
+    public function setLink(string $link): self
+    {
+        $this->link = $link;
         return $this;
     }
 

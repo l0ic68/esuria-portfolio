@@ -4,7 +4,7 @@
     Blog
 {% endblock %}
 {% block css %}
-    <link type="text/css" rel="stylesheet" href="{{asset("css/Hobbies_Musique.css")}}"/>
+    <link type="text/css" rel="stylesheet" href="{{asset("css/Hobbies_Film.css")}}"/>
 {% endblock %}
 {% block content %}
     <!-- CONTENU -->
@@ -27,32 +27,19 @@
         </div>
         <div id="Zone_bas">
             <div class="Wrap">
-                <div class="Mobile_Moment" id="Margin_Musique">
-                    <p>Film&nbsp;du&nbsp;moment</p>
-                    <p>Serie&nbsp;du&nbsp;moment</p>
-                    <p>Anime&nbsp;du&nbsp;moment</p>
-                </div>
-                <div
-                    class="Moment_data_mobile">
-                    {# <a href="htqtps://muuse Doctrine\Persistence\ManagerRegistry;
-                                                                                                                                                                                                                                                                    sic.youtube.com/watch?v=f3L9_6aJi2Q&list=OLAK5uy_m0Bdl6V0SVlvhoYFWURcyTrVXENLcww18" target="_blank"><img src="../Images/Musiques/Album_du_moment/Myles_Kennedy.jpg" alt="Myles Kennedy"></a> #}
-                    <a href="{{film_moment.link}}" target="_blank"><img src="{{film_moment.image.path}}" alt="{{film_moment.image.alt}}"></a>
-                    <a href="{{serie_moment.link}}" target="_blank"><img src="{{serie_moment.image.path}}" alt="{{serie_moment.image.alt}}"></a>
-                    <a href="{{anime_moment.link}}" target="_blank"><img src="{{anime_moment.image.path}}" alt="{{anime_moment.image.alt}}"></a>
-                </div>
                 <div id="Moment">
                     <div class="Moment_2">
                         <p>Film&nbsp;du&nbsp;moment</p>
-                        <p>Serie&nbsp;du&nbsp;moment</p>
-                        <p>Anime&nbsp;du&nbsp;moment</p>
+                        {% if film_moment %}<a href="{{film_moment.link}}" target="_blank"><img src="{{film_moment.image.path}}" alt="{{film_moment.image.alt}}"></a>{% endif %}
                     </div>
-                </div>
-                <div
-                    id="Moment_data">
-                    {# <p style="color:white; ">Path : {{album_moment.filename}}</p> #}
-                    <a href="{{film_moment.link}}" target="_blank"><img src="{{film_moment.image.path}}" alt="{{film_moment.image.alt}}"></a>
-                    <a href="{{serie_moment.link}}" target="_blank"><img src="{{serie_moment.image.path}}" alt="{{serie_moment.image.alt}}"></a>
-                    <a href="{{anime_moment.link}}" target="_blank"><img src="{{anime_moment.image.path}}" alt="{{anime_moment.image.alt}}"></a>
+                    <div class="Moment_2">
+                        <p>Serie&nbsp;du&nbsp;moment</p>
+                        {% if serie_moment %}<a href="{{serie_moment.link}}" target="_blank"><img src="{{serie_moment.image.path}}" alt="{{serie_moment.image.alt}}"></a>{% endif %}
+                    </div>
+                    <div class="Moment_2">
+                        <p>Anime&nbsp;du&nbsp;moment</p>
+                        {% if anime_moment %}<a href="{{anime_moment.link}}" target="_blank"><img src="{{anime_moment.image.path}}" alt="{{anime_moment.image.alt}}"></a>{% endif %}
+                    </div>
                 </div>
             </div>
 
@@ -63,7 +50,7 @@
                 <div class="Article_element">
                     {%  set countAlbumFav = 0 %}
                     {% for hobbie in hobbies if hobbie.type == "Film_fav" %}
-                        {% if countAlbumFav == 5 %}
+                        {% if countAlbumFav == 4 %}
                             {%  set countAlbumFav = 0 %}
                         {% endif %}
                         <div class="Une_Boite">
@@ -71,7 +58,7 @@
                         </div>
                         {% set countAlbumFav = countAlbumFav + 1 %}
                     {% endfor %}
-                    {% for i in  countAlbumFav..4 if countAlbumFav != 5 %}
+                    {% for i in  countAlbumFav..4 if countAlbumFav != 4 %}
                         <div class="Une_Boite hidden"></div>
                     {% endfor %}
                 </div>
@@ -83,7 +70,7 @@
                 <div class="Article_element">
                     {%  set countAlbumFav = 0 %}
                     {% for hobbie in hobbies if hobbie.type == "Serie_fav" %}
-                        {% if countAlbumFav == 5 %}
+                        {% if countAlbumFav == 4 %}
                             {%  set countAlbumFav = 0 %}
                         {% endif %}
                         <div class="Une_Boite">
@@ -91,7 +78,7 @@
                         </div>
                         {% set countAlbumFav = countAlbumFav + 1 %}
                     {% endfor %}
-                    {% for i in  countAlbumFav..4 if countAlbumFav != 5 %}
+                    {% for i in  countAlbumFav..4 if countAlbumFav != 4 %}
                         <div class="Une_Boite hidden"></div>
                     {% endfor %}
                 </div>
@@ -103,7 +90,7 @@
                 <div class="Article_element">
                     {%  set countAlbumFav = 0 %}
                     {% for hobbie in hobbies if hobbie.type == "Anime_fav" %}
-                        {% if countAlbumFav == 5 %}
+                        {% if countAlbumFav == 4 %}
                             {%  set countAlbumFav = 0 %}
                         {% endif %}
                         <div class="Une_Boite">
@@ -111,7 +98,7 @@
                         </div>
                         {% set countAlbumFav = countAlbumFav + 1 %}
                     {% endfor %}
-                    {% for i in  countAlbumFav..4 if countAlbumFav != 5 %}
+                    {% for i in  countAlbumFav..4 if countAlbumFav != 4 %}
                         <div class="Une_Boite hidden"></div>
                     {% endfor %}
                 </div>

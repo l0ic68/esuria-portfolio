@@ -3,30 +3,290 @@
 Esuria // CMS
 {% endblock %}
 {% block css %}
-<link type="text/css" rel="stylesheet" href={{asset("css/CMS.css")}} />
+<link type="text/css" rel="stylesheet" href={{asset("css/cms_blog.css")}} />
 {% endblock %}
 {% block content %}
 		<!-- CONTENU -->
 		<div id="Zone">
-			<div id="Zone_haut">
+			<div id="app">
+				<h1>- Blog -</h1>
 				<div class="CMS_wrap" id="Blog_cms">
-				<a href="{{path('new-article')}}" ><button> Nouvelle article</button></a>
+				<a id="Bouton_envoie" href="{{path('new-article')}}">Nouvel article</a>
+				<div id="search">
+						<input class="noselect" placeholder="Recherche" v-model="searchText" v-on:keyup="search()"></input>
+				<i class="far fa-search"></i>
+		</div>
 					<div class="Article_list">
-						{% for article in articles %}
-						<div class="Article_line">
-							<p class="Article_date">{{ article.date|localizeddate('long', 'none', 'locale')|capitalize }}</p>
-							<p class="Article_nom">{{article.titre}} </p>
-							<div class="Article_Interaction">
-								<a href="{{path('edit-article',{id: article.id})}}"><i class="fal fa-edit"></i></a>
-								<a href="{{path('article-delete',{id: article.id})}}"><i class="fal fa-times"></i></a>
-							</div>
-						</div>	
-						{% endfor %}
+						<div class="Article_element" v-if="onLoad == false">
+								<div class="Article_line" v-for="article in articles.slice().reverse()">
+												<h2 class="Titre_article"><a class="Lien_Photo" v-bind:href="'/lecture-article/' + article.path">
+														{article.titre}</a>
+												</h2>
+												<p class="Date">
+														<span class="Couleur_slash">//
+														</span>{article.date | moment}
+												</p>
+												<div class="Article_Interaction">
+												<a class="Lien_Photo" v-bind:href="'/edit-article/' + article.id"><i class="fal fa-edit"></i></a>
+												<a class="Lien_Photo" v-bind:href="'/article-delete/' + article.id"><i class="fal fa-times"></i></a>
+												</div>
+										</div>
+								</div>
+
+								<div id="Centre_chiffre">
+						        <p>
+						            <template v-if="nbrPage == 1">
+						            </template>
+						            <template v-else-if="nbrPage == 2">
+						              <div v-if="page == 1" >
+						                  <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+						                  <button v-on:click="setPage(page + 1)">{page + 1}</button>
+						              </div>
+						              <div v-if="page == 2" >
+						                  <button v-on:click="setPage(page - 1)">{page - 1}</button>
+						                  <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+						              </div>
+						            </template>
+						            <template v-else-if="nbrPage == 3">
+						              <div v-if="page == 1" >
+						                  <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+						                  <button v-on:click="setPage(page + 1)">{page + 1}</button>
+						                  <button v-on:click="setPage(page + 2)">{page + 2}</button>
+						              </div>
+						              <div v-if="page == 2" >
+						                  <button v-on:click="setPage(page - 1)">{page - 1}</button>
+						                  <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+						                  <button v-on:click="setPage(page + 1)">{page + 1}</button>
+						              </div>
+						              <div v-if="page == 3" >
+						                  <button v-on:click="setPage(page - 2)">{page - 2}</button>
+						                  <button v-on:click="setPage(page - 1)">{page - 1}</button>
+						                  <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+						              </div>
+						            </template>
+						            <template v-else-if="nbrPage > 3">
+						                <div v-if="page == 1" >
+						                    <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+						                    <button v-on:click="setPage(page + 1)">{page + 1}</button>
+						                    <button v-on:click="setPage(page + 2)">{page + 2}</button>
+						                    ...
+						                    <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
+
+						                </div>
+						                <div v-else-if="page < 3">
+						                    <button v-on:click="setPage(page -1)">{page -1}</button>
+						                    <button  class="pag_select" v-on:click="setPage(page)">{page}</button>
+						                    <button v-on:click="setPage(page + 1)">{page + 1}</button>
+						                    ...
+						                    <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
+
+						                </div>
+						                <div v-else-if="page >= 3 && page < nbrPage - 1">
+						                    <button v-on:click="setPage(1)">1</button>
+						                    ...
+						                    <button v-on:click="setPage(page - 1)">{page - 1}</button>
+						                    <button  class="pag_select" v-on:click="setPage(page)">{page}</button>
+						                    <button v-on:click="setPage(page + 1)">{page + 1}</button>
+						                    ...
+						                    <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
+
+						                </div>
+						                <div v-else-if="page == (nbrPage - 1)">
+						                    <button v-on:click="setPage(1)">1</button>
+						                    ...
+						                    <button v-on:click="setPage(page - 1)">{page - 1}</button>
+						                    <button  class="pag_select" v-on:click="setPage(page)">{page}</button>
+						                    <button v-on:click="setPage(page + 1)">{page + 1}</button>
+						                </div>
+						                <div v-else-if="page == nbrPage">
+						                    <button v-on:click="setPage(1)">1</button>
+						                    ...
+						                    <button v-on:click="setPage(page - 2)">{page - 2}</button>
+						                    <button v-on:click="setPage(page - 1)">{page - 1}</button>
+						                    <button  class="pag_select" v-on:click="setPage(page)">{page}</button>
+						                </div>
+						            </template>
+						</div>
 					</div>
 			</div>
+		</div>
 		</div>
 
     {% endblock %}
 
-    {% block js %}
+		{% block js %}
+		<script crossorigin="anonymous" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script src="{{asset('js/moment.js')}}"></script>
+		<script src="{{asset('js/vue.js')}}"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+
+		<script>
+		    var app = new Vue({
+		        el: '#app',
+		        delimiters: [
+		            '{', '}'
+		        ],
+		        data: {
+		            articles: [],
+		            select: "All",
+		            page: 1,
+		            count: 1,
+								id: 1,
+		            currentPage: 1,
+		            nbrPerPage: 6,
+		            nbrPage: 6,
+		            searchText: "",
+		            onLoad: false
+		        },
+		        mounted() {
+		            this.getArticle();
+		            this.getCount();
+		        },
+		        filters: {
+		            moment: function (date) {
+		                //console.log(moment(date).format('MMMM Do YYYY, h:mm:ss a'));
+		            return moment(date).locale("fr").format('LL');
+		            }
+		        },
+		        methods: {
+		            moment: function () {
+		                return moment();
+		            },
+		            setSelect(selection) {
+		                this.page = 1;
+		                this.select = selection;
+		                this.getArticleSelection();
+		            },
+		            setPage(page) {
+		                if (this.page != page) {
+		                    this.page = page;
+		                    this.currentPage = page.pageView;
+		                    if (this.select == 'All') {
+		                        this.getArticle();
+		                    } else {
+		                        this.getArticleSelection();
+		                    }
+		                }
+		            },
+		            setLoad() {
+		                if (this.onLoad == false) {
+		                    this.onLoad = true;
+		                } else {
+		                    this.onLoad = false;
+		                }
+
+		            },
+		            getArticle() {
+		                this.onLoad = true;
+		                axios({
+		                    method: 'POST',
+		                    url: '/get-article',
+		                    data: {
+		                        page: this.page
+		                    }
+		                }).then(response => {
+		                    var getUrl = window.location;
+		                    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+		                    baseUrl = baseUrl.replace("annonce", "");
+		                    var base_url = window.location.origin;
+		                    var json = JSON.parse(response.data);
+		                    var object = this;
+		                    this.articles = [];
+
+		                    $.each(json, function (key, value) {
+		                        object.articles.push({
+		                            "titre": value.titre,
+		                            "description": value.description,
+		                            "date": value.date,
+		                            "path": value.path,
+																"id": value.id,
+		                            "image": base_url + "/" + value.image.path
+		                        });
+		                    });
+		                    this.onLoad = false;
+
+		                })
+		            },
+		            search() {
+		                axios({
+		                    method: 'POST',
+		                    url: '/search-article',
+		                    data: {
+		                        searchText: this.searchText
+		                    }
+		                }).then(response => {
+		                    var getUrl = window.location;
+		                    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+		                    baseUrl = baseUrl.replace("annonce", "");
+		                    var json = JSON.parse(response.data);
+		                    var base_url = window.location.origin;
+
+		                    var object = this;
+		                    this.articles = [];
+		                    $.each(json, function (key, value) {
+		                        object.articles.push({
+		                            "titre": value.titre,
+		                            "description": value.description,
+		                            "date": value.date,
+		                            "path": value.path,
+		                            "image": base_url + "/" + value.image.path
+		                        });
+		                    });
+		                })
+		            },
+		            getArticleSelection() {
+		                axios({
+		                    method: 'POST',
+		                    url: '/get-article-selection',
+		                    data: { // id :this.biens[0],
+		                        selection: this.select,
+		                        page: this.page
+		                    }
+		                }).then(response => {
+		                    var getUrl = window.location;
+		                    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+		                    baseUrl = baseUrl.replace("annonce", "");
+		                                        var base_url = window.location.origin;
+
+		                    var json = JSON.parse(response.data);
+		                    var object = this;
+		                    this.articles = [];
+		                    $.each(json, function (key, value) {
+		                        object.articles.push({
+		                            "titre": value.titre,
+		                            "description": value.description,
+		                            "date": value.date,
+		                            "path": value.path,
+		                            "image": base_url + "/" + value.image.path
+		                        });
+		                    });
+		                    this.getCount();
+		                })
+		            },
+		            getCount() {
+		                axios({
+		                    method: 'POST',
+		                    url: '/count-article',
+		                    data: {
+		                        selection: this.select
+		                    }
+		                }).then(response => {
+		                    var getUrl = window.location;
+		                    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+		                    baseUrl = baseUrl.replace("annonce", "");
+		                    var json = JSON.parse(response.data);
+		                    var object = this;
+		                    this.count = json;
+		                    console.log(this.count % this.nbrPerPage);
+		                    if (this.count % this.nbrPerPage === 0){
+		                      this.nbrPage = Math.floor((this.count / this.nbrPerPage));
+		                    }
+		                    else {
+		                      this.nbrPage = Math.floor((this.count / this.nbrPerPage) + 1);
+		                    }
+		                })
+		            }
+		        }
+		    })
+		</script>
 		{% endblock %}

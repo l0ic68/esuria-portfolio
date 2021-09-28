@@ -3,7 +3,7 @@
     font-family: "Roboto Slab", serif;
     text-transform: uppercase;
     font-size: 1.5em;
-    color: #bd7a00;
+    color: #E69500;
     border: none;
     border-bottom: solid 2px #003471;
     background: none;
@@ -27,6 +27,10 @@
     font-family: "Roboto Slab", serif;
     display: flex;
     justify-content: center;
+}
+
+#Presentation h1, #Competences h1 {
+    text-align: center;
 }
 
 #Presentation_cms form {
@@ -70,7 +74,7 @@
 }
 
 .LittleCircle i:hover {
-    color: #bd7a00;
+    color: #E69500;
     transition-duration: 0.3s;
 }
 
@@ -86,7 +90,7 @@
 }
 
 .InsideCircle:hover>i {
-    color: #bd7a00;
+    color: #E69500;
     transition-duration: 0.3s;
 }
 
@@ -120,7 +124,7 @@
 
 #Competences_data::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: #bd7a00;
+    background-color: #E69500;
 }
 
 .Competences_line a {
@@ -138,7 +142,7 @@
 }
 
 .Competences_line a:hover>i {
-    color: #bd7a00;
+    color: #E69500;
     transition-duration: 0.3s;
 }
 
@@ -151,6 +155,10 @@
     align-items: center;
     font-family: "Roboto Slab", serif;
     color: white;
+}
+
+#Projets_cms h1 {
+    text-align: center;
 }
 
 #Projets_Switch {
@@ -178,11 +186,11 @@
 
 #Projets_Switch a:hover {
     cursor: pointer;
-    color: #bd7a00;
+    color: #E69500;
 }
 
 .Hobbies_Select {
-    color: #bd7a00;
+    color: #E69500;
 }
 
 .cms_hr {
@@ -215,12 +223,12 @@
 }
 
 #Sort_Select .sort:hover {
-    color: #bd7a00;
+    color: #E69500;
     cursor: pointer;
 }
 
 .Sort_Select {
-    color: #bd7a00;
+    color: #E69500;
 }
 
 .Article_list {
@@ -248,6 +256,27 @@
     cursor: pointer;
 }
 
+#Bouton_envoie {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #003471;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: auto;
+  font-family: "Cinzel", serif;
+  font-size: 1.25em;
+  color: white;
+  text-decoration: none;
+  padding: 0.5em 0.5em 0.5em 0.5em;
+}
+
+
+#Bouton_envoie:hover {
+  color: #E69500;
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
 
 /* hobbies */
 
@@ -284,16 +313,16 @@
 
 #Hobbies_Switch a:hover {
     cursor: pointer;
-    color: #bd7a00;
+    color: #E69500;
 }
 
 .fa-chevron-left,
 .fa-chevron-right {
-    color: #bd7a00;
+    color: #E69500;
 }
 
 .Coloractive {
-    color: #bd7a00;
+    color: #E69500;
 }
 
 .fa-chevron-left,
@@ -322,11 +351,11 @@
 
 .CMS_Hobbies::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: #bd7a00;
+    background-color: #E69500;
 }
 
 .CMS_Titre {
-    color: #bd7a00;
+    color: #E69500;
     font-size: 1.5em;
     font-family: "Cinzel", serif;
 }
@@ -353,18 +382,6 @@
 /* Blog */
 
 #Blog_cms {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-family: "Roboto Slab", serif;
-    color: white;
-}
-
-
-/* Agenda */
-
-#Agenda_cms {
     display: flex;
     flex-direction: column;
     align-items: center;

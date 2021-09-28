@@ -18,15 +18,14 @@
             <a href="{{path('accueil')}}">Présentation</a>
             <a href="{{path('index_biographie')}}">Biographie</a>
         </div>
-        <div id="app">
             <div id="Zone_haut">
                 <h1 class="Titre">- Derniere Vidéo -</h1>
-                <iframe :src="video" allow="autoplay; encrypted-media" allowfullscreen frameborder="0" height="180" width="320"></iframe>
+                <iframe id="youtube_last" src="https://www.youtube.com/embed?max-results=1&controls=0&showinfo=0&rel=0&listType=user_uploads&list=TheEsuria" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <h1 class="Titre">- Derniers Articles -</h1>
                 <div class="Article_element">
-                    {% for article in articles %}
-                        <div class="Une_Boite">
-                            <a class="Lien_Photo" href="{{path("lecture-article",{path : article.path })}}"><img class="Photo" src={{asset(article.image.path)}}></a>
+                    {% for article in articles|reverse %}
+                        <a href="{{path("lecture-article",{path : article.path })}}" class="Une_Boite">
+                            <div class="Lien_Photo"><img class="Photo" src={{asset(article.image.path)}}></div>
                             <div class="Sous_Bandeau">
                                 <h2 class="Titre_article">
                                     {{article.titre}}
@@ -41,11 +40,10 @@
                                     {{article.description}}
                                 </p>
                             </div>
-                        </div>
+                        </a>
                     {% endfor %}
                 </div>
-                <h1 class="Titre">- Instagram -</h1>
-            </div>
+              
         </div>
     </div>
 {% endblock %}

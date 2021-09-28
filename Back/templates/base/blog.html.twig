@@ -7,8 +7,7 @@
     <link type="text/css" rel="stylesheet" href="{{asset("css/Blog.css")}}"/>
 {% endblock %}
 {% block content %}
-    <div
-        id="app" style="display: flex;flex-direction: column;">
+    <div id="app" style="display: flex;flex-direction: column;">
         <!-- CONTENU -->
         <div id="search">
             <input class="noselect" placeholder="Recherche" v-model="searchText" v-on:keyup="search()"></input>
@@ -21,6 +20,7 @@
         <p v-bind:class="{Sort_Select : select=='personnel', Sort : select != 'personnel' }" v-on:click="setSelect('personnel')">Personnel</p>
         <p v-bind:class="{Sort_Select : select=='professionnel', Sort : select != 'professionnel' }" v-on:click="setSelect('professionnel')">Professionnel</p>
     </div>
+
     <select id="Sort_Select_Mobile">
         <option value="valeur1">Tout</option>
         <option value="valeur2">Réalisation</option>
@@ -28,8 +28,9 @@
         <option value="valeur4">Personnel</option>
         <option value="valeur5">Professionnel</option>
     </select>
+    <div id="Zone_bas">
     <div class="Article_element" v-if="onLoad == false">
-        <div class="Une_Boite" v-for="article in articles">
+        <div class="Une_Boite" v-for="article in articles.slice().reverse()">
             <a class="Lien_Photo" v-bind:href="'/lecture-article/' + article.path"><img :src="article.image" class="Photo"></a>
             <div class="Sous_Bandeau">
                 <h2 class="Titre_article">
@@ -58,8 +59,37 @@
     </div>
     <div id="Centre_chiffre">
         <p>
-            <template>
-                <div v-if="page == 1">
+            <template v-if="nbrPage == 1">
+            </template>
+            <template v-else-if="nbrPage == 2">
+              <div v-if="page == 1" >
+                  <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+                  <button v-on:click="setPage(page + 1)">{page + 1}</button>
+              </div>
+              <div v-if="page == 2" >
+                  <button v-on:click="setPage(page - 1)">{page - 1}</button>
+                  <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+              </div>
+            </template>
+            <template v-else-if="nbrPage == 3">
+              <div v-if="page == 1" >
+                  <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+                  <button v-on:click="setPage(page + 1)">{page + 1}</button>
+                  <button v-on:click="setPage(page + 2)">{page + 2}</button>
+              </div>
+              <div v-if="page == 2" >
+                  <button v-on:click="setPage(page - 1)">{page - 1}</button>
+                  <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+                  <button v-on:click="setPage(page + 1)">{page + 1}</button>
+              </div>
+              <div v-if="page == 3" >
+                  <button v-on:click="setPage(page - 2)">{page - 2}</button>
+                  <button v-on:click="setPage(page - 1)">{page - 1}</button>
+                  <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+              </div>
+            </template>
+            <template v-else-if="nbrPage > 3">
+                <div v-if="page == 1" >
                     <button class="pag_select" v-on:click="setPage(page)">{page}</button>
                     <button v-on:click="setPage(page + 1)">{page + 1}</button>
                     <button v-on:click="setPage(page + 2)">{page + 2}</button>
@@ -102,7 +132,10 @@
             </template>
         </p>
     </div>
-</div>{% endblock %}{% block js %}
+    </div>
+</div>
+{% endblock %}
+{% block js %}
 <script crossorigin="anonymous" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="{{asset('js/moment.js')}}"></script>
 <script src="{{asset('js/vue.js')}}"></script>
@@ -118,13 +151,14 @@
             articles: [],
             select: "All",
             page: 1,
-            count: 0,
+            count: 1,
+            currentPage: 1,
+            nbrPerPage: 6,
+            nbrPage: 6,
             searchText: "",
-            nbrPage: 0,
             onLoad: false
         },
         mounted() {
-            this.sayHello();
             this.getArticle();
             this.getCount();
         },
@@ -138,21 +172,15 @@
             moment: function () {
                 return moment();
             },
-            sayHello() {
-                console.log("Hello");
-            },
             setSelect(selection) {
-                console.log("set Selection");
                 this.page = 1;
                 this.select = selection;
                 this.getArticleSelection();
             },
             setPage(page) {
-                console.log('Set page');
                 if (this.page != page) {
                     this.page = page;
-                    console.log(this.page);
-
+                    this.currentPage = page.pageView;
                     if (this.select == 'All') {
                         this.getArticle();
                     } else {
@@ -161,7 +189,6 @@
                 }
             },
             setLoad() {
-                console.log('Set load');
                 if (this.onLoad == false) {
                     this.onLoad = true;
                 } else {
@@ -170,7 +197,6 @@
 
             },
             getArticle() {
-                console.log("get Article");
                 this.onLoad = true;
                 axios({
                     method: 'POST',
@@ -186,10 +212,8 @@
                     var json = JSON.parse(response.data);
                     var object = this;
                     this.articles = [];
-                    console.log(json);
 
                     $.each(json, function (key, value) {
-                        console.log(value);
                         object.articles.push({
                             "titre": value.titre,
                             "description": value.description,
@@ -203,7 +227,6 @@
                 })
             },
             search() {
-                console.log("search");
                 axios({
                     method: 'POST',
                     url: '/search-article',
@@ -231,7 +254,6 @@
                 })
             },
             getArticleSelection() {
-                console.log("get Article Selection");
                 axios({
                     method: 'POST',
                     url: '/get-article-selection',
@@ -261,11 +283,10 @@
                 })
             },
             getCount() {
-                console.log("get Count");
                 axios({
                     method: 'POST',
                     url: '/count-article',
-                    data: { // id :this.biens[0],
+                    data: {
                         selection: this.select
                     }
                 }).then(response => {
@@ -274,10 +295,13 @@
                     baseUrl = baseUrl.replace("annonce", "");
                     var json = JSON.parse(response.data);
                     var object = this;
-                    console.log(json);
                     this.count = json;
-                    this.nbrPage = Math.ceil(this.count / 6)
-
+                    if (this.count % this.nbrPerPage === 0){
+                      this.nbrPage = Math.floor((this.count / this.nbrPerPage));
+                    }
+                    else {
+                      this.nbrPage = Math.floor((this.count / this.nbrPerPage) + 1);
+                    }
                 })
             }
         }

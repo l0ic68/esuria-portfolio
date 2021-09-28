@@ -23,7 +23,7 @@
                                 <p class="Article_nom">{{project.categorie}}</p>
                                 <p class="Article_nom">
                                     <div id="circle" class="{{project.status}}"></div>
-                                    {{project.status}}</p>
+                                    {{project.status}}
                                 <div class="Article_Interaction">
                                     <a href="{{path("edit-project", {"id" : project.id })}}">
                                         <i class="fal fa-edit"></i>
@@ -38,35 +38,11 @@
                 </div>
 
             </div>
-            <a href="{{path('new-projet')}}">
+            <a id="Bouton_envoie" href="{{path('new-projet')}}">
                 Nouveau Projet
             </a>
         </div>
-        <div id="Competences">
-            <h1>- Compétences -</h1>
-            <div id="Competences_data">
-                {% for technologie in technologies %}
-                    <div class="Competences_line">
-                        <i class="{{technologie.icon}}"></i>
-                        <p>{{technologie.name}}</p>
-                        <a href="{{path('edit-technologie',{"id" : technologie.id})}}">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <a href="{{path('delete-technologie',{"id" : technologie.id})}}">
-                            <i class="fas fa-trash-alt"></i>
-                        </a>
-                    </div>
-                {% endfor %}
 
-                <div class="Competences_line">
-                    <a href="{{path('new-technologie')}}" style="width: 100% !important;">
-                        <i class="fas fa-plus"></i>
-                        {# <p>Ajouter </p> #}
-                    </a>
-                </div>
-
-            </div>
-        </div>
     </div>
 </div>{% endblock %}{% block js %}
 <script src="https://code.jquery.com/jquery.js"></script>

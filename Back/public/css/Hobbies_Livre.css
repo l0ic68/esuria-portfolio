@@ -10,9 +10,9 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  min-height: 10vh;
-  max-height: 10vh;
-  height: 10vh;
+  min-height: 6vh;
+  max-height: 6vh;
+  height: 6vh;
   width: 100%;
   border-bottom: solid #003471 2px;
   background-color: rgba(0, 0, 0, 0.3);
@@ -32,7 +32,7 @@
 
 #Hobbies_Switch a:hover {
   cursor: pointer;
-  color: #bd7a00;
+  color: #E69500;
 }
 
 #Titre_Back {
@@ -66,11 +66,11 @@
 #Backlog a:hover>img {
   margin: -2px;
   padding: -2px;
-  border: 2px solid #bd7a00;
+  border: 2px solid #E69500;
 }
 
 #Backlog a:hover>p {
-  color: #bd7a00;
+  color: #E69500;
 }
 
 #Backlog a img {
@@ -88,7 +88,7 @@
 }
 
 .fa-chevron-left, .fa-chevron-right, .fa-book {
-  color: #bd7a00;
+  color: #E69500;
 }
 
 .fa-chevron-left, .fa-chevron-right {
@@ -117,7 +117,7 @@
 
 #Zone_bas::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: #bd7a00;
+  background-color: #E69500;
 }
 
 #Moment {
@@ -160,7 +160,7 @@
 }
 
 #Moment_data a img:hover {
-  border: 2px solid #bd7a00;
+  border: 2px solid #E69500;
   margin: -2px;
   padding: -2px;
 }
@@ -170,7 +170,7 @@
 }
 
 .Une_Boite a img:hover {
-  border: 2px solid #bd7a00;
+  border: 2px solid #E69500;
   margin: -2px;
   padding: -2px;
 }
@@ -275,7 +275,7 @@
   }
 
   .Moment_data_mobile a img:hover {
-    border: 2px solid #bd7a00;
+    border: 2px solid #E69500;
     margin: -2px;
     padding: -2px;
   }

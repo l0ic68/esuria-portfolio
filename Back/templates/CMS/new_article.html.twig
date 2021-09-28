@@ -1,24 +1,27 @@
-{% extends 'base.html.twig' %}
+{% extends 'cms_base.html.twig' %}
 {% block title %}
     {{parent()}}
     new-article
 {% endblock %}
 {% block css %}
-    <link type="text/css" rel="stylesheet" href="{{asset("css/Blog.css")}}"/>{# <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/> #}
-    {# <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> #}
-    {# <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> #}<script src="http://cdn.ckeditor.com/4.6.2/standard-all/ckeditor.js"> </script>
+  <link type="text/css" rel="stylesheet" href={{asset("css/addArticle.css")}} />
+    <script src="https://cdn.ckeditor.com/4.6.2/full-all/ckeditor.js"> </script>
 {% endblock %}
 {% block content %}
-    <h1 style="color:white">Ajout d'un nouvelle article</h1>
+    <div class="container">
     {{ form_start(form) }}
     {{form_row(form.titre)}}
-    {# <textarea class="form-control ckeditor" id="content" name="content"> </textarea> #}
+
 
     {{form_row(form.texte, {'id' : 'content'})}}
     {{form_row(form.type)}}
     {{form_row(form.path)}}
-    <button>
-        Confirm
+    {{form_row(form.description)}}
+    {{form_row(form.image)}}
+    {{form_row(form.banner)}}
+    {{form_row(form.tag)}}
+    <button id="Bouton_envoie">
+        Envoyer
     </button>
     {{ form_end(form) }}
 
@@ -43,13 +46,12 @@
     {% endif %}
 
     <vue-cropper ref="cropper" :src="imgSrc" alt="Source Image" :cropmove="cropImage"></vue-cropper>
+    </div>
 {% endblock %}
 {% block js %}
-
-    {# <script src="{{asset('js/vue.js')}}"/> #}
-    <script>
+  <script>
         CKEDITOR.replace('content', {
-            height: 300,
+            height: 500,
             filebrowserUploadUrl: "/upload-image"
         });
     </script>

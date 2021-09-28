@@ -1,103 +1,119 @@
 {% extends 'base.html.twig' %}
 {% block title %}
-    {{parent()}}
-    Biographie
+{{parent()}}
+Biographie
 {% endblock %}
 {% block css %}
 <link type="text/css" rel="stylesheet" href={{asset("css/Index_biographie.css")}} />
 {% endblock %}
 {% block content %}
 
-		<!-- CONTENU -->
-		<div id="Zone">
-			<div id="Hobbies_Switch">
-				<a href="{{path('index_nouveaute')}}">Nouveauté</a>
-				<a href="{{path('accueil')}}">Présentation</a>
-				<a href="#"><i class="far fa-chevron-left"></i><span class="Current">Biographie</span><i class="far fa-chevron-right"></i></a>
-			</div>
-			<div id="Zone_haut">
-				<div id="left">
-					<div class="Box_left">
-						<div class="Box_left_top">
-							<i class="fal fa-birthday-cake"></i>
-							<pre><span class="BDash"> -</span> Age</pre>
-						</div>
-						<p>21 Ans</p>
-					</div>
-					<div class="dashed_line"></div>
-					<div class="Box_left">
-						<div class="Box_left_top">
-							<i class="fal fa-map-marker-alt"></i>
-							<pre><span class="BDash"> -</span> Lieu</pre>
-						</div>
-						<p>Moselle, France</p>
-					</div>
-					<div class="dashed_line"></div>
-					<div class="Box_left">
-						<div class="Box_left_top">
-							<i class="fal fa-male"></i>
-							<pre><span class="BDash"> -</span> Taille</pre>
-						</div>
-						<p>175 CM</p>
-					</div>
-					<div class="dashed_line"></div>
-					<div class="Box_left">
-						<div class="Box_left_top">
-							<i class="fal fa-language"></i>
-							<pre><span class="BDash"> -</span> Langues</pre>
-						</div>
-						<div id="language_line">
-						<p>Français</p><pre class="none"> - </pre><p>Anglais</p><pre class="none"> - </pre><p>Japonais</p>
-					</div>
-					</div>
-					<div class="dashed_line"></div>
-					<div class="Box_left">
-						<div class="Box_left_top">
-							<i class="fal fa-hand-rock"></i>
-							<pre><span class="BDash"> -</span> Politique</pre>
-						</div>
-						<p>France Insoumise</p>
-					</div>
-					<div class="dashed_line"></div>
-					<div class="Box_left">
-						<div class="Box_left_top">
-							<i class="fal fa-heartbeat"></i>
-							<pre><span class="BDash">-</span> Sports</pre>
-						</div>
-						<p><span class="bold">2016 - 2017</span><br>Odysée Club (Chréhange)<br>Musculation</p>
-						<p><span class="bold">2013 - 2015</span><br>Lycée Charles Jully<br>Musculation</p>
-					</div>
-          	<div class="dashed_line"></div>
-					<div class="Box_right">
-						<div class="Box_right_top">
-              	<i class="fal fa-graduation-cap"></i>
-							<pre><span class="BDash"> - </span>Formations</pre>
+<!-- CONTENU -->
+<div id="Zone">
+  <div id="Hobbies_Switch">
+    <a href="{{path('index_nouveaute')}}">Nouveauté</a>
+    <a href="{{path('accueil')}}">Présentation</a>
+    <a href="#"><i class="far fa-chevron-left"></i><span class="Current">Biographie</span><i class="far fa-chevron-right"></i></a>
+  </div>
+  <div id="Zone_haut">
+    <div id="left">
 
-						</div>
-						<p><span class="bold">2015 - 2017</span><br>SUPINFO International University<br>Technicien en Informatique</p>
-						<p><span class="bold">2012 - 2015</span><br>Lycée Charles Jully<br>BAC STI2D SIN</p>
-					</div>
-					<div class="dashed_line"></div>
-					<div class="Box_right">
-						<div class="Box_right_top">
-              <i class="fal fa-building"></i>
-							<pre><span class="BDash"> - </span>Travails</pre>
+      <div class="Box_left">
+        <div class="Box_left_top">
+          <i class="fal fa-birthday-cake"></i>
+          <pre><span class="BDash"> -</span> Age</pre>
+        </div>
+        <p>24 Ans</p>
+      </div>
 
-						</div>
-						<p><span class="bold">2017 - ?</span><br>Com4Up<br>Directeur Géneral</p>
-						<p><span class="bold">juillet 2016 - aoüt 2016</span><br>Centre hospitalier de Saint-Avold<br>Stagiaire / Service Informatique</p>
-						<p><span class="bold">juin 2015 - juillet 2015</span><br>Viessmann France<br>Vacataire / Travaux neuf</p>
-					</div>
-					<div class="dashed_line"></div>
-					<div class="Box_right">
-						<div class="Box_right_top">
-              <i class="fal fa-gamepad"></i>
-							<pre><span class="BDash"> - </span>Projets</pre>
+      <div class="dashed_line"></div>
 
-						</div>
-						<p><span class="bold">2018 - ?</span><br>Streaming School<br>Fondateur</p>
-						<p><span class="bold">2012 - ?</span><br>Faerith's<br>Fondateur</p>
-					</div>
-				</div>
-			</div>
-{% endblock %}
+      <div class="Box_left">
+        <div class="Box_left_top">
+          <i class="fal fa-map-marker-alt"></i>
+          <pre><span class="BDash"> -</span> Lieu</pre>
+        </div>
+        <p>Moselle, France</p>
+      </div>
+
+      <div class="dashed_line"></div>
+
+      <div class="Box_left">
+        <div class="Box_left_top">
+          <i class="fal fa-male"></i>
+          <pre><span class="BDash"> -</span> Taille</pre>
+        </div>
+        <p>175 CM</p>
+      </div>
+
+      <div class="dashed_line"></div>
+
+      <div class="Box_left">
+        <div class="Box_left_top">
+          <i class="fal fa-language"></i>
+          <pre><span class="BDash"> -</span> Langues</pre>
+        </div>
+        <div id="language_line">
+          <p>Français</p>
+          <pre class="none"> - </pre>
+          <p>Anglais</p>
+          <pre class="none"> - </pre>
+          <p>Japonais</p>
+        </div>
+      </div>
+
+      <div class="dashed_line"></div>
+
+      <div class="Box_left">
+        <div class="Box_left_top">
+          <i class="fal fa-heartbeat"></i>
+          <pre><span class="BDash"> -</span> Sports</pre>
+        </div>
+        <div>
+          <p><span class="bold">2016 - 2017</span><br>Odysée Club (Chréhange)<br>Musculation</p>
+          <p><span class="bold">2013 - 2015</span><br>Lycée Charles Jully<br>Musculation</p>
+        </div>
+      </div>
+
+      <div class="dashed_line"></div>
+
+      <div class="Box_right">
+        <div class="Box_right_top">
+          <i class="fal fa-graduation-cap"></i>
+          <pre><span class="BDash"> - </span>Formations</pre>
+        </div>
+        <div>
+          <p><span class="bold">2015 - 2017</span><br>SUPINFO International University<br>Technicien en Informatique</p>
+          <p><span class="bold">2012 - 2015</span><br>Lycée Charles Jully<br>BAC STI2D SIN</p>
+        </div>
+      </div>
+
+      <div class="dashed_line"></div>
+
+      <div class="Box_right">
+        <div class="Box_right_top">
+          <i class="fal fa-building"></i>
+          <pre><span class="BDash"> - </span>Travails</pre>
+        </div>
+        <div>
+          <p><span class="bold">2017 - 2020</span><br>Com4Up<br>Directeur Géneral</p>
+          <p><span class="bold">juillet 2016 - août 2016</span><br>Centre hospitalier de Saint-Avold<br>Stagiaire / Service Informatique</p>
+          <p><span class="bold">juin 2015 - juillet 2015</span><br>Viessmann France<br>Vacataire / Travaux neuf</p>
+        </div>
+      </div>
+
+      <div class="dashed_line"></div>
+
+      <div class="Box_right">
+        <div class="Box_right_top">
+          <i class="fal fa-gamepad"></i>
+          <pre><span class="BDash"> - </span>Projets</pre>
+        </div>
+        <div>
+          <p><span class="bold">2018 - ?</span><br>Streaming School<br>Fondateur</p>
+          <p><span class="bold">2012 - ?</span><br>Faerith's<br>Fondateur</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}

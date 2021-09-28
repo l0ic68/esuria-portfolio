@@ -24,7 +24,15 @@ Esuria // Live
 			</div>
 
 			<div id="Twitch">
-				<iframe src="https://player.twitch.tv/?channel=esuria" frameborder="0" allowfullscreen="true" scrolling="no" autoplay="yes" id="Twitch_1"></iframe>
+			<script src= "https://player.twitch.tv/js/embed/v1.js"></script>
+			<div id="SamplePlayerDivID"></div>
+			<script type="text/javascript">
+			  var options = {
+			    channel: "esuria"
+			  };
+			  var player = new Twitch.Player("SamplePlayerDivID", options);
+			  player.setVolume(0.5);
+			</script>
 			</div>
 
 			<div id="Bas_page">
@@ -95,7 +103,7 @@ Esuria // Live
 		</div>
 
 		<div id="Chat">
-			<iframe src="http://www.twitch.tv/embed/esuria/chat?darkpopout" frameborder="0" scrolling="yes" id="Twitch_chat"></iframe>
+			<iframe src="https://www.twitch.tv/embed/esuria/chat" scrolling="yes" frameborder="0" id="Twitch_chat"></iframe>
 		</div>
 
 {% endblock %}

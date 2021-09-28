@@ -62,8 +62,7 @@ class CMSController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $projects = $em->getRepository(Projects::class)->findAll();
-        $technologies = $em->getRepository(Technologies::class)->findAll();
-        return $this->render('cms_base/cms_projets.html.twig', ["projects" => $projects,"technologies" => $technologies]);
+        return $this->render('cms_base/cms_projets.html.twig', ["projects" => $projects]);
     }
 
 

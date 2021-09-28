@@ -25,76 +25,7 @@
         </div>
         <button type="submit">Edit</button>
         {{form_end(form)}}</div>
-    <div id="Parcours">
-        <div id="app">
-            <h1>- Parcours -</h1>
-            <div id="Timeline">
-                <div id="Info">
-                    <p class="Periode" id="Periode_2012_2015">2012 - 2015</p>
-                    <p class="Titre_periode" id="Titre_lycee">Lycée Charles Jully</p>
-                </div>
-            </div>
 
-            <i class="far fa-chevron-double-left" id="chevron_past"></i>
-            <div id="Timeline_bar">
-                <template v-for="(events, tindex) in timeline">
-                    <template v-for="(smallEvent, sindex) in events">
-                        <template class="Timeline_section" v-if="smallEvent.event">
-                            <div class="Bar"></div>
-                            <div class="circle" onclick="action_timeline()" v-on:click="changeInfo(tindex , sindex)">
-                                <div class="InsideCircle"></div>
-                            </div>
-                            <div class="timeline_action">
-                                <a v-bind:href="'/edit-event/' + smallEvent.event.id ">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a v-bind:href="'/delete-event/' + smallEvent.event.id ">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
-                            </div>
-                        </template>
-
-
-                        {# {smallEvent} #}
-                        <template v-if="smallEvent.smallEvent">
-                            <div class="Bar"></div>
-                            <div class="LittleCircle" onclick="action_timeline()" v-on:click="changeInfo(tindex , sindex)">
-                                <div class="InsideLittleCircle"></div>
-                            </div>
-                            <div class="timeline_action">
-                                <a v-bind:href="'/edit-small-event/' + smallEvent.smallEvent.id ">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a v-bind:href="'/delete-small-event/' + smallEvent.smallEvent.id ">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
-                            </div>
-                        </template>
-
-                        <template v-if="smallEvent.event">
-                            <div class="Bar"></div>
-                            <a class="LittleCircle" v-bind:href="'/new-smallEvent/' + smallEvent.event.id" v-on:click="changeInfo(tindex , sindex)">
-                                <div class="InsideLittleCircle">
-                                    <i class="fas fa-plus"></i>
-                                </div>
-                            </a>
-                        </template>
-
-                    </template>
-                </template>
-
-                <div class="Bar"></div>
-                <a href="{{path('new-event')}}" class="circle" v-on:click="changeInfo(tindex , sindex)">
-                    <div class="InsideCircle">
-                        <i class="fas fa-plus"></i>
-                    </div>
-                </a>
-            </template>
-        </template>
-
-        {# <div class="Bar"></div> #}
-    </div>
-    <i class="far fa-chevron-double-right" id="chevron_post"></i>
     <div id="Competences">
         <h1>- Compétences -</h1>
         <div id="Competences_data">
@@ -173,11 +104,11 @@
                     this.key = key;
                 },
                 changeInfo(tindex, sindex) {
-                    if (this.timeline[tindex][sindex].event != undefined) 
+                    if (this.timeline[tindex][sindex].event != undefined)
                         this.description = this.timeline[tindex][sindex].event.description;
-                     else 
+                     else
                         this.description = this.timeline[tindex][sindex].smallEvent.description;
-                    
+
 
 
                     // this.description = this.timeline[tindex][sindex].description;

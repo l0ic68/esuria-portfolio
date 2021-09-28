@@ -1,7 +1,7 @@
 .Photo {
-  height: auto;
+  height: 250px;
   width: 100%;
-  border-bottom: 2px solid #bd7a00;
+  border-bottom: 2px solid #E69500;
 }
 
 .espace_icone {
@@ -53,7 +53,18 @@
 
 #Zone::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: #bd7a00;
+    background-color: #E69500;
+}
+
+#CkEditorContent {
+  padding: 1em;
+  max-width: 100%;
+}
+
+img {
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 #Hashtag {
@@ -70,13 +81,32 @@
   color: white;
   font-size: 2em;
   justify-content: flex-end;
+  align-items: center;
   width: 50%;
+}
+
+#Social_share a {
+  color: white;
 }
 
 #After_Article {
   display: flex;
   align-items: center;
   width: 100%;
+}
+
+#separation_your_com {
+  width: 90%;
+  height: 1px;
+  border: 0;
+  background-color: #E69500;
+}
+
+#separation_com {
+  width: 90%;
+  height: 1px;
+  border: 0;
+  background-color: white;
 }
 
 #Total_com {
@@ -88,15 +118,44 @@
   font-family: "Roboto Slab", serif;
   color: white;
 }
-
-#Zone_com {
-  border: 2px solid #003471;
-  background-color: rgba(0, 0, 0, 0.2);
-  width: 100%;
-  height: 8em;
+.titre_com {
   color: white;
   font-family: "Roboto", sans-serif;
   font-size: 1em;
+  margin: 0;
+}
+
+.gras {
+  font-weight: bold;
+}
+
+.Zone_com {
+  border: 2px solid #003471;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 0.5em;
+  margin: 0;
+  margin-bottom: 1em;
+  color: white;
+  font-family: "Roboto", sans-serif;
+  font-size: 1em;
+  resize: vertical;
+}
+
+.Zone_pseudo {
+  border: 2px solid #003471;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 0.5em;
+  margin: 0;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  color: white;
+  font-family: "Roboto", sans-serif;
+  font-size: 1em;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
 }
 
 #Bouton_envoie {
@@ -115,7 +174,7 @@
 }
 
 #Bouton_envoie:hover {
-  color: #bd7a00;
+  color: #E69500;
   font-weight: bold;
   background-color: rgba(0, 0, 0, 0.4);
   cursor: pointer;

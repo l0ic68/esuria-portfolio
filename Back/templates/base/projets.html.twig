@@ -50,69 +50,105 @@
                 <option value="valeur4">Personnel</option>
                 <option value="valeur5">Professionnel</option>
             </select> #}
+            <div id="Zone_bas">
+            <div class="Article_element" v-if="onLoad == false">
 
-            <div id="Project_Content" v-if="onLoad == false">
-                <div class="Project_Data" v-for="projet in projets">
-                
-                    <a class="Lien_Photo" :href="'/projet' + '/' + projet.id + '/' + projet.slug"><img :src="projet.image" class="Photo"></a>
-                    <div class="Project_Info Web">
-                        <div class="Project_Type">{projet.titre}</div>
-                        <div class="Project_Date">-
-                            <span class="Project_Date_Data">{ projet.date| moment}</span>
-                            -</div>
-                    </div>
-                </div>
-
-
-                <div class="Project_Data hidden"></div>
-
-                <div class="Project_Data hidden"></div>
-                <div id="Centre_chiffre">
-                    <template>
-                        <div v-if="page == 1">
+              <a :href="'/projet' + '/' + projet.id + '/' + projet.slug" class="Une_Boite" v-for="projet in projets.slice().reverse()">
+                  <div class="Lien_Photo"><img :src="projet.image" class="Photo"></div>
+                  <div class="Sous_Bandeau">
+                      <h2 class="Titre_article">
+                          {projet.titre}
+                      </h2>
+                      <p class="Date">
+                          <span class="Couleur_slash">//
+                          </span>
+                          { projet.date| moment}
+                      </p>
+                  </div>
+              </a>
+              <div class="Une_Boite hidden"></div>
+              <div class="Une_Boite hidden"></div>
+              <div class="Une_Boite hidden"></div>
+              <div class="Une_Boite hidden"></div>
+              </div>
+              <div id="Centre_chiffre">
+                  <p>
+                      <template v-if="nbrPage == 1">
+                      </template>
+                      <template v-else-if="nbrPage == 2">
+                        <div v-if="page == 1" >
+                            <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+                            <button v-on:click="setPage(page + 1)">{page + 1}</button>
+                        </div>
+                        <div v-if="page == 2" >
+                            <button v-on:click="setPage(page - 1)">{page - 1}</button>
+                            <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+                        </div>
+                      </template>
+                      <template v-else-if="nbrPage == 3">
+                        <div v-if="page == 1" >
                             <button class="pag_select" v-on:click="setPage(page)">{page}</button>
                             <button v-on:click="setPage(page + 1)">{page + 1}</button>
                             <button v-on:click="setPage(page + 2)">{page + 2}</button>
-                            ...
-                            <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
-
                         </div>
-                        <div v-else-if="page < 3">
-                            <button v-on:click="setPage(page -1)">{page -1}</button>
-                            <button class="pag_select" v-on:click="setPage(page)">{page}</button>
-                            <button v-on:click="setPage(page + 1)">{page + 1}</button>
-                            ...
-                            <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
-
-                        </div>
-                        <div v-else-if="page >= 3 && page < nbrPage - 1">
-                            <button v-on:click="setPage(1)">1</button>
-                            ...
-                            <button v-on:click="setPage(page - 1)">{page - 1}</button>
-                            <button class="pag_select" v-on:click="setPage(page)">{page}</button>
-                            <button v-on:click="setPage(page + 1)">{page + 1}</button>
-                            ...
-                            <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
-
-                        </div>
-                        <div v-else-if="page == (nbrPage - 1)">
-                            <button v-on:click="setPage(1)">1</button>
-                            ...
+                        <div v-if="page == 2" >
                             <button v-on:click="setPage(page - 1)">{page - 1}</button>
                             <button class="pag_select" v-on:click="setPage(page)">{page}</button>
                             <button v-on:click="setPage(page + 1)">{page + 1}</button>
                         </div>
-                        <div v-else-if="page == nbrPage">
-                            <button v-on:click="setPage(1)">1</button>
-                            ...
+                        <div v-if="page == 3" >
                             <button v-on:click="setPage(page - 2)">{page - 2}</button>
                             <button v-on:click="setPage(page - 1)">{page - 1}</button>
                             <button class="pag_select" v-on:click="setPage(page)">{page}</button>
                         </div>
-                    </template>
-                </div>
+                      </template>
+                      <template v-else-if="nbrPage > 3">
+                          <div v-if="page == 1" >
+                              <button class="pag_select" v-on:click="setPage(page)">{page}</button>
+                              <button v-on:click="setPage(page + 1)">{page + 1}</button>
+                              <button v-on:click="setPage(page + 2)">{page + 2}</button>
+                              ...
+                              <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
 
-            </div>
+                          </div>
+                          <div v-else-if="page < 3">
+                              <button v-on:click="setPage(page -1)">{page -1}</button>
+                              <button  class="pag_select" v-on:click="setPage(page)">{page}</button>
+                              <button v-on:click="setPage(page + 1)">{page + 1}</button>
+                              ...
+                              <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
+
+                          </div>
+                          <div v-else-if="page >= 3 && page < nbrPage - 1">
+                              <button v-on:click="setPage(1)">1</button>
+                              ...
+                              <button v-on:click="setPage(page - 1)">{page - 1}</button>
+                              <button  class="pag_select" v-on:click="setPage(page)">{page}</button>
+                              <button v-on:click="setPage(page + 1)">{page + 1}</button>
+                              ...
+                              <button v-on:click="setPage(nbrPage)">{nbrPage}</button>
+
+                          </div>
+                          <div v-else-if="page == (nbrPage - 1)">
+                              <button v-on:click="setPage(1)">1</button>
+                              ...
+                              <button v-on:click="setPage(page - 1)">{page - 1}</button>
+                              <button  class="pag_select" v-on:click="setPage(page)">{page}</button>
+                              <button v-on:click="setPage(page + 1)">{page + 1}</button>
+                          </div>
+                          <div v-else-if="page == nbrPage">
+                              <button v-on:click="setPage(1)">1</button>
+                              ...
+                              <button v-on:click="setPage(page - 2)">{page - 2}</button>
+                              <button v-on:click="setPage(page - 1)">{page - 1}</button>
+                              <button  class="pag_select" v-on:click="setPage(page)">{page}</button>
+                          </div>
+                      </template>
+                  </p>
+              </div>
+
+
+        </div>
         </div>
     </div>
 {% endblock %}
@@ -221,7 +257,7 @@
                     if(this.select == 'all')
                     {
                         return this.getArticle();
-                        
+
                     }
                     axios({
                         method: 'POST',
@@ -258,13 +294,13 @@
                         baseUrl = baseUrl.replace("annonce", "");
                         var json = JSON.parse(response.data);
                         var object = this;
-                        console.log(json);
                         this.count = json;
-                        this.nbrPage = Math.ceil(this.count / 6)
-                        // this.projets = [];
-                        // $.each(json,function(key,value){
-                        // object.projets.push({"titre" : value.titre,"texte" : value.texte,"date" : value.date });
-                        // });
+                        if (this.count % this.nbrPerPage === 0){
+                          this.nbrPage = Math.floor((this.count / this.nbrPerPage));
+                        }
+                        else {
+                          this.nbrPage = Math.floor((this.count / this.nbrPerPage) + 1);
+                        }
                     })
                 }
             }

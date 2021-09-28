@@ -67,7 +67,6 @@ class ProjetController extends Controller
         if ($previous != null) {
             $previous["title"] = $slug->slugify($previous["title"]);
         }
-        var_dump($previous);
         return $this->render('base/lecture_projet.html.twig', array(
             'project' => $project,
             'next'    => $next,
@@ -76,7 +75,7 @@ class ProjetController extends Controller
     }
 
     /**
-     * @Route("/new-projet", name="projet")
+     * @Route("/new-projet", name="new-projet")
      */
     public function new_projet(ManagerRegistry $doctrine, Request $request)
     {

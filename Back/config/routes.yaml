@@ -51,9 +51,6 @@ agenda:
     path: /agenda
     controller: App\Controller\DefaultController::agenda
 
-contact:
-    path: /contact
-    controller: App\Controller\DefaultController::contact
 
 # lecture-article:
 #     path: /lecture-article/{titre}

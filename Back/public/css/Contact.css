@@ -1,5 +1,5 @@
 .icone_jaune {
-  color: #bd7a00;
+  color: #E69500;
   font-size: 2em;
 }
 
@@ -14,7 +14,7 @@
 }
 
 .icone_bas {
-  color: #bd7a00;
+  color: #E69500;
   font-size: 1.5em;
   margin-right: 0.25em;
 }
@@ -96,7 +96,7 @@
 }
 
 .Police_mail a:hover {
-  color: #bd7a00;
+  color: #E69500;
 }
 
 #Ensemble {
@@ -131,12 +131,16 @@
   border: 2px solid #003471;
   background-color: rgba(0, 0, 0, 0.2);
   width: auto;
-  font-family: "Cinzel", serif;
-  font-size: 1.25em;
+  color: white;
+  text-decoration: none;
 }
 
 #Bouton_envoie p {
   margin: 0.5em 0em 0.5em 0.5em;
+  font-family: "Cinzel", serif;
+  font-size: 1.25em;
+  color: white;
+  text-decoration: none;
 }
 
 #ico_send {
@@ -145,7 +149,7 @@
 }
 
 #Bouton_envoie:hover {
-  color: #bd7a00;
+  color: #E69500;
   font-weight: bold;
   background-color: rgba(0, 0, 0, 0.4);
   cursor: pointer;

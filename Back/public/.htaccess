@@ -66,3 +66,4 @@ DirectoryIndex index.php
         # RedirectTemp cannot be used instead
     </IfModule>
 </IfModule>
+Content-Security-Policy: frame-ancestors 'self' https://player.twitch.tv https://twitch.tv;

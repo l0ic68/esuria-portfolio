@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block title %}
     {{parent()}}
-    Blog
+    Jeux
 {% endblock %}
 {% block css %}
-    <link type="text/css" rel="stylesheet" href="{{asset("css/Hobbies_Musique.css")}}"/>
+    <link type="text/css" rel="stylesheet" href="{{asset("css/Hobbies_Jeux.css")}}"/>
 {% endblock %}
 {% block content %}
     <!-- CONTENU -->
@@ -27,26 +27,18 @@
         </div>
         <div id="Zone_bas">
             <div class="Wrap">
-                <div class="Mobile_Moment" id="Margin_Musique">
-                    <p>Jeu vidéo du moment</p>
-                </div>
-                <div
-                    class="Moment_data_mobile">
-                    {# <a href="htqtps://muuse Doctrine\Persistence\ManagerRegistry;
-                                                                                                                                                                                                                                                                    sic.youtube.com/watch?v=f3L9_6aJi2Q&list=OLAK5uy_m0Bdl6V0SVlvhoYFWURcyTrVXENLcww18" target="_blank"><img src="../Images/Musiques/Album_du_moment/Myles_Kennedy.jpg" alt="Myles Kennedy"></a> #}
-                    <a href="{{jeu_moment.link}}" target="_blank"><img src="{{jeu_moment.image.path}}" alt="{{jeu_moment.image.alt}}"></a>
-                </div>
                 <div id="Moment">
                     <div class="Moment_2">
-                        <p>Jeu&nbsp;vidéo&nbsp;moment</p>
+                        <p>Jeu&nbsp;vidéo&nbsp;du&nbsp;moment</p>
+                        {% if jeu_moment %}
+                        <a href="{{jeu_moment.link}}" target="_blank"><img src="{{jeu_moment.image.path}}" alt="{{jeu_moment.image.alt}}"></a>
+                        {% endif %}
                     </div>
                 </div>
-                <div
-                    id="Moment_data">
-                    {# <p style="color:white; ">Path : {{album_moment.filename}}</p> #}
-                    <a href="{{jeu_moment.link}}" target="_blank"><img src="{{jeu_moment.image.path}}" alt="{{jeu_moment.image.alt}}"></a>
+
+
                 </div>
-            </div>
+
 
             <div class="Wrap">
                 <div class="Favori">
@@ -55,7 +47,7 @@
                 <div class="Article_element">
                     {%  set countJeuxFav = 0 %}
                     {% for hobbie in hobbies if hobbie.type == "Jeux_fav" %}
-                        {% if countJeuxFav == 5 %}
+                        {% if countJeuxFav == 4 %}
                             {%  set countJeuxFav = 0 %}
                         {% endif %}
                         <div class="Une_Boite">
@@ -63,7 +55,7 @@
                         </div>
                         {% set countJeuxFav = countJeuxFav + 1 %}
                     {% endfor %}
-                    {% for i in  countJeuxFav..4 if countJeuxFav != 5 %}
+                    {% for i in  countJeuxFav..4 if countJeuxFav != 4 %}
                         <div class="Une_Boite hidden"></div>
                     {% endfor %}
                 </div>

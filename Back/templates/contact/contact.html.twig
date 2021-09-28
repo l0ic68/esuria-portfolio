@@ -9,30 +9,33 @@
 
 		<!-- CONTENU -->
 		<div id="Zone">
-			<form method="post" action="traitement.php">
+			{{ form_start(our_form, {'attr': {'id': 'Contact_Form'}}) }}
 				<div class="En_ligne">
 					<i class="fal fa-user-alt icone_jaune Police_i" aria-hidden></i>
-					<input type="text" name="pseudo" id="pseudo" autofocus required maxlength="20" placeholder="Pseudo" />
+					{{ form_widget(our_form.nom)}}
 				</div>
 				<div class="En_ligne">
 					<i class="fal fa-envelope icone_jaune Police_i" aria-hidden></i>
-					<input type="email" name="e-mail" id="e-mail" required placeholder="E-Mail" />
+
+					{{ form_widget(our_form.email)}}
 				</div>
 				<div class="En_ligne">
 					<i class="fal fa-info icone_jaune Police_i" aria-hidden></i>
-					<input type="text" name="Objet" id="Objet" required placeholder="Objet" />
+
+					{{ form_widget(our_form.objet)}}
 				</div>
 				<div class="En_ligne_text">
 					<i class="fal fa-pencil-alt icone_jaune Police_i" aria-hidden></i>
-					<textarea name="Message" id="Message" required placeholder="Message"></textarea>
+				
+					{{ form_widget(our_form.message)}}
 				</div>
-			</form>
 			<div id="Bouton_envoie">
 				<p>
 					ENVOYER LE MESSAGE
 				</p>
 				<i class="fal fa-paper-plane" id="ico_send"></i>
 			</div>
+		{{ form_end(our_form) }}
 			<div id="Ensemble">
 				<div class="Bas_ligne">
 
@@ -40,7 +43,7 @@
 						<i class="fal fa-at icone_bas" aria-hidden></i> E-MAIL PRO
 					</p>
 					<p class="Police_mail">
-						<a href="mailto:kleine.thomas@com4up.fr">kleine.thomas@com4up.fr</a>
+						<a>kleine.thomas@com4up.fr</a>
 					</p>
 				</div>
 				<div class="Bas_ligne">
@@ -48,7 +51,7 @@
 						<i class="fal fa-at icone_bas" aria-hidden></i> E-MAIL FAERITH'S
 					</p>
 					<p class="Police_mail">
-						<a href="mailto:esu.faeriths@gmail.com">esu.faeriths@gmail.com</a>
+						<a>esu.faeriths@gmail.com</a>
 					</p>
 				</div>
 				<div class="Bas_ligne">

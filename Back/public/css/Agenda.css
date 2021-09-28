@@ -8,7 +8,7 @@
 
 .Gros_Titre {
   font-family: 'Cinzel', serif;
-  color: #bd7a00;
+  color: #E69500;
   margin-left: 0.5em;
 }
 
@@ -72,7 +72,7 @@
 }
 
 .Couleur_slash {
-  color: #bd7a00;
+  color: #E69500;
   font-size: 1.25em;
 }
 
@@ -96,7 +96,7 @@
 
 #Scroll::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: #bd7a00;
+    background-color: #E69500;
 }
 
 #Separation_basse {
@@ -128,7 +128,7 @@
 }
 
 #Gauche:hover, #Droite:hover {
-  color: #bd7a00;
+  color: #E69500;
   cursor: pointer;
 }
 

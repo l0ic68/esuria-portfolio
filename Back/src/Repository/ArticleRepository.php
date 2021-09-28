@@ -19,7 +19,7 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
-   
+
     public function myGetArticle($page)
     {
         return $this->createQueryBuilder('b')
@@ -68,7 +68,7 @@ class ArticleRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('b')
         ->setMaxResults($maxResult)
-        ->orderBy('b.date','ASC')
+        ->orderBy('b.date','DESC')
         ->getQuery()
         ->getResult()
         ;
@@ -93,7 +93,7 @@ class ArticleRepository extends ServiceEntityRepository
         ->setFirstResult(($page-1)*6)
         ->setMaxResults(6)
         ->orderBy('b.date','ASC')
-      
+
         ->getQuery()
         ->getResult()
         ;

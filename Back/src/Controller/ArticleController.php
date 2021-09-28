@@ -59,6 +59,9 @@ class ArticleController extends Controller
         ));
     }
 
+    /**
+     * @Route("/new-article", name="new-article")
+     */
     public function new_article(ManagerRegistry $doctrine, Request $request)
     {
 
@@ -78,12 +81,19 @@ class ArticleController extends Controller
         ));
     }
 
+    /**
+     * @Route("/edit-article/{id}", name="edit-article")
+     */
     public function edit_article(ManagerRegistry $doctrine, Request $request, $id)
     {
         $article = $doctrine->getRepository(Article::class)->find($id);
         $article->getImage()->setFilename(new File($this->getParameter('uploadDirectory') . '/' . $article->getImage()->getFilename()));
+        $article->getBanner()->setFilename(new File($this->getParameter('uploadDirectory') . '/' . $article->getBanner()->getFilename()));
+
         $form = $this->createForm(BlogType::class, $article);
+
         $saveImage = $article->getImage()->getFilename();
+        $saveBanner = $article->getBanner()->getFilename();
 
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
@@ -91,6 +101,10 @@ class ArticleController extends Controller
             $data = $form->getData();
             if ($data->getImage()->getFilename() == null)
                 $data->getImage()->setFilename($saveImage);
+
+            if ($data->getBanner()->getFilename() == null)
+                $data->getBanner()->setFilename($saveBanner);
+
             #$article->setType($type);
             $em->persist($article);
             $em->flush();

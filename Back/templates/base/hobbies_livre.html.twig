@@ -4,7 +4,7 @@
     Blog
 {% endblock %}
 {% block css %}
-    <link type="text/css" rel="stylesheet" href="{{asset("css/Hobbies_Musique.css")}}"/>
+    <link type="text/css" rel="stylesheet" href="{{asset("css/Hobbies_Film.css")}}"/>
 {% endblock %}
 {% block content %}
     <!-- CONTENU -->
@@ -27,32 +27,19 @@
         </div>
         <div id="Zone_bas">
             <div class="Wrap">
-                <div class="Mobile_Moment" id="Margin_Musique">
-                    <p>Livre du moment</p>
-                    <p>BD du moment</p>
-                    <p>Manga du moment</p>
-                </div>
-                <div
-                    class="Moment_data_mobile">
-                    {# <a href="htqtps://muuse Doctrine\Persistence\ManagerRegistry;
-                                                                                                                                                                                                                                                                                        sic.youtube.com/watch?v=f3L9_6aJi2Q&list=OLAK5uy_m0Bdl6V0SVlvhoYFWURcyTrVXENLcww18" target="_blank"><img src="../Images/Musiques/Album_du_moment/Myles_Kennedy.jpg" alt="Myles Kennedy"></a> #}
-                    <a href="{{livre_moment.link}}" target="_blank"><img src="{{livre_moment.image.path}}" alt="{{livre_moment.image.alt}}"></a>
-                    <a href="{{bd_moment.link}}" target="_blank"><img src="{{bd_moment.image.path}}" alt="{{bd_moment.image.alt}}"></a>
-                    <a href="{{manga_moment.link}}" target="_blank"><img src="{{manga_moment.image.path}}" alt="{{manga_moment.image.alt}}"></a>
-                </div>
                 <div id="Moment">
                     <div class="Moment_2">
                         <p>Livre&nbsp;du&nbsp;moment</p>
-                        <p>BD&nbsp;du&nbsp;moment</p>
-                        <p>Manga&nbsp;du&nbsp;moment</p>
+                        {% if livre_moment %}<a href="{{livre_moment.link}}" target="_blank"><img src="{{livre_moment.image.path}}" alt="{{livre_moment.image.alt}}"></a>{% endif %}
                     </div>
-                </div>
-                <div
-                    id="Moment_data">
-                    {# <p style="color:white; ">Path : {{album_moment.filename}}</p> #}
-                    <a href="{{livre_moment.link}}" target="_blank"><img src="{{livre_moment.image.path}}" alt="{{livre_moment.image.alt}}"></a>
-                    <a href="{{bd_moment.link}}" target="_blank"><img src="{{bd_moment.image.path}}" alt="{{bd_moment.image.alt}}"></a>
-                    <a href="{{manga_moment.link}}" target="_blank"><img src="{{manga_moment.image.path}}" alt="{{manga_moment.image.alt}}"></a>
+                    <div class="Moment_2">
+                        <p>BD&nbsp;du&nbsp;moment</p>
+                        {% if bd_moment %}<a href="{{bd_moment.link}}" target="_blank"><img src="{{bd_moment.image.path}}" alt="{{bd_moment.image.alt}}"></a>{% endif %}
+                    </div>
+                    <div class="Moment_2">
+                        <p>Manga&nbsp;du&nbsp;moment</p>
+                        {% if manga_moment %}<a href="{{manga_moment.link}}" target="_blank"><img src="{{manga_moment.image.path}}" alt="{{manga_moment.image.alt}}"></a>{% endif %}
+                    </div>
                 </div>
             </div>
 
@@ -63,7 +50,7 @@
                 <div class="Article_element">
                     {%  set countAlbumFav = 0 %}
                     {% for hobbie in hobbies if hobbie.type == "Livre_fav" %}
-                        {% if countAlbumFav == 5 %}
+                        {% if countAlbumFav == 4 %}
                             {%  set countAlbumFav = 0 %}
                         {% endif %}
                         <div class="Une_Boite">
@@ -71,7 +58,7 @@
                         </div>
                         {% set countAlbumFav = countAlbumFav + 1 %}
                     {% endfor %}
-                    {% for i in  countAlbumFav..4 if countAlbumFav != 5 %}
+                    {% for i in  countAlbumFav..4 if countAlbumFav != 4 %}
                         <div class="Une_Boite hidden"></div>
                     {% endfor %}
                 </div>
